@@ -22,12 +22,12 @@ import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 const POPULAR_DESTINATIONS: Record<string, string[]> = {
-  "japan": ["Akihabara", "Arashiyama Bamboo Grove", "Fushimi Inari Taisha", "Gion District", "Kinkaku-ji", "Mount Fuji", "Osaka Castle", "Shibuya Crossing", "Tokyo Tower", "Universal Studios Japan"],
-  "france": ["Champs-Élysées", "Disneyland Paris", "Eiffel Tower", "Louvre Museum", "Mont Saint-Michel", "Montmartre", "Palace of Versailles", "Riviera", "Sainte-Chapelle"],
-  "italy": ["Amalfi Coast", "Colosseum", "Cinque Terre", "Duomo di Milano", "Florence Cathedral", "Leaning Tower of Pisa", "Pantheon", "Pompeii", "Trevi Fountain", "Vatican Museums"],
-  "usa": ["Central Park", "Disneyland", "Golden Gate Bridge", "Grand Canyon", "Las Vegas Strip", "Statue of Liberty", "Times Square", "Walt Disney World", "Yellowstone", "Yosemite"],
-  "india": ["Amber Palace", "Gateway of India", "Hawa Mahal", "Qutub Minar", "Red Fort", "Taj Mahal", "Varanasi Ghats", "Victoria Memorial"],
-  "spain": ["Alhambra", "Casa Batlló", "Ibiza", "La Sagrada Familia", "Park Güell", "Plaza Mayor", "Prado Museum", "Royal Palace of Madrid", "Seville Cathedral"]
+  "japan": ["Akihabara, Tokyo, Japan", "Arashiyama Bamboo Grove, Kyoto, Japan", "Fushimi Inari Taisha, Kyoto, Japan", "Gion District, Kyoto, Japan", "Kinkaku-ji, Kyoto, Japan", "Mount Fuji, Honshu, Japan", "Osaka Castle, Osaka, Japan", "Shibuya Crossing, Tokyo, Japan", "Tokyo Tower, Tokyo, Japan", "Universal Studios Japan, Osaka, Japan"],
+  "france": ["Champs-Élysées, Paris, France", "Disneyland Paris, France", "Eiffel Tower, Paris, France", "Louvre Museum, Paris, France", "Mont Saint-Michel, Normandy, France", "Montmartre, Paris, France", "Palace of Versailles, France", "French Riviera, France", "Sainte-Chapelle, Paris, France"],
+  "italy": ["Amalfi Coast, Campania, Italy", "Colosseum, Rome, Italy", "Cinque Terre, Liguria, Italy", "Duomo di Milano, Milan, Italy", "Florence Cathedral, Florence, Italy", "Leaning Tower of Pisa, Pisa, Italy", "Pantheon, Rome, Italy", "Pompeii, Campania, Italy", "Trevi Fountain, Rome, Italy", "Vatican Museums, Vatican City"],
+  "usa": ["Central Park, New York, USA", "Disneyland, California, USA", "Golden Gate Bridge, San Francisco, USA", "Grand Canyon, Arizona, USA", "Las Vegas Strip, Nevada, USA", "Statue of Liberty, New York, USA", "Times Square, New York, USA", "Walt Disney World, Florida, USA", "Yellowstone, Wyoming, USA", "Yosemite, California, USA"],
+  "india": ["Amber Palace, Jaipur, India", "Gateway of India, Mumbai, India", "Hawa Mahal, Jaipur, India", "Qutub Minar, Delhi, India", "Red Fort, Delhi, India", "Taj Mahal, Agra, India", "Varanasi Ghats, Uttar Pradesh, India", "Victoria Memorial, Kolkata, India"],
+  "spain": ["Alhambra, Granada, Spain", "Casa Batlló, Barcelona, Spain", "Ibiza, Balearic Islands, Spain", "La Sagrada Familia, Barcelona, Spain", "Park Güell, Barcelona, Spain", "Plaza Mayor, Madrid, Spain", "Prado Museum, Madrid, Spain", "Royal Palace of Madrid, Spain", "Seville Cathedral, Andalusia, Spain"]
 };
 
 export default function Home() {
@@ -201,6 +201,17 @@ export default function Home() {
                           className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-2xl max-h-64 overflow-y-auto overflow-x-hidden z-[100]"
                         >
                           <div className="p-2">
+                            <button
+                              type="button"
+                              className="w-full text-left px-4 py-3 bg-blue-50/50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-blue-700 dark:text-blue-300 font-bold flex items-center mb-2 border border-blue-100 dark:border-blue-800/50"
+                              onClick={() => {
+                                setShowSuggestions(false);
+                              }}
+                            >
+                              <Sparkles className="h-4 w-4 mr-3 text-blue-500" />
+                              Plan trip to "{destination}"
+                            </button>
+                            
                             <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places in this country (A-Z)</div>
                             {suggestions.map((place, idx) => (
                               <button
