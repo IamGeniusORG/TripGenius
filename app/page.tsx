@@ -18,6 +18,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Navbar } from "@/components/Navbar";
 
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+
+const POPULAR_DESTINATIONS: Record<string, string[]> = {
+  "japan": ["Akihabara", "Arashiyama Bamboo Grove", "Fushimi Inari Taisha", "Gion District", "Kinkaku-ji", "Mount Fuji", "Osaka Castle", "Shibuya Crossing", "Tokyo Tower", "Universal Studios Japan"],
+  "france": ["Champs-Élysées", "Disneyland Paris", "Eiffel Tower", "Louvre Museum", "Mont Saint-Michel", "Montmartre", "Palace of Versailles", "Riviera", "Sainte-Chapelle"],
+  "italy": ["Amalfi Coast", "Colosseum", "Cinque Terre", "Duomo di Milano", "Florence Cathedral", "Leaning Tower of Pisa", "Pantheon", "Pompeii", "Trevi Fountain", "Vatican Museums"],
+  "usa": ["Central Park", "Disneyland", "Golden Gate Bridge", "Grand Canyon", "Las Vegas Strip", "Statue of Liberty", "Times Square", "Walt Disney World", "Yellowstone", "Yosemite"],
+  "india": ["Amber Palace", "Gateway of India", "Hawa Mahal", "Qutub Minar", "Red Fort", "Taj Mahal", "Varanasi Ghats", "Victoria Memorial"],
+  "spain": ["Alhambra", "Casa Batlló", "Ibiza", "La Sagrada Familia", "Park Güell", "Plaza Mayor", "Prado Museum", "Royal Palace of Madrid", "Seville Cathedral"]
+};
+
 export default function Home() {
   const [date, setDate] = useState<DateRange | undefined>({
     from: undefined,
@@ -29,8 +41,43 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   
-  // Setup tabs default value
   const [activeTab, setActiveTab] = useState("day-0");
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleDestinationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setDestination(val);
+    
+    if (val.length >= 2) {
+      const lowerVal = val.toLowerCase();
+      let found = false;
+      for (const [country, places] of Object.entries(POPULAR_DESTINATIONS)) {
+        if (country.includes(lowerVal) || lowerVal.includes(country)) {
+          setSuggestions([...places].sort());
+          setShowSuggestions(true);
+          found = true;
+          break;
+        }
+      }
+      if (!found) setShowSuggestions(false);
+    } else {
+      setShowSuggestions(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,56 +125,105 @@ export default function Home() {
     show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.4 } }
   };
 
+  // Determine glow color depending on theme (neon violet/cyan for dark mode, subtle blue for light mode)
+  const glowColor = mounted && resolvedTheme === "dark" 
+    ? "rgba(139, 92, 246, 0.45)" // Strong violet/indigo
+    : "rgba(59, 130, 246, 0.35)"; // Solid blue
+
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+    <div 
+      className="min-h-screen flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
       <Navbar />
+      
+      {/* Reactive cursor glow */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColor}, transparent 80%)`
+        }}
+      />
+
       {/* Soft Dot Pattern Background */}
-      <main className="flex-1 relative bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#3f3f46_1px,transparent_1px)]">
+      <main className="flex-1 relative z-10 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#3f3f46_1px,transparent_1px)]">
         
         <section className="relative pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center min-h-[80vh]">
           {/* Subtle gradient overlay to fade the dots out towards edges */}
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--tw-gradient-stops)_80%)] from-transparent to-zinc-50 dark:to-zinc-950" />
           
           <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center">
-            <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 dark:bg-blue-900/10 px-3 py-1 text-sm text-blue-600 mb-8 dark:border-blue-800 dark:text-blue-400 backdrop-blur-sm shadow-sm">
-              <Sparkles className="mr-2 h-4 w-4" />
+            <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 dark:bg-blue-900/10 px-4 py-1.5 text-[11px] uppercase tracking-widest font-bold text-blue-600 mb-8 dark:border-blue-800 dark:text-blue-400 backdrop-blur-sm shadow-sm">
+              <Sparkles className="mr-2 h-3.5 w-3.5" />
               <span>AI-Powered Trip Planning</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight max-w-4xl mb-6 drop-shadow-sm">
-              Design your perfect trip in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">seconds</span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter max-w-4xl mb-6 drop-shadow-sm text-zinc-900 dark:text-zinc-50 leading-[1.1]">
+              Design your perfect trip in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">seconds</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-12 font-medium">
+            <p className="text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide">
               Tell us where you want to go and what you love doing. Our AI will craft a personalized itinerary that matches your vibe and budget perfectly.
             </p>
 
-            <Card className="w-full max-w-4xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-zinc-200/60 dark:border-zinc-800/60 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl mb-8">
-              <CardHeader className="pb-6">
-                <CardTitle className="text-2xl">Plan your next adventure</CardTitle>
-                <CardDescription className="text-base">Fill out the details below to generate your custom itinerary.</CardDescription>
+            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-zinc-200/60 dark:border-zinc-800/60 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl mb-8">
+              <CardHeader className="pb-6 text-center md:text-left">
+                <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
+                <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" onSubmit={handleSubmit}>
+                <form className="grid grid-cols-1 md:grid-cols-3 gap-6" onSubmit={handleSubmit}>
                   
                   {/* Destination */}
-                  <div className="space-y-2 lg:col-span-1">
-                    <Label htmlFor="destination" className="text-sm font-semibold">Destination</Label>
+                  <div className="space-y-3 md:col-span-3 mb-4 relative z-50">
+                    <Label htmlFor="destination" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Where to?</Label>
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500" />
+                      <MapPin className="absolute left-4 top-4 h-6 w-6 text-blue-500" />
                       <Input 
                         id="destination" 
-                        placeholder="Tokyo, Japan" 
-                        className="pl-9 h-11" 
+                        placeholder="e.g. Japan, Italy, France, USA..." 
+                        className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
                         value={destination}
-                        onChange={(e) => setDestination(e.target.value)}
+                        onChange={handleDestinationChange}
+                        onFocus={() => destination.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
+                        onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                         required
+                        autoComplete="off"
                       />
                     </div>
+                    {/* Dropdown Suggestions */}
+                    <AnimatePresence>
+                      {showSuggestions && suggestions.length > 0 && (
+                        <motion.div 
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-2xl max-h-64 overflow-y-auto overflow-x-hidden z-[100]"
+                        >
+                          <div className="p-2">
+                            <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places in this country (A-Z)</div>
+                            {suggestions.map((place, idx) => (
+                              <button
+                                key={idx}
+                                type="button"
+                                className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors text-zinc-700 dark:text-zinc-200 font-medium flex items-center"
+                                onClick={() => {
+                                  setDestination(place);
+                                  setShowSuggestions(false);
+                                }}
+                              >
+                                <MapPin className="h-4 w-4 mr-3 text-blue-400" />
+                                {place}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
                   {/* Dates */}
-                  <div className="space-y-2 lg:col-span-1">
+                  <div className="space-y-2 md:col-span-1">
                     <Label className="text-sm font-semibold">Dates</Label>
                     <Popover>
                       <PopoverTrigger
@@ -164,49 +260,67 @@ export default function Home() {
                   </div>
 
                   {/* Budget */}
-                  <div className="space-y-2 lg:col-span-1">
-                    <Label htmlFor="budget" className="text-sm font-semibold">Budget</Label>
-                    <Select value={budget} onValueChange={(val) => setBudget(val || "")}>
-                      <SelectTrigger id="budget" className="h-11">
-                        <div className="flex items-center">
-                          <Wallet className="mr-2 h-4 w-4 text-zinc-500" />
-                          <SelectValue placeholder="Select budget" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="budget">Budget-friendly</SelectItem>
-                        <SelectItem value="moderate">Moderate</SelectItem>
-                        <SelectItem value="luxury">Luxury</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-3 md:col-span-1">
+                    <Label className="text-sm font-semibold">Budget</Label>
+                    <div className="flex flex-col space-y-2">
+                      {[
+                        { id: "budget", label: "Budget", icon: "🎒" },
+                        { id: "moderate", label: "Moderate", icon: "🏨" },
+                        { id: "luxury", label: "Luxury", icon: "✨" }
+                      ].map(opt => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setBudget(opt.id)}
+                          className={cn(
+                            "flex items-center w-full px-4 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 border-2 text-left",
+                            budget === opt.id 
+                              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm" 
+                              : "border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                          )}
+                        >
+                          <span className="mr-3 text-lg">{opt.icon}</span>
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Travel Style */}
-                  <div className="space-y-2 lg:col-span-1">
-                    <Label htmlFor="style" className="text-sm font-semibold">Travel Style</Label>
-                    <Select value={travelStyle} onValueChange={(val) => setTravelStyle(val || "")}>
-                      <SelectTrigger id="style" className="h-11">
-                        <div className="flex items-center">
-                          <Plane className="mr-2 h-4 w-4 text-zinc-500" />
-                          <SelectValue placeholder="Select style" />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="relaxed">Relaxed & Leisure</SelectItem>
-                        <SelectItem value="adventure">Adventure & Outdoors</SelectItem>
-                        <SelectItem value="culture">Culture & History</SelectItem>
-                        <SelectItem value="foodie">Food & Culinary</SelectItem>
-                        <SelectItem value="party">Nightlife & Party</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div className="space-y-3 md:col-span-1">
+                    <Label className="text-sm font-semibold">Travel Style</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        { id: "relaxed", label: "Relaxed", icon: "🌴" },
+                        { id: "adventure", label: "Adventure", icon: "🏕️" },
+                        { id: "culture", label: "Culture", icon: "🏛️" },
+                        { id: "foodie", label: "Foodie", icon: "🍜" },
+                        { id: "party", label: "Nightlife", icon: "🎉" }
+                      ].map(opt => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setTravelStyle(opt.id)}
+                          className={cn(
+                            "flex items-center px-4 py-2 text-sm font-bold rounded-full transition-all duration-200 border-2",
+                            travelStyle === opt.id 
+                              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm" 
+                              : "border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                          )}
+                        >
+                          <span className="mr-2">{opt.icon}</span>
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Submit Button */}
-                  <div className="lg:col-span-4 mt-4">
+                  <div className="md:col-span-3 mt-6 flex justify-center">
                     <Button 
                       type="submit" 
                       size="lg" 
-                      className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200" 
+                      className="w-full max-w-sm h-12 text-base font-bold tracking-wide bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 rounded-xl" 
                       disabled={isLoading}
                     >
                       {isLoading ? (
@@ -232,25 +346,68 @@ export default function Home() {
               {itinerary && (
                 <motion.div 
                   id="itinerary-results" 
-                  className="w-full max-w-4xl text-left mt-12 scroll-mt-24"
+                  className="w-full max-w-5xl text-left mt-12 scroll-mt-24"
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
+                  {itinerary.imageKeyword && (
+                    <motion.div variants={itemVariants} className="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-10 shadow-xl border border-zinc-200/60 dark:border-zinc-800/60">
+                      <img 
+                        src={`https://loremflickr.com/1200/800/${itinerary.imageKeyword.replace(/\+/g, ',')}`} 
+                        alt={itinerary.title}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                      />
+                    </motion.div>
+                  )}
+                  
                   <div className="mb-12 text-center">
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-zinc-50 mb-4 drop-shadow-sm">
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-zinc-50 dark:to-zinc-400 mb-4 drop-shadow-sm pb-1">
                       {itinerary.title || "Your Custom Itinerary"}
                     </h2>
                     {itinerary.summary && (
-                      <p className="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+                      <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed font-medium">
                         {itinerary.summary}
                       </p>
                     )}
                   </div>
 
+                  {itinerary.topDestinations && Array.isArray(itinerary.topDestinations) && itinerary.topDestinations.length > 0 && (
+                    <motion.div variants={containerVariants} initial="hidden" animate="show" className="mb-16">
+                      <h3 className="flex items-center text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 px-2">
+                        <MapPin className="h-6 w-6 mr-3 text-blue-500" />
+                        Top Destinations (A-Z)
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {itinerary.topDestinations.map((dest: any, i: number) => (
+                          <motion.div key={i} variants={itemVariants}>
+                            <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-lg transition-all duration-300 group overflow-hidden">
+                              <div className="h-32 w-full relative overflow-hidden bg-zinc-200 dark:bg-zinc-800">
+                                {dest.imageKeyword && (
+                                  <img 
+                                    src={`https://loremflickr.com/400/300/${dest.imageKeyword.replace(/\+/g, ',')}`} 
+                                    alt={dest.name}
+                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                  />
+                                )}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                <h4 className="absolute bottom-3 left-3 right-3 text-white font-bold text-lg leading-tight truncate">{dest.name}</h4>
+                              </div>
+                              <CardContent className="p-4">
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium line-clamp-3">
+                                  {dest.description}
+                                </p>
+                              </CardContent>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+
                   {itinerary.accommodations && Array.isArray(itinerary.accommodations) && (
                     <motion.div variants={containerVariants} initial="hidden" animate="show" className="mb-12">
-                      <h3 className="flex items-center text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-6 px-2">
+                      <h3 className="flex items-center text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 px-2">
                         <Bed className="h-6 w-6 mr-3 text-blue-500" />
                         Accommodation Options
                       </h3>
@@ -258,12 +415,21 @@ export default function Home() {
                         {itinerary.accommodations.map((acc: any, i: number) => (
                           <motion.div key={i} variants={itemVariants}>
                             <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-lg transition-shadow duration-300">
-                              <CardHeader className="pb-3">
-                                <Badge variant="outline" className="w-fit mb-3 bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">{acc.tier || acc.type}</Badge>
-                                <CardTitle className="text-xl leading-tight">{acc.name}</CardTitle>
+                              <CardHeader className="pb-3 relative overflow-hidden rounded-t-xl p-0 h-40 mb-4">
+                                {acc.imageKeyword ? (
+                                  <img 
+                                    src={`https://loremflickr.com/600/400/${acc.imageKeyword.replace(/\+/g, ',')}`} 
+                                    alt={acc.name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-zinc-200 dark:bg-zinc-800" />
+                                )}
+                                <Badge variant="outline" className="absolute top-3 left-3 bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-50 font-bold tracking-wide uppercase text-[10px] backdrop-blur-sm border-none shadow-sm">{acc.tier || acc.type}</Badge>
                               </CardHeader>
                               <CardContent>
-                                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                <CardTitle className="text-xl font-bold tracking-tight leading-tight text-zinc-900 dark:text-zinc-100 mb-3">{acc.name}</CardTitle>
+                                <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
                                   {acc.description}
                                 </p>
                               </CardContent>
@@ -299,10 +465,19 @@ export default function Home() {
                               className="bg-white/70 dark:bg-zinc-900/70 p-6 md:p-8 rounded-2xl shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 backdrop-blur-md"
                             >
                               <motion.div variants={itemVariants} className="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
-                                <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
+                                {day.imageKeyword && (
+                                  <div className="w-full h-48 md:h-64 rounded-xl overflow-hidden mb-6 shadow-md border border-zinc-200/60 dark:border-zinc-800/60">
+                                    <img 
+                                      src={`https://loremflickr.com/800/400/${day.imageKeyword.replace(/\+/g, ',')}`} 
+                                      alt={`Day ${idx + 1}`}
+                                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                    />
+                                  </div>
+                                )}
+                                <h3 className="text-2xl md:text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 mb-3">
                                   {day.day || day.title || `Day ${idx + 1}`}
                                 </h3>
-                                <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                                <p className="text-lg text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
                                   {day.description || day.summary || ""}
                                 </p>
                               </motion.div>
@@ -311,7 +486,7 @@ export default function Home() {
                                 {/* Activities Timeline */}
                                 {day.activities && (
                                   <motion.div variants={itemVariants}>
-                                    <h4 className="flex items-center text-xl font-bold text-zinc-800 dark:text-zinc-200 mb-6">
+                                    <h4 className="flex items-center text-xl font-bold tracking-tight text-zinc-800 dark:text-zinc-200 mb-6">
                                       <Navigation className="h-6 w-6 mr-3 text-blue-500" /> 
                                       Activities
                                     </h4>
@@ -326,11 +501,11 @@ export default function Home() {
                                             <Card className="hover:shadow-md transition-shadow duration-300 border-zinc-200/60 dark:border-zinc-700/60 bg-white dark:bg-zinc-900">
                                               <CardContent className="p-5 flex flex-col items-start pt-5 relative">
                                                 {act.time && (
-                                                  <Badge variant="secondary" className="mb-3 font-semibold bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900/40 dark:text-blue-300 pointer-events-none text-[13px] px-3 py-1">
+                                                  <Badge variant="secondary" className="mb-3 font-bold uppercase tracking-wider bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900/40 dark:text-blue-300 pointer-events-none text-[11px] px-3 py-1">
                                                     {act.time}
                                                   </Badge>
                                                 )}
-                                                <div className="text-zinc-700 dark:text-zinc-300 text-base leading-relaxed space-y-2">
+                                                <div className="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed space-y-2 font-medium">
                                                   {typeof act === 'string' ? act : (
                                                     act.description || act.name || act.activity
                                                   )}

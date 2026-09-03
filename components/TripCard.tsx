@@ -9,9 +9,9 @@ export function TripCard({ trip }: { trip: any }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <Card className="flex flex-col bg-white dark:bg-zinc-900 hover:shadow-lg transition-shadow">
+    <Card className="flex flex-col bg-white dark:bg-zinc-900 hover:shadow-lg transition-shadow border-zinc-200/60 dark:border-zinc-800/60">
       <CardHeader>
-        <CardTitle className="flex items-center text-xl">
+        <CardTitle className="flex items-center text-xl font-bold tracking-tight">
           <Map className="w-5 h-5 mr-2 text-blue-500" />
           {trip.destination}
         </CardTitle>

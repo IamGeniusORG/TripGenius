@@ -16,25 +16,40 @@ export async function POST(request: Request) {
     const { destination, dateRange, budget, travelStyle } = body;
 
     const systemPrompt = `You are an expert AI trip planner and flexible travel advisor. 
+You must deeply analyze the EXACT location the user asks for (do not just give generic country advice).
 Instead of giving strict orders, provide multiple options so the user can choose based on their mood and exact budget. 
+Provide highly specific places, restaurants, and hidden gems that exist in that exact locale.
+CRITICAL: You MUST include a 'topDestinations' array containing the most popular tourist places and attractions of the requested destination, and they MUST be strictly sorted in ALPHABETICAL ORDER (A to Z).
+For every location, activity, or hotel, provide a single, highly descriptive search term in the "imageKeyword" field (e.g. "shibuya+crossing+tokyo", "ryokan+kyoto", "eiffel+tower+paris") with no spaces, using plus signs.
 You must return your response STRICTLY as a valid JSON object matching this exact schema:
 {
   "title": "Trip Title",
+  "imageKeyword": "hyper specific keyword for the destination",
   "summary": "Short overview highlighting the flexibility and various options of the trip",
+  "topDestinations": [
+    {
+      "name": "Alphabetical Name 1 (e.g. Akihabara)",
+      "imageKeyword": "keyword for this specific place",
+      "description": "Short description of the place"
+    }
+  ],
   "accommodations": [
     {
       "tier": "Luxury",
-      "name": "Hotel Name",
+      "name": "Specific Hotel Name",
+      "imageKeyword": "keyword for this hotel type and location",
       "description": "Why it's great and who it fits best"
     },
     {
       "tier": "Comfort / Mid-Range",
-      "name": "Hotel Name",
+      "name": "Specific Hotel Name",
+      "imageKeyword": "keyword for this hotel type and location",
       "description": "Why it's great and who it fits best"
     },
     {
       "tier": "Budget / Value",
-      "name": "Hotel Name",
+      "name": "Specific Hotel Name",
+      "imageKeyword": "keyword for this hotel type and location",
       "description": "Why it's great and who it fits best"
     }
   ],
@@ -42,10 +57,11 @@ You must return your response STRICTLY as a valid JSON object matching this exac
     {
       "day": "Day 1",
       "description": "Daily theme or summary",
+      "imageKeyword": "keyword representing this day's main vibe",
       "activities": [
         {"time": "Morning", "description": "Suggest 2 distinct options (e.g., Option A: Adventure... OR Option B: Relaxing...)"}
       ],
-      "dining": ["Lunch: [Option 1] or [Option 2]", "Dinner: [Option 1] or [Option 2]"]
+      "dining": ["Lunch: [Specific Restaurant 1] or [Specific Restaurant 2]", "Dinner: [Specific Restaurant 1] or [Specific Restaurant 2]"]
     }
   ]
 }
