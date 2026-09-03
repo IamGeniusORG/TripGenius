@@ -28,7 +28,7 @@ You must return your response STRICTLY as a valid JSON object matching this exac
   "summary": "Short overview highlighting the flexibility and various options of the trip",
   "topDestinations": [
     {
-      "name": "Alphabetical Name 1 (e.g. Akihabara)",
+      "name": "Alphabetical Name 1, City, Country (e.g. Akihabara, Tokyo, Japan)",
       "imageKeyword": "keyword for this specific place",
       "description": "Short description of the place"
     }

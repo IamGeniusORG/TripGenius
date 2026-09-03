@@ -68,12 +68,14 @@ export default function Home() {
       for (const [country, places] of Object.entries(POPULAR_DESTINATIONS)) {
         if (country.includes(lowerVal) || lowerVal.includes(country)) {
           setSuggestions([...places].sort());
-          setShowSuggestions(true);
           found = true;
           break;
         }
       }
-      if (!found) setShowSuggestions(false);
+      if (!found) {
+        setSuggestions([]); // Clear previous suggestions
+      }
+      setShowSuggestions(true); // Always show dropdown to present the custom fallback button
     } else {
       setShowSuggestions(false);
     }
@@ -193,7 +195,7 @@ export default function Home() {
                     </div>
                     {/* Dropdown Suggestions */}
                     <AnimatePresence>
-                      {showSuggestions && suggestions.length > 0 && (
+                      {showSuggestions && (
                         <motion.div 
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -203,7 +205,7 @@ export default function Home() {
                           <div className="p-2">
                             <button
                               type="button"
-                              className="w-full text-left px-4 py-3 bg-blue-50/50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-blue-700 dark:text-blue-300 font-bold flex items-center mb-2 border border-blue-100 dark:border-blue-800/50"
+                              className="w-full text-left px-4 py-3 bg-blue-50/50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-blue-700 dark:text-blue-300 font-bold flex items-center border border-blue-100 dark:border-blue-800/50"
                               onClick={() => {
                                 setShowSuggestions(false);
                               }}
@@ -212,21 +214,25 @@ export default function Home() {
                               Plan trip to "{destination}"
                             </button>
                             
-                            <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places in this country (A-Z)</div>
-                            {suggestions.map((place, idx) => (
-                              <button
-                                key={idx}
-                                type="button"
-                                className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors text-zinc-700 dark:text-zinc-200 font-medium flex items-center"
-                                onClick={() => {
-                                  setDestination(place);
-                                  setShowSuggestions(false);
-                                }}
-                              >
-                                <MapPin className="h-4 w-4 mr-3 text-blue-400" />
-                                {place}
-                              </button>
-                            ))}
+                            {suggestions.length > 0 && (
+                              <div className="mt-2">
+                                <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places in this country (A-Z)</div>
+                                {suggestions.map((place, idx) => (
+                                  <button
+                                    key={idx}
+                                    type="button"
+                                    className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors text-zinc-700 dark:text-zinc-200 font-medium flex items-center"
+                                    onClick={() => {
+                                      setDestination(place);
+                                      setShowSuggestions(false);
+                                    }}
+                                  >
+                                    <MapPin className="h-4 w-4 mr-3 text-blue-400" />
+                                    {place}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </motion.div>
                       )}
