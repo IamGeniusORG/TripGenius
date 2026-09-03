@@ -84,8 +84,7 @@ Provide a daily itinerary, recommended activities, and dining options.
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
         ],
-        response_format: { type: "json_object" },
-        max_tokens: 2500, // Added to prevent 402 pre-authorization failures with Gemini's huge default limits
+        max_tokens: 5000, // Added to prevent 402 pre-authorization failures with Gemini's huge default limits
       },
       {
         extra_body: {
@@ -142,3 +141,4 @@ Provide a daily itinerary, recommended activities, and dining options.
     );
   }
 }
+
