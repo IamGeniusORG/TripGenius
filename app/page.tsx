@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Navbar } from "@/components/Navbar";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const POPULAR_DESTINATIONS: Record<string, string[]> = {
   "japan": ["Akihabara", "Arashiyama Bamboo Grove", "Fushimi Inari Taisha", "Gion District", "Kinkaku-ji", "Mount Fuji", "Osaka Castle", "Shibuya Crossing", "Tokyo Tower", "Universal Studios Japan"],
