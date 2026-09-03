@@ -1,4 +1,4 @@
-# 🌍 AI Trip Planner
+# 🌎 TripGenius
 
 An intelligent, full-stack travel advisory application built with Next.js. Tell the AI your destination, dates, budget, and travel style, and it will craft a personalized, flexible itinerary complete with accommodation tiers, daily activities, and dining options.
 
