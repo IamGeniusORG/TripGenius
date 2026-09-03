@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed, Globe, Compass, Camera, Heart, Image as ImageIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -154,8 +154,38 @@ export default function Home() {
           {/* Subtle gradient overlay to fade the dots out towards edges */}
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--tw-gradient-stops)_80%)] from-transparent to-zinc-50 dark:to-zinc-950" />
           
-          <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center">
-            <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 dark:bg-blue-900/10 px-4 py-1.5 text-[11px] uppercase tracking-widest font-bold text-blue-600 mb-8 dark:border-blue-800 dark:text-blue-400 backdrop-blur-sm shadow-sm">
+          <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center relative">
+              {/* Decorative Floating Icons */}
+              <motion.div 
+                animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }} 
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} 
+                className="absolute hidden lg:flex left-[10%] top-10 w-16 h-16 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl items-center justify-center border border-zinc-100 dark:border-zinc-700/50"
+              >
+                <Plane className="w-8 h-8 text-blue-500" />
+              </motion.div>
+              <motion.div 
+                animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} 
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }} 
+                className="absolute hidden lg:flex right-[12%] top-0 w-14 h-14 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl items-center justify-center border border-zinc-100 dark:border-zinc-700/50"
+              >
+                <Compass className="w-7 h-7 text-indigo-500" />
+              </motion.div>
+              <motion.div 
+                animate={{ y: [0, -15, 0], rotate: [0, 8, 0] }} 
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }} 
+                className="absolute hidden lg:flex left-[15%] bottom-10 w-12 h-12 bg-white dark:bg-zinc-800 rounded-full shadow-lg items-center justify-center border border-zinc-100 dark:border-zinc-700/50"
+              >
+                <Camera className="w-5 h-5 text-purple-500" />
+              </motion.div>
+              <motion.div 
+                animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }} 
+                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} 
+                className="absolute hidden lg:flex right-[18%] bottom-12 w-16 h-16 bg-white dark:bg-zinc-800 rounded-full shadow-lg items-center justify-center border border-zinc-100 dark:border-zinc-700/50"
+              >
+                <Globe className="w-7 h-7 text-emerald-500" />
+              </motion.div>
+
+              <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 dark:bg-blue-900/10 px-4 py-1.5 text-[11px] uppercase tracking-widest font-bold text-blue-600 mb-8 dark:border-blue-800 dark:text-blue-400 backdrop-blur-sm shadow-sm relative z-10">
               <Sparkles className="mr-2 h-3.5 w-3.5" />
               <span>AI-Powered Trip Planning</span>
             </div>
@@ -357,6 +387,38 @@ export default function Home() {
                 </form>
               </CardContent>
             </Card>
+
+            {/* Features Section - Only shown before generating an itinerary */}
+            {!itinerary && !isLoading && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="w-full max-w-5xl mt-16 lg:mt-24 grid grid-cols-1 md:grid-cols-3 gap-8 px-4"
+              >
+                <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
+                    <Sparkles className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <h3 className="text-lg font-black text-zinc-900 dark:text-zinc-50 mb-2">Smart AI Generation</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">Our advanced models analyze millions of options to craft a hyper-personalized trip that matches your exact vibe.</p>
+                </div>
+                <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
+                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-4">
+                    <ImageIcon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="text-lg font-black text-zinc-900 dark:text-zinc-50 mb-2">Real-Time Imagery</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">See your itinerary come to life instantly with gorgeous photos of the exact locations and accommodations.</p>
+                </div>
+                <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-white/40 dark:bg-zinc-900/40 border border-zinc-200/50 dark:border-zinc-800/50 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
+                  <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mb-4">
+                    <Heart className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <h3 className="text-lg font-black text-zinc-900 dark:text-zinc-50 mb-2">Flexible Options</h3>
+                  <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed">We don't dictate your schedule. Get multiple tiers of hotels and alternative daily activities to choose from.</p>
+                </div>
+              </motion.div>
+            )}
 
             {/* Results Section */}
             <AnimatePresence>
@@ -586,6 +648,19 @@ export default function Home() {
             </AnimatePresence>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md">
+          <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center space-x-2 mb-4 md:mb-0">
+              <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              <span className="text-lg font-black tracking-tighter text-zinc-900 dark:text-zinc-50">TripGenius</span>
+            </div>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
+              &copy; {new Date().getFullYear()} TripGenius by IamGeniusORG. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </main>
     </div>
   );
