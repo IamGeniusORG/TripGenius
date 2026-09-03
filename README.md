@@ -1,73 +1,70 @@
-# 🌎 TripGenius
+<div align="center">
+  
+# ✦ T R I P G E N I U S ✦
+### [ SYSTEM ONLINE // NEURAL ITINERARY ENGINE v2.5 ]
 
-An intelligent, full-stack travel advisory application built with Next.js. Tell the AI your destination, dates, budget, and travel style, and it will craft a personalized, flexible itinerary complete with accommodation tiers, daily activities, and dining options.
+> *"You don't just visit the future. You let the AI forge it for you."*
 
-## ✨ Features
+[![Next.js Matrix](https://img.shields.io/badge/Engine-Next.js_16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Cognitive Core](https://img.shields.io/badge/Core-Gemini_2.5_Flash-1A73E8?style=for-the-badge&logo=google)](https://deepmind.google/)
+[![Security](https://img.shields.io/badge/Auth-Clerk_Core_3-6C47FF?style=for-the-badge&logo=clerk)](https://clerk.com/)
 
-- **AI-Powered Itineraries:** Generates highly customized day-by-day travel plans using OpenRouter (Primary: Gemini 2.5 Flash, with auto-fallbacks to GPT-4o-mini and Claude 3 Haiku).
-- **Flexible Options:** Instead of rigid schedules, the AI acts as a travel advisor, providing multiple accommodation tiers (Luxury, Mid-Range, Budget) and daily activity choices.
-- **Secure Authentication:** Complete user lifecycle management (Sign In / Sign Up) powered by Clerk.
-- **Personal Dashboard:** Logged-in users can view and manage their previously generated trips in a beautifully animated, protected dashboard.
-- **Modern UI/UX:** Built with Tailwind CSS, `shadcn/ui` components, and Framer Motion for buttery-smooth animations.
+</div>
 
-## 🛠️ Tech Stack
+<br/>
 
-- **Framework:** [Next.js 16](https://nextjs.org/) (App Router & Turbopack)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS & [shadcn/ui](https://ui.shadcn.com/)
-- **Animations:** Framer Motion
-- **Database:** PostgreSQL
-- **ORM:** [Prisma](https://www.prisma.io/)
-- **Authentication:** [Clerk](https://clerk.com/)
-- **AI SDK:** OpenAI Node SDK (configured for OpenRouter)
+## ⚠️ // SYSTEM CAPABILITIES 
 
-## 🚀 Getting Started
+| ⚡ Matrix Module | 🧬 Technical Description |
+| :--- | :--- |
+| **Neural Destination Mapping** | Bypasses basic geodata. Uses LLM cognitive reasoning to synthesize hyper-specific planetary coordinates (from hidden Shibuya alleys to remote Amalfi coves). |
+| **Dynamic Holographic Injection** | Live visual synthesis. Bypasses standard browser caching using cryptographic `tripSeed` locks to ensure a 100% unique visual matrix for every simulation. |
+| **Adaptive Wealth Scaling** | Automatically calibrates itinerary parameters across 3 financial tiers (Budget/Scrap, Moderate/Standard, Luxury/Elite). |
+| **Dark Matter UI** | Built on Tailwind v4. Features reactive cursor-tracking radial energy fields, Framer Motion physics, and Plus Jakarta Sans cryptography. |
 
-### Prerequisites
-- Node.js 18+
-- A PostgreSQL database (e.g., Supabase, Neon, or local)
-- [Clerk](https://clerk.com/) Account for authentication
-- [OpenRouter](https://openrouter.ai/) Account for AI API access
+---
 
-### 1. Clone the repository
+## ⚙️ // BOOT SEQUENCE (LOCAL DEPLOYMENT)
+
+Initiate the development environment using standard Earth protocols:
+
 ```bash
-git clone https://github.com/IamGeniusORG/AI-Trip-Planner.git
-cd AI-Trip-Planner
-```
+# 01. Clone the mainframe
+git clone https://github.com/IamGeniusORG/TripGenius.git
+cd TripGenius
 
-### 2. Install dependencies
-```bash
+# 02. Install local dependencies
 npm install
-```
 
-### 3. Set up environment variables
-Copy the provided example environment file:
-```bash
-cp .env.example .env.local
-```
-Then, fill in your `.env.local` with your specific keys:
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY`
-- `DATABASE_URL`
-- `OPENROUTER_API_KEY`
-
-### 4. Initialize the Database
-Push the Prisma schema to your PostgreSQL database to create the required `Trip` tables:
-```bash
-npx prisma db push
-```
-
-### 5. Run the development server
-```bash
+# 03. Ignite the reactor
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 📂 Project Structure
-- `app/api/plan-trip`: Core AI logic and prompt engineering for itinerary generation.
-- `app/dashboard`: Protected route displaying the user's saved trips fetched via Prisma.
-- `app/page.tsx`: The main landing page and interactive itinerary generation form.
-- `components/`: Reusable UI components (Navbar, TripCard, and shadcn/ui primitives).
-- `prisma/schema.prisma`: Database models.
+*Access the simulation at `http://localhost:3000`*
 
-## 📄 License
-This project is open-source and available under the MIT License.
+---
+
+## 🔐 // AUTHORIZED ACCESS (ENV VARIABLES)
+
+Configure your `.env.local` file with the required decryption keys:
+
+```env
+# Identity Matrix
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+
+# Cognitive Engine
+OPENROUTER_API_KEY=sk-or-v1-...
+
+# Neural Memory Bank (PostgreSQL)
+DATABASE_URL=postgresql://user:password@host:port/db_name
+```
+
+---
+
+<div align="center">
+
+**[ END OF TRANSMISSION ]**
+
+</div>
+
