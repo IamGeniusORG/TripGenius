@@ -75,7 +75,7 @@ export default function Home() {
   
   const itemVariants = {
     hidden: { opacity: 0, x: -15, y: 10 },
-    show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+    show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.4 } }
   };
 
   return (
@@ -153,11 +153,10 @@ export default function Home() {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
-                          initialFocus
                           mode="range"
                           defaultMonth={date?.from}
                           selected={date}
-                          onSelect={setDate}
+                          onSelect={setDate as any}
                           numberOfMonths={2}
                         />
                       </PopoverContent>
@@ -167,7 +166,7 @@ export default function Home() {
                   {/* Budget */}
                   <div className="space-y-2 lg:col-span-1">
                     <Label htmlFor="budget" className="text-sm font-semibold">Budget</Label>
-                    <Select value={budget} onValueChange={setBudget}>
+                    <Select value={budget} onValueChange={(val) => setBudget(val || "")}>
                       <SelectTrigger id="budget" className="h-11">
                         <div className="flex items-center">
                           <Wallet className="mr-2 h-4 w-4 text-zinc-500" />
@@ -185,7 +184,7 @@ export default function Home() {
                   {/* Travel Style */}
                   <div className="space-y-2 lg:col-span-1">
                     <Label htmlFor="style" className="text-sm font-semibold">Travel Style</Label>
-                    <Select value={travelStyle} onValueChange={setTravelStyle}>
+                    <Select value={travelStyle} onValueChange={(val) => setTravelStyle(val || "")}>
                       <SelectTrigger id="style" className="h-11">
                         <div className="flex items-center">
                           <Plane className="mr-2 h-4 w-4 text-zinc-500" />

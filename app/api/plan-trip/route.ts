@@ -80,7 +80,7 @@ Provide a daily itinerary, recommended activities, and dining options.
             "meta-llama/llama-3.1-8b-instruct"
           ]
         }
-      }
+      } as any
     );
 
     let aiMessage = completion.choices[0].message?.content || "{}";
