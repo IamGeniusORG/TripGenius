@@ -135,5 +135,5 @@ TripGenius features a comprehensive suite of SaaS legal compliance pages, includ
 
 <div align="center">
   <br/>
-  <b>Crafted with â¤ï¸ by the TripGenius Team.</b>
+  <b>Crafted with â¤ï¸ by Teddy.</b>
 </div>
