@@ -1,4 +1,4 @@
-import { Sparkles, Twitter, Github, Linkedin, Map } from "lucide-react";
+import { Sparkles, MessageSquare, Globe, Mail, Map } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
@@ -40,16 +40,16 @@ export function Footer() {
             <h4 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-4">Connect</h4>
             <div className="flex items-center space-x-4 text-zinc-400">
               <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">
-                <Twitter className="w-5 h-5" />
-                <span className="sr-only">Twitter</span>
+                <MessageSquare className="w-5 h-5" />
+                <span className="sr-only">Social</span>
               </a>
               <a href="https://github.com/IamGeniusORG" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">
-                <Github className="w-5 h-5" />
-                <span className="sr-only">GitHub</span>
+                <Globe className="w-5 h-5" />
+                <span className="sr-only">Website</span>
               </a>
               <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">
-                <Linkedin className="w-5 h-5" />
-                <span className="sr-only">LinkedIn</span>
+                <Mail className="w-5 h-5" />
+                <span className="sr-only">Contact</span>
               </a>
             </div>
           </div>
