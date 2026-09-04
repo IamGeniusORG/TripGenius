@@ -3,6 +3,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { CookieBanner } from "@/components/CookieBanner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <CookieBanner />
             {children}
           </ThemeProvider>
         </body>
@@ -45,3 +47,4 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+
