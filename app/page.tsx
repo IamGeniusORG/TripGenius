@@ -22,12 +22,19 @@ import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 const POPULAR_DESTINATIONS: Record<string, string[]> = {
-  "japan": ["Akihabara, Tokyo, Japan", "Arashiyama Bamboo Grove, Kyoto, Japan", "Fushimi Inari Taisha, Kyoto, Japan", "Gion District, Kyoto, Japan", "Kinkaku-ji, Kyoto, Japan", "Mount Fuji, Honshu, Japan", "Osaka Castle, Osaka, Japan", "Shibuya Crossing, Tokyo, Japan", "Tokyo Tower, Tokyo, Japan", "Universal Studios Japan, Osaka, Japan"],
-  "france": ["Champs-Élysées, Paris, France", "Disneyland Paris, France", "Eiffel Tower, Paris, France", "Louvre Museum, Paris, France", "Mont Saint-Michel, Normandy, France", "Montmartre, Paris, France", "Palace of Versailles, France", "French Riviera, France", "Sainte-Chapelle, Paris, France"],
+  "japan": ["Akihabara, Tokyo, Japan", "Arashiyama Bamboo Grove, Kyoto, Japan", "Fushimi Inari Taisha, Kyoto, Japan", "Mount Fuji, Honshu, Japan", "Osaka Castle, Osaka, Japan", "Shibuya Crossing, Tokyo, Japan"],
+  "france": ["Eiffel Tower, Paris, France", "Louvre Museum, Paris, France", "Mont Saint-Michel, Normandy, France", "French Riviera, France", "Palace of Versailles, France"],
   "italy": ["Amalfi Coast, Campania, Italy", "Colosseum, Rome, Italy", "Cinque Terre, Liguria, Italy", "Duomo di Milano, Milan, Italy", "Florence Cathedral, Florence, Italy", "Leaning Tower of Pisa, Pisa, Italy", "Pantheon, Rome, Italy", "Pompeii, Campania, Italy", "Trevi Fountain, Rome, Italy", "Vatican Museums, Vatican City"],
   "usa": ["Central Park, New York, USA", "Disneyland, California, USA", "Golden Gate Bridge, San Francisco, USA", "Grand Canyon, Arizona, USA", "Las Vegas Strip, Nevada, USA", "Statue of Liberty, New York, USA", "Times Square, New York, USA", "Walt Disney World, Florida, USA", "Yellowstone, Wyoming, USA", "Yosemite, California, USA"],
   "india": ["Amber Palace, Jaipur, India", "Gateway of India, Mumbai, India", "Hawa Mahal, Jaipur, India", "Qutub Minar, Delhi, India", "Red Fort, Delhi, India", "Taj Mahal, Agra, India", "Varanasi Ghats, Uttar Pradesh, India", "Victoria Memorial, Kolkata, India"],
-  "spain": ["Alhambra, Granada, Spain", "Casa Batlló, Barcelona, Spain", "Ibiza, Balearic Islands, Spain", "La Sagrada Familia, Barcelona, Spain", "Park Güell, Barcelona, Spain", "Plaza Mayor, Madrid, Spain", "Prado Museum, Madrid, Spain", "Royal Palace of Madrid, Spain", "Seville Cathedral, Andalusia, Spain"]
+  "spain": ["Alhambra, Granada, Spain", "Casa Batllo, Barcelona, Spain", "Ibiza, Balearic Islands, Spain", "La Sagrada Familia, Barcelona, Spain", "Park Guell, Barcelona, Spain", "Plaza Mayor, Madrid, Spain"],
+  "morocco": ["Jemaa el-Fnaa, Marrakech, Morocco", "Hassan II Mosque, Casablanca, Morocco", "Chefchaouen (Blue City), Morocco", "Sahara Desert Dunes, Merzouga, Morocco", "Bahia Palace, Marrakech, Morocco", "Medina of Fez, Fez, Morocco"],
+  "uk": ["Big Ben, London, UK", "Stonehenge, Wiltshire, UK", "Tower of London, London, UK", "Edinburgh Castle, Edinburgh, UK", "British Museum, London, UK", "Lake District, Cumbria, UK"],
+  "australia": ["Sydney Opera House, Sydney, Australia", "Great Barrier Reef, Queensland, Australia", "Uluru, Northern Territory, Australia", "Bondi Beach, Sydney, Australia", "Great Ocean Road, Victoria, Australia"],
+  "greece": ["Acropolis of Athens, Athens, Greece", "Santorini Caldera, Santorini, Greece", "Mykonos Town, Mykonos, Greece", "Parthenon, Athens, Greece", "Meteora Monasteries, Thessaly, Greece"],
+  "mexico": ["Chichen Itza, Yucatan, Mexico", "Cancun Beaches, Quintana Roo, Mexico", "Teotihuacan, State of Mexico, Mexico", "Tulum Ruins, Quintana Roo, Mexico", "Frida Kahlo Museum, Mexico City, Mexico"],
+  "thailand": ["Grand Palace, Bangkok, Thailand", "Phi Phi Islands, Krabi, Thailand", "Ayutthaya Historical Park, Thailand", "Wat Arun, Bangkok, Thailand", "Chiang Mai Night Bazaar, Thailand"],
+  "uae": ["Burj Khalifa, Dubai, UAE", "Sheikh Zayed Grand Mosque, Abu Dhabi, UAE", "Palm Jumeirah, Dubai, UAE", "The Dubai Mall, Dubai, UAE", "Louvre Abu Dhabi, UAE"]
 };
 
 export default function Home() {
@@ -667,3 +674,4 @@ export default function Home() {
     </div>
   );
 }
+

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles } from "lucide-react";
+import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function TripCard({ trip }: { trip: any }) {
@@ -93,6 +93,18 @@ export function TripCard({ trip }: { trip: any }) {
           ) : (
             <><ChevronDown className="w-4 h-4 mr-2" /> View Details</>
           )}
+        </Button>
+        <Button 
+          variant="secondary" 
+          size="icon" 
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.origin + "/share/" + trip.id);
+            alert("Share link copied to clipboard!");
+          }} 
+          className="shadow-sm"
+          title="Share Trip"
+        >
+          <Share2 className="w-4 h-4" />
         </Button>
         <Button variant="destructive" size="icon" onClick={handleDelete} disabled={isDeleting} className="shadow-sm">
           {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
