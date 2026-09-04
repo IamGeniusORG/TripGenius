@@ -32,11 +32,11 @@ export async function GET(request: Request) {
       return NextResponse.redirect(imageUrl);
     } else {
       // Fallback if no images found
-      return NextResponse.redirect(https://loremflickr.com/800/400/ + encodeURIComponent(query));
+      return NextResponse.redirect("https://loremflickr.com/800/400/" + encodeURIComponent(query));
     }
   } catch (error) {
     console.error("Image Fetch Error:", error);
     // Smart Fallback to LoremFlickr if we hit rate limits!
-    return NextResponse.redirect(https://loremflickr.com/800/400/ + encodeURIComponent(query));
+    return NextResponse.redirect("https://loremflickr.com/800/400/" + encodeURIComponent(query));
   }
 }
