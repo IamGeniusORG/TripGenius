@@ -3,6 +3,7 @@
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { Sparkles, Map, Moon, Sun } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group">
           <div className="bg-blue-600/10 p-1.5 rounded-lg group-hover:bg-blue-600/20 transition-colors">
-            <Map className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+            <Logo className="w-6 h-6" />
           </div>
           <span className="font-black tracking-tight text-xl">TripGenius</span>
         </Link>
@@ -67,3 +68,4 @@ export function Navbar() {
     </nav>
   );
 }
+

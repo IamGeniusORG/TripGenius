@@ -1,4 +1,5 @@
 import { Sparkles, MessageSquare, Globe, Mail, Map } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import Link from "next/link";
 
 export function Footer() {
@@ -10,7 +11,7 @@ export function Footer() {
           <div className="col-span-2 md:col-span-1 flex flex-col items-start space-y-3 md:space-y-4">
             <Link href="/" className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-50 transition-colors group w-fit">
               <div className="bg-blue-600 p-1.5 rounded-lg">
-                <Map className="w-4 h-4 text-white" />
+                <Logo className="w-5 h-5" globeColor="text-white" planeColor="text-blue-100" />
               </div>
               <span className="font-black tracking-tight text-lg md:text-xl">TripGenius</span>
             </Link>
@@ -63,3 +64,4 @@ export function Footer() {
     </footer>
   );
 }
+
