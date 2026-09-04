@@ -45,7 +45,7 @@ export default function Home() {
   });
   const [destination, setDestination] = useState("");
   const [budget, setBudget] = useState("");
-  const [travelStyle, setTravelStyle] = useState("");
+  const [travelStyle, setTravelStyle] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [tripSeed, setTripSeed] = useState(1);
@@ -100,7 +100,7 @@ export default function Home() {
       const response = await fetch("/api/plan-trip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ destination, dateRange: date, budget, travelStyle }),
+        body: JSON.stringify({ destination, dateRange: date, budget, travelStyle: travelStyle.join(", ") }),
       });
 
       const data = await response.json();
@@ -357,10 +357,10 @@ export default function Home() {
                         <button
                           key={opt.id}
                           type="button"
-                          onClick={() => setTravelStyle(opt.id)}
+                          onClick={() => setTravelStyle(prev => prev.includes(opt.id) ? prev.filter(id => id !== opt.id) : [...prev, opt.id])}
                           className={cn(
                             "flex items-center px-4 py-2 text-sm font-bold rounded-full transition-all duration-200 border-2",
-                            travelStyle === opt.id 
+                            travelStyle.includes(opt.id) 
                               ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm" 
                               : "border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-700 text-zinc-600 dark:text-zinc-400"
                           )}
@@ -664,5 +664,6 @@ export default function Home() {
     </div>
   );
 }
+
 
 
