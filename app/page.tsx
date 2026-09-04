@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed, Globe, Compass, Camera, Heart, Image as ImageIcon, ExternalLink } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed, Globe, Compass, Camera, Heart, Image as ImageIcon, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -155,6 +155,17 @@ export default function Home() {
   const glowColor = mounted && resolvedTheme === "dark" 
     ? "rgba(139, 92, 246, 0.45)" // Strong violet/indigo
     : "rgba(59, 130, 246, 0.35)"; // Solid blue
+
+  // Helper for dynamic time icons
+  const getTimeIcon = (timeStr: string) => {
+    if (!timeStr) return null;
+    const t = timeStr.toLowerCase();
+    if (t.includes('morning')) return <Sunrise className="w-3.5 h-3.5 mr-1.5 inline" />;
+    if (t.includes('afternoon')) return <Sun className="w-3.5 h-3.5 mr-1.5 inline" />;
+    if (t.includes('evening')) return <Sunset className="w-3.5 h-3.5 mr-1.5 inline" />;
+    if (t.includes('night')) return <Moon className="w-3.5 h-3.5 mr-1.5 inline" />;
+    return <Clock className="w-3.5 h-3.5 mr-1.5 inline" />;
+  };
 
   // Custom markdown formatter for AI responses
   const formatMarkdown = (text: string) => {

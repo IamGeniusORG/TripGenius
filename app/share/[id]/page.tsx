@@ -1,7 +1,7 @@
 ﻿import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
-import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink } from "lucide-react";
+import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +18,17 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
   }
 
   const itinerary = trip.itinerary as any;
+
+  // Helper for dynamic time icons
+  const getTimeIcon = (timeStr: string) => {
+    if (!timeStr) return null;
+    const t = timeStr.toLowerCase();
+    if (t.includes('morning')) return <Sunrise className="w-4 h-4 mr-1.5 inline text-blue-500" />;
+    if (t.includes('afternoon')) return <Sun className="w-4 h-4 mr-1.5 inline text-amber-500" />;
+    if (t.includes('evening')) return <Sunset className="w-4 h-4 mr-1.5 inline text-orange-500" />;
+    if (t.includes('night')) return <Moon className="w-4 h-4 mr-1.5 inline text-indigo-500" />;
+    return <Clock className="w-4 h-4 mr-1.5 inline text-zinc-500" />;
+  };
 
   // Custom markdown formatter for AI responses
   const formatMarkdown = (text: string) => {
@@ -96,7 +107,10 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                         <div className="space-y-6">
                           {day.activities?.map((act: any, i: number) => (
                             <div key={i} className="flex gap-4">
-                              <div className="w-24 shrink-0 font-medium text-sm text-zinc-500 dark:text-zinc-400 pt-1">{act.time}</div>
+                              <div className="w-24 shrink-0 font-medium text-sm text-zinc-500 dark:text-zinc-400 pt-1 flex items-start mt-1">
+                                  {getTimeIcon(act.time)}
+                                  <span>{act.time}</span>
+                                </div>
                               <div className="prose prose-zinc dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
                                 <p dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
                               </div>
