@@ -46,7 +46,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
             </div>
           </div>
 
-          <div className="w-full h-[400px] md:h-[500px] rounded-3xl overflow-hidden relative shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
+          <div className="w-full h-[250px] md:h-[500px] rounded-3xl overflow-hidden relative shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
             <img 
               src={"/api/image?query=" + encodeURIComponent(itinerary.imageKeyword || trip.destination)} 
               alt="Destination"
@@ -127,3 +127,4 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
     </div>
   );
 }
+

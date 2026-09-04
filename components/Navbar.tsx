@@ -26,7 +26,7 @@ export function Navbar() {
           <span className="font-black tracking-tight text-xl">TripGenius</span>
         </Link>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -39,14 +39,14 @@ export function Navbar() {
           )}
 
           {userId ? (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link href="/dashboard">
-                <Button variant="secondary" className="flex items-center space-x-2 font-bold shadow-sm">
+                <Button variant="secondary" className="flex items-center space-x-2 font-bold shadow-sm px-3 sm:px-4">
                   <Map className="w-4 h-4" />
-                  <span>Dashboard</span>
+                  <span className="hidden sm:inline">Dashboard</span>
                 </Button>
               </Link>
-              <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+              <div className="h-6 sm:h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
               <UserButton 
                 appearance={{
                   elements: {
