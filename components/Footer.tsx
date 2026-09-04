@@ -47,9 +47,9 @@ export function Footer() {
                 <Globe className="w-5 h-5" />
                 <span className="sr-only">Website</span>
               </a>
-              <a href="#" className="hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">
+              <a href="mailto:tanmaydey005@gmail.com" className="hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors">
                 <Mail className="w-5 h-5" />
-                <span className="sr-only">Contact</span>
+                <span className="sr-only">Contact via Email</span>
               </a>
             </div>
           </div>
