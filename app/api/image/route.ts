@@ -32,11 +32,11 @@ export async function GET(request: Request) {
       return NextResponse.redirect(imageUrl);
     } else {
       // Fallback if no images found
-      return NextResponse.redirect("https://loremflickr.com/800/400/" + encodeURIComponent(query));
+      return NextResponse.redirect(`https://placehold.co/800x400/18181b/a1a1aa?text=${encodeURIComponent(query)}`);
     }
   } catch (error) {
     console.error("Image Fetch Error:", error);
-    // Smart Fallback to LoremFlickr if we hit rate limits!
-    return NextResponse.redirect("https://loremflickr.com/800/400/" + encodeURIComponent(query));
+    // Smart Fallback for Rate Limits
+    return NextResponse.redirect("https://placehold.co/800x400/18181b/ef4444?text=Unsplash+API+Limit+Reached+(Demo)");
   }
 }
