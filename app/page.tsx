@@ -45,19 +45,58 @@ export default function Home() {
   });
     const [destination, setDestination] = useState("");
   const [origin, setOrigin] = useState("");
-  const [isLocating, setIsLocating] = useState(true);
+  const [isLocating, setIsLocating] = useState(false);
 
-  useEffect(() => {
-    fetch('/api/location')
-      .then(res => res.json())
-      .then(data => {
-        if (data.city && data.country_name) {
-          setOrigin(data.city + ", " + data.country_name);
+  
+  
+  const handleGetLocation = () => {
+    setIsLocating(true);
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const data = await res.json();
+            
+            const city = data.address.city || data.address.town || data.address.village || data.address.county;
+            const country = data.address.country;
+            
+            if (city && country) {
+              setOrigin(`${city}, ${country}`);
+            } else {
+              fallbackToIp();
+            }
+            setIsLocating(false);
+          } catch (error) {
+            console.error("Geocoding failed", error);
+            fallbackToIp();
+          }
+        },
+        (error) => {
+          console.error("Geolocation denied or failed", error);
+          fallbackToIp();
         }
-      })
-      .catch(e => console.error(e))
-      .finally(() => setIsLocating(false));
-  }, []);
+      );
+    } else {
+      fallbackToIp();
+    }
+  };
+
+  const fallbackToIp = async () => {
+    try {
+      const res = await fetch('/api/location');
+      const data = await res.json();
+      if (data.city && data.country_name) {
+        setOrigin(`${data.city}, ${data.country_name}`);
+      }
+    } catch (e) {
+      console.error("IP fallback failed", e);
+    } finally {
+      setIsLocating(false);
+    }
+  };
+
   const [budget, setBudget] = useState("");
   const [travelStyle, setTravelStyle] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -258,10 +297,21 @@ export default function Home() {
                     <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
                       <Label htmlFor="origin" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Departing From</Label>
                       <div className="relative">
-                        <Navigation className="absolute left-4 top-4 h-6 w-6 text-emerald-500" />
+                        <button 
+                          type="button"
+                          onClick={handleGetLocation}
+                          className="absolute left-2.5 top-2.5 p-1.5 rounded-md hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors z-10 group"
+                          title="Use my exact location"
+                        >
+                          {isLocating ? (
+                            <Loader2 className="h-5 w-5 text-emerald-500 animate-spin" />
+                          ) : (
+                            <Navigation className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
+                          )}
+                        </button>
                         <Input 
                           id="origin" 
-                          placeholder={isLocating ? "Locating..." : "e.g. New York"} 
+                          placeholder={isLocating ? "Detecting location..." : "Add your location"} 
                           className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
                           value={origin}
                           onChange={(e) => setOrigin(e.target.value)}
