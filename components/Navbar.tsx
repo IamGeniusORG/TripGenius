@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Sparkles, Map, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const { userId } = useAuth();
@@ -38,12 +39,22 @@ export function Navbar() {
           )}
 
           {userId ? (
-            <>
-              <Link href="/dashboard" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50 mr-4">
-                My Trips
+            <div className="flex items-center space-x-4">
+              <Link href="/dashboard">
+                <Button variant="secondary" className="flex items-center space-x-2 font-bold shadow-sm">
+                  <Map className="w-4 h-4" />
+                  <span>Dashboard</span>
+                </Button>
               </Link>
-              <UserButton />
-            </>
+              <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+              <UserButton 
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "w-9 h-9 border-2 border-zinc-200 dark:border-zinc-800 hover:border-blue-500 transition-colors"
+                  }
+                }}
+              />
+            </div>
           ) : (
             <SignInButton mode="modal">
               <button className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
