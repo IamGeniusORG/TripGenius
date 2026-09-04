@@ -38,7 +38,7 @@ export function TripCard({ trip }: { trip: any }) {
       {/* Cover Image */}
       <div className="h-48 w-full relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
         <img 
-          src={`https://loremflickr.com/800/400/${imageKeyword.replace(/\+/g, ',')}?lock=${lockSeed}`}
+          src={`/api/image?query=${encodeURIComponent(imageKeyword)}`}
           alt={trip.destination}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />

@@ -435,7 +435,7 @@ export default function Home() {
                   {itinerary.imageKeyword && (
                     <motion.div variants={itemVariants} className="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-10 shadow-xl border border-zinc-200/60 dark:border-zinc-800/60">
                       <img 
-                        src={`https://loremflickr.com/1200/800/${itinerary.imageKeyword.replace(/\+/g, ',')}?lock=${tripSeed}`} 
+                        src={`/api/image?query=${encodeURIComponent(itinerary.imageKeyword)}`} 
                         alt={itinerary.title}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                       />
@@ -466,7 +466,7 @@ export default function Home() {
                               <div className="h-32 w-full relative overflow-hidden bg-zinc-200 dark:bg-zinc-800">
                                 {dest.imageKeyword && (
                                   <img 
-                                    src={`https://loremflickr.com/400/300/${dest.imageKeyword.replace(/\+/g, ',')}?lock=${tripSeed + 100 + i}`} 
+                                    src={`/api/image?query=${encodeURIComponent(dest.imageKeyword)}`} 
                                     alt={dest.name}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                   />
@@ -499,7 +499,7 @@ export default function Home() {
                               <CardHeader className="pb-3 relative overflow-hidden rounded-t-xl p-0 h-40 mb-4">
                                 {acc.imageKeyword ? (
                                   <img 
-                                    src={`https://loremflickr.com/600/400/${acc.imageKeyword.replace(/\+/g, ',')}?lock=${tripSeed + 200 + i}`} 
+                                    src={`/api/image?query=${encodeURIComponent(acc.imageKeyword)}`} 
                                     alt={acc.name}
                                     className="w-full h-full object-cover"
                                   />
@@ -549,7 +549,7 @@ export default function Home() {
                                 {day.imageKeyword && (
                                   <div className="w-full h-48 md:h-64 rounded-xl overflow-hidden mb-6 shadow-md border border-zinc-200/60 dark:border-zinc-800/60">
                                     <img 
-                                      src={`https://loremflickr.com/800/400/${day.imageKeyword.replace(/\+/g, ',')}?lock=${tripSeed + 300 + idx}`} 
+                                      src={`/api/image?query=${encodeURIComponent(day.imageKeyword)}`} 
                                       alt={`Day ${idx + 1}`}
                                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                     />
