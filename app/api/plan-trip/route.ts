@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -26,9 +26,10 @@ FORMATTING RULES FOR ACTIVITIES:
 The user demands absolute premium, magazine-style formatting.
 DO NOT EVER use the phrases "Option A" or "Option B". That is banned.
 Instead, you must provide 2 distinct, beautifully formatted choices for every part of the day using Markdown.
+You MUST put a double line break and a horizontal rule between the two choices so they do not clump together.
 Example format you MUST follow:
-"**?? The Adventurer's Path:**\\nStart your day with a thrilling hike up...\\n\\n**? The Cultural Immersion:**\\nPrefer a slower pace? Wander through the historic..."
-Use rich, sensory details, professional tone, and sophisticated vocabulary.
+"**\u2B50 The Adventurer's Path:**\nStart your day with a thrilling hike up...\n\n---\n\n**\u2615 The Cultural Immersion:**\nPrefer a slower pace? Wander through the historic..."
+Use rich, sensory details, professional tone, sophisticated vocabulary, and actual unicode emojis!
 
 You must return your response STRICTLY as a valid JSON object matching this exact schema:
 {

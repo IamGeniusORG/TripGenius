@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart } from "lucide-react";
@@ -18,6 +18,16 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
   }
 
   const itinerary = trip.itinerary as any;
+
+  // Custom markdown formatter for AI responses
+  const formatMarkdown = (text: string) => {
+    if (!text) return "";
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
+      .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
+      .replace(/\n\n/g, '<br /><br />')
+      .replace(/\n/g, '<br />');
+  };
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
@@ -87,7 +97,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                             <div key={i} className="flex gap-4">
                               <div className="w-24 shrink-0 font-medium text-sm text-zinc-500 dark:text-zinc-400 pt-1">{act.time}</div>
                               <div className="prose prose-zinc dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
-                                <p dangerouslySetInnerHTML={{ __html: act.description.replace(/\n/g, '<br />') }} />
+                                <p dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
                               </div>
                             </div>
                           ))}

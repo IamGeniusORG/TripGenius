@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { format } from "date-fns";
@@ -141,6 +141,16 @@ export default function Home() {
   const glowColor = mounted && resolvedTheme === "dark" 
     ? "rgba(139, 92, 246, 0.45)" // Strong violet/indigo
     : "rgba(59, 130, 246, 0.35)"; // Solid blue
+
+  // Custom markdown formatter for AI responses
+  const formatMarkdown = (text: string) => {
+    if (!text) return "";
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
+      .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
+      .replace(/\n\n/g, '<br /><br />')
+      .replace(/\n/g, '<br />');
+  };
 
   return (
     <div 
@@ -321,9 +331,9 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Budget</Label>
                     <div className="flex flex-col space-y-2">
                       {[
-                        { id: "budget", label: "Budget", icon: "🎒" },
-                        { id: "moderate", label: "Moderate", icon: "🏨" },
-                        { id: "luxury", label: "Luxury", icon: "✨" }
+                        { id: "budget", label: "Budget", icon: "ðŸŽ’" },
+                        { id: "moderate", label: "Moderate", icon: "ðŸ¨" },
+                        { id: "luxury", label: "Luxury", icon: "âœ¨" }
                       ].map(opt => (
                         <button
                           key={opt.id}
@@ -348,11 +358,11 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Travel Style</Label>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        { id: "relaxed", label: "Relaxed", icon: "🌴" },
-                        { id: "adventure", label: "Adventure", icon: "🏕️" },
-                        { id: "culture", label: "Culture", icon: "🏛️" },
-                        { id: "foodie", label: "Foodie", icon: "🍜" },
-                        { id: "party", label: "Nightlife", icon: "🎉" }
+                        { id: "relaxed", label: "Relaxed", icon: "ðŸŒ´" },
+                        { id: "adventure", label: "Adventure", icon: "ðŸ•ï¸" },
+                        { id: "culture", label: "Culture", icon: "ðŸ›ï¸" },
+                        { id: "foodie", label: "Foodie", icon: "ðŸœ" },
+                        { id: "party", label: "Nightlife", icon: "ðŸŽ‰" }
                       ].map(opt => (
                         <button
                           key={opt.id}
@@ -454,17 +464,17 @@ export default function Home() {
                     <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                       {destination && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                          📍 {destination}
+                          ðŸ“ {destination}
                         </Badge>
                       )}
                       {budget && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          💰 {budget}
+                          ðŸ’° {budget}
                         </Badge>
                       )}
                       {travelStyle && travelStyle.length > 0 && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
-                          ✨ {travelStyle.join(" + ")}
+                          âœ¨ {travelStyle.join(" + ")}
                         </Badge>
                       )}
                     </div>
@@ -611,11 +621,10 @@ export default function Home() {
                                                     {act.time}
                                                   </Badge>
                                                 )}
-                                                <div className="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed space-y-2 font-medium">
-                                                  {typeof act === 'string' ? act : (
-                                                    act.description || act.name || act.activity
-                                                  )}
-                                                </div>
+                                                                                                  <div 
+                                                    className="text-zinc-600 dark:text-zinc-300 text-base leading-relaxed font-medium"
+                                                    dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }}
+                                                  />
                                               </CardContent>
                                             </Card>
                                           </motion.div>
