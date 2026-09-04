@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed, Globe, Compass, Camera, Heart, Image as ImageIcon } from "lucide-react";
+import { Calendar as CalendarIcon, MapPin, Sparkles, Wallet, Plane, ArrowRight, Loader2, Utensils, Navigation, Bed, Globe, Compass, Camera, Heart, Image as ImageIcon, ExternalLink } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -160,7 +160,7 @@ export default function Home() {
   const formatMarkdown = (text: string) => {
     if (!text) return "";
     return text
-      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">✨ $1</strong>')
+      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">âœ¨ $1</strong>')
       .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
       .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
       .replace(/\n\n/g, '<br /><br />')
@@ -361,9 +361,9 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Budget</Label>
                     <div className="flex flex-col space-y-2">
                       {[
-                        { id: "budget", label: "Budget", icon: "ðŸŽ’" },
-                        { id: "moderate", label: "Moderate", icon: "ðŸ¨" },
-                        { id: "luxury", label: "Luxury", icon: "âœ¨" }
+                        { id: "budget", label: "Budget", icon: "Ã°Å¸Å½â€™" },
+                        { id: "moderate", label: "Moderate", icon: "Ã°Å¸ÂÂ¨" },
+                        { id: "luxury", label: "Luxury", icon: "Ã¢Å“Â¨" }
                       ].map(opt => (
                         <button
                           key={opt.id}
@@ -388,11 +388,11 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Travel Style</Label>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        { id: "relaxed", label: "Relaxed", icon: "ðŸŒ´" },
-                        { id: "adventure", label: "Adventure", icon: "ðŸ•ï¸" },
-                        { id: "culture", label: "Culture", icon: "ðŸ›ï¸" },
-                        { id: "foodie", label: "Foodie", icon: "ðŸœ" },
-                        { id: "party", label: "Nightlife", icon: "ðŸŽ‰" }
+                        { id: "relaxed", label: "Relaxed", icon: "Ã°Å¸Å’Â´" },
+                        { id: "adventure", label: "Adventure", icon: "Ã°Å¸Ââ€¢Ã¯Â¸Â" },
+                        { id: "culture", label: "Culture", icon: "Ã°Å¸Ââ€ºÃ¯Â¸Â" },
+                        { id: "foodie", label: "Foodie", icon: "Ã°Å¸ÂÅ“" },
+                        { id: "party", label: "Nightlife", icon: "Ã°Å¸Å½â€°" }
                       ].map(opt => (
                         <button
                           key={opt.id}
@@ -494,22 +494,22 @@ export default function Home() {
                                         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                       {origin && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50">
-                          🛫 {origin}
+                          ðŸ›« {origin}
                         </Badge>
                       )}
                       {destination && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                          ðŸ“ {destination}
+                          Ã°Å¸â€œÂ {destination}
                         </Badge>
                       )}
                       {budget && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          ðŸ’° {budget}
+                          Ã°Å¸â€™Â° {budget}
                         </Badge>
                       )}
                       {travelStyle && travelStyle.length > 0 && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
-                          âœ¨ {travelStyle.join(" + ")}
+                          Ã¢Å“Â¨ {travelStyle.join(" + ")}
                         </Badge>
                       )}
                     </div>
@@ -531,8 +531,12 @@ export default function Home() {
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {itinerary.topDestinations.map((dest: any, i: number) => (
-                          <motion.div key={i} variants={itemVariants}>
-                            <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-lg transition-all duration-300 group overflow-hidden">
+                            <motion.div key={i} variants={itemVariants}>
+                              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" className="block h-full cursor-pointer relative group">
+                                <div className="absolute top-3 right-3 z-10 bg-black/40 backdrop-blur-md p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <ExternalLink className="w-4 h-4 text-white" />
+                                </div>
+                                <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-xl hover:border-blue-500/40 transition-all duration-300 overflow-hidden">
                               <div className="h-32 w-full relative overflow-hidden bg-zinc-200 dark:bg-zinc-800">
                                 {dest.imageKeyword && (
                                   <img 
@@ -547,10 +551,11 @@ export default function Home() {
                               <CardContent className="p-4">
                                 <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium line-clamp-3">
                                   {dest.description}
-                                </p>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
+                                  </p>
+                                </CardContent>
+                                </Card>
+                              </a>
+                            </motion.div>
                         ))}
                       </div>
                     </motion.div>

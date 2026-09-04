@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
-import { MapPin, Sparkles, Navigation, Bed, Compass, Heart } from "lucide-react";
+import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +23,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
   const formatMarkdown = (text: string) => {
     if (!text) return "";
     return text
-      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">✨ $1</strong>')
+      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">âœ¨ $1</strong>')
       .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
       .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
       .replace(/\n\n/g, '<br /><br />')
@@ -119,16 +119,19 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {itinerary.topDestinations?.map((dest: any, i: number) => (
-                    <div key={i} className="group flex gap-4 items-center p-2 -mx-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors">
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={i} className="group flex gap-4 items-center p-2 -mx-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors relative cursor-pointer pr-8">
+                        <div className="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ExternalLink className="w-4 h-4 text-zinc-400" />
+                        </div>
                       <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-zinc-100 dark:bg-zinc-800">
                         <img src={"/api/image?query=" + encodeURIComponent(dest.imageKeyword)} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
                       </div>
                       <div>
                         <h4 className="font-medium text-sm line-clamp-1">{dest.name}</h4>
                         <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">{dest.description}</p>
-                      </div>
-                    </div>
-                  ))}
+                        </div>
+                      </a>
+                    ))}
                 </CardContent>
               </Card>
             </div>
