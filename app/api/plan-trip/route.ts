@@ -13,11 +13,12 @@ export async function POST(request: Request) {
   try {
     const { userId } = await auth();
     const body = await request.json();
-    const { destination, dateRange, budget, travelStyle } = body;
+    const { destination, origin, dateRange, budget, travelStyle } = body;
 
     const systemPrompt = `You are an elite, high-end travel concierge and expert AI trip planner.
 You must deeply analyze the EXACT location the user asks for (do not just give generic country advice).
 Provide highly specific places, restaurants, and hidden gems that exist in that exact locale.
+The user is departing from: . If relevant, suggest feasible arrival logistics or first-day activities that make sense coming from there.
 MULTI-STYLE OPTIMIZATION: The user may select multiple Travel Styles. Your response MUST make it highly visible and feasible how you are catering to EVERY SINGLE selected style. Blend them seamlessly so the itinerary flows logically.
   CRITICAL: You MUST include a 'topDestinations' array containing the most popular tourist places and attractions of the requested destination, strictly sorted in ALPHABETICAL ORDER (A to Z).
 For every location, activity, or hotel, provide a single, highly descriptive search term in the "imageKeyword" field (e.g. "shibuya+crossing+tokyo", "luxury+resort+maldives") with no spaces, using plus signs.
@@ -67,7 +68,8 @@ Do NOT include any conversational text before or after the JSON.`;
 
     const userPrompt = `
 Please plan a trip with the following details:
-- Destination: ${destination || "Not specified"}
+- Departing From: 
+- Destination: 
 - Dates: ${dateRange?.from ? new Date(dateRange.from).toLocaleDateString() : "Not specified"} to ${dateRange?.to ? new Date(dateRange.to).toLocaleDateString() : "Not specified"}
 - Budget: ${budget || "Not specified"}
 - Travel Style: ${travelStyle || "Not specified"}

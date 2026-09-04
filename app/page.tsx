@@ -43,7 +43,21 @@ export default function Home() {
     from: undefined,
     to: undefined,
   });
-  const [destination, setDestination] = useState("");
+    const [destination, setDestination] = useState("");
+  const [origin, setOrigin] = useState("");
+  const [isLocating, setIsLocating] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/location')
+      .then(res => res.json())
+      .then(data => {
+        if (data.city && data.country_name) {
+          setOrigin(data.city + ", " + data.country_name);
+        }
+      })
+      .catch(e => console.error(e))
+      .finally(() => setIsLocating(false));
+  }, []);
   const [budget, setBudget] = useState("");
   const [travelStyle, setTravelStyle] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +114,7 @@ export default function Home() {
       const response = await fetch("/api/plan-trip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ destination, dateRange: date, budget, travelStyle: travelStyle.join(", ") }),
+        body: JSON.stringify({ destination, origin, dateRange: date, budget, travelStyle: travelStyle.join(", ") }),
       });
 
       const data = await response.json();
@@ -224,10 +238,25 @@ export default function Home() {
                 <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="grid grid-cols-1 md:grid-cols-3 gap-6" onSubmit={handleSubmit}>
-                  
-                  {/* Destination */}
-                  <div className="space-y-3 md:col-span-3 mb-4 relative z-50">
+                                  <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onSubmit={handleSubmit}>
+                    
+                    {/* Origin */}
+                    <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
+                      <Label htmlFor="origin" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Departing From</Label>
+                      <div className="relative">
+                        <Navigation className="absolute left-4 top-4 h-6 w-6 text-emerald-500" />
+                        <Input 
+                          id="origin" 
+                          placeholder={isLocating ? "Locating..." : "e.g. New York"} 
+                          className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
+                          value={origin}
+                          onChange={(e) => setOrigin(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Destination */}
+                    <div className="space-y-3 md:col-span-1 lg:col-span-2 mb-4 relative z-50">
                     <Label htmlFor="destination" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Where to?</Label>
                     <div className="relative">
                       <MapPin className="absolute left-4 top-4 h-6 w-6 text-blue-500" />
@@ -461,7 +490,12 @@ export default function Home() {
                   )}
                   
                   <div className="mb-12 text-center">
-                    <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                                        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                      {origin && (
+                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50">
+                          🛫 {origin}
+                        </Badge>
+                      )}
                       {destination && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
                           ðŸ“ {destination}
