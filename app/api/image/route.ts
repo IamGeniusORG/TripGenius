@@ -11,10 +11,10 @@ export async function GET(request: Request) {
     }
 
     const res = await fetch(
-      https://api.unsplash.com/search/photos?page=1&per_page=1&query= + encodeURIComponent(query),
+      "https://api.unsplash.com/search/photos?page=1&per_page=1&query=" + encodeURIComponent(query),
       {
         headers: {
-          Authorization: Client-ID  + unsplashKey,
+          Authorization: "Client-ID " + unsplashKey,
         },
         // Cache the response heavily so we don't blow through the 50 req/hr limit
         next: { revalidate: 86400 } // Cache for 24 hours
