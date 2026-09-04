@@ -32,9 +32,9 @@ export function Footer() {
           <div className="col-span-1 flex flex-col items-start">
             <h4 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-3 text-sm">Legal</h4>
             <ul className="space-y-2 md:space-y-3 text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
-              <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-              <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
+              <li><Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+              <li><Link href="/cookies" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
             </ul>
           </div>
 
@@ -64,4 +64,5 @@ export function Footer() {
     </footer>
   );
 }
+
 
