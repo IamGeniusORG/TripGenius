@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="256" height="256">
+  <!-- Globe -->
+  <g stroke="#3b82f6" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8"/>
+    <path d="M4 12h16"/>
+    <path d="M12 4a15.3 15.3 0 0 1 4 8 15.3 15.3 0 0 1-4 8 15.3 15.3 0 0 1-4-8 15.3 15.3 0 0 1 4-8z"/>
+  </g>
+  <!-- Orbiting Plane (rotated 45deg and scaled down, placed at top right) -->
+  <g transform="translate(18, 5) scale(0.4) rotate(45) translate(-12, -12)">
+    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.2-1.1.6L3 8l7 4-3 3-4.5-1-1.5 1.5 5 2.5 2.5 5 1.5-1.5-1-4.5 3-3 4 7l1.2-.7c.4-.2.7-.6.6-1.1z" fill="#2563eb" stroke="#2563eb" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+</svg>
