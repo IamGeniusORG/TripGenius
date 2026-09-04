@@ -61,6 +61,8 @@ export default function Home() {
   const [budget, setBudget] = useState("");
   const [travelStyle, setTravelStyle] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [modificationPrompt, setModificationPrompt] = useState("");
+  const [isModifying, setIsModifying] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
   const [tripSeed, setTripSeed] = useState(1);
   
