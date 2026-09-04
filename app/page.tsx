@@ -17,6 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
@@ -658,20 +659,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md">
-          <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-              <span className="text-lg font-black tracking-tighter text-zinc-900 dark:text-zinc-50">TripGenius</span>
-            </div>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 font-medium">
-              &copy; {new Date().getFullYear()} TripGenius by IamGeniusORG. All rights reserved.
-            </p>
-          </div>
-        </footer>
+<Footer />
       </main>
     </div>
   );
 }
+
 
