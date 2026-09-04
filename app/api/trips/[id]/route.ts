@@ -4,16 +4,17 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth();
+    const resolvedParams = await params;
+    const tripId = resolvedParams.id;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const tripId = params.id;
 
     // Verify ownership
     const trip = await prisma.trip.findUnique({
