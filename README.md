@@ -1,6 +1,6 @@
 <div align="center">
   
-# ✦ T R I P G E N I U S ✦
+# ✨ T R I P G E N I U S ✨
 ### [ SYSTEM ONLINE // NEURAL ITINERARY ENGINE v2.5 ]
 
 > *"You don't just visit the future. You let the AI forge it for you."*
@@ -13,13 +13,17 @@
 
 <br/>
 
-## ⚠️ // SYSTEM CAPABILITIES 
+## 🛠️ // SYSTEM CAPABILITIES 
 
-| ⚡ Matrix Module | 🧬 Technical Description |
+| 🌐 Matrix Module | 🚀 Technical Description |
 | :--- | :--- |
 | **Neural Destination Mapping** | Bypasses basic geodata. Uses LLM cognitive reasoning to synthesize hyper-specific planetary coordinates (from hidden Shibuya alleys to remote Amalfi coves). |
+| **Universal Currency Engine** | Replaces static budget tiers. Enter any global currency (e.g. "50,000 INR" or "£2000"). The AI silently parses purchasing power and establishes a hidden comfort tier without exposing math. |
+| **GPS-Powered Geolocation** | Interactive origin field using native browser Geolocation API. Reverse-geocodes exact Lat/Lon via OpenStreetMap with a graceful fallback to IPStack for IP-based routing. |
+| **Post-Generation Mutation** | Sleek iterative AI modification interface. Tweak a completed itinerary (e.g., "Add a day trip to Kyoto"), directly patching the JSON tree and database record in real-time. |
+| **Dynamic Contextual Iconography** | Automated injection of situational timeline icons (🌅, ☀️, 🌇, 🌙) based on advanced time-of-day parsing. |
+| **Live Maps Binding** | Top destination cards are interactively bound to dynamically encoded Google Maps search queries with glassmorphism hover indicators. |
 | **Dynamic Holographic Injection** | Live visual synthesis. Bypasses standard browser caching using cryptographic `tripSeed` locks to ensure a 100% unique visual matrix for every simulation. |
-| **Adaptive Wealth Scaling** | Automatically calibrates itinerary parameters across 3 financial tiers (Budget/Scrap, Moderate/Standard, Luxury/Elite). |
 | **Dark Matter UI** | Built on Tailwind v4. Features reactive cursor-tracking radial energy fields, Framer Motion physics, and Plus Jakarta Sans cryptography. |
 
 ---
@@ -56,6 +60,9 @@ CLERK_SECRET_KEY=sk_test_...
 # Cognitive Engine
 OPENROUTER_API_KEY=sk-or-v1-...
 
+# Geolocation Fallback
+IPSTACK_API_KEY=...
+
 # Neural Memory Bank (PostgreSQL)
 DATABASE_URL=postgresql://user:password@host:port/db_name
 ```
@@ -67,4 +74,3 @@ DATABASE_URL=postgresql://user:password@host:port/db_name
 **[ END OF TRANSMISSION ]**
 
 </div>
-
