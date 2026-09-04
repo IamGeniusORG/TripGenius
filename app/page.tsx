@@ -451,6 +451,23 @@ export default function Home() {
                   )}
                   
                   <div className="mb-12 text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+                      {destination && (
+                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
+                          📍 {destination}
+                        </Badge>
+                      )}
+                      {budget && (
+                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
+                          💰 {budget}
+                        </Badge>
+                      )}
+                      {travelStyle && travelStyle.length > 0 && (
+                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
+                          ✨ {travelStyle.join(" + ")}
+                        </Badge>
+                      )}
+                    </div>
                     <h2 className="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-zinc-50 dark:to-zinc-400 mb-4 drop-shadow-sm pb-1">
                       {itinerary.title || "Your Custom Itinerary"}
                     </h2>
