@@ -59,8 +59,6 @@ export default function Home() {
       .finally(() => setIsLocating(false));
   }, []);
   const [budget, setBudget] = useState("");
-  const [customBudget, setCustomBudget] = useState("");
-  const [isCustomBudget, setIsCustomBudget] = useState(false);
   const [travelStyle, setTravelStyle] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [itinerary, setItinerary] = useState<any>(null);
@@ -116,7 +114,7 @@ export default function Home() {
       const response = await fetch("/api/plan-trip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ destination, origin, dateRange: date, budget: isCustomBudget ? customBudget : budget, travelStyle: travelStyle.join(", ") }),
+        body: JSON.stringify({ destination, origin, dateRange: date, budget, travelStyle: travelStyle.join(", ") }),
       });
 
       const data = await response.json();
@@ -372,47 +370,15 @@ export default function Home() {
                   {/* Budget */}
                   <div className="space-y-3 md:col-span-1">
                     <Label className="text-sm font-semibold">Budget</Label>
-                    <div className="flex flex-col space-y-2">
-                      {[
-                          { id: "budget", label: "Budget", icon: "🎒" },
-                          { id: "moderate", label: "Moderate", icon: "🏨" },
-                          { id: "luxury", label: "Luxury", icon: "✨" },
-                          { id: "custom", label: "Custom", icon: "✏️" }
-                        ].map(opt => (
-                          <button
-                            key={opt.id}
-                            type="button"
-                            onClick={() => {
-                              if (opt.id === "custom") {
-                                setIsCustomBudget(true);
-                                setBudget("");
-                              } else {
-                                setIsCustomBudget(false);
-                                setBudget(opt.id);
-                              }
-                            }}
-                            className={cn(
-                              "flex items-center w-full px-4 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 border-2 text-left",
-                              (!isCustomBudget && budget === opt.id) || (isCustomBudget && opt.id === "custom")
-                                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm" 
-                                : "border-zinc-200 dark:border-zinc-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-700 dark:text-zinc-300"
-                            )}
-                          >
-                            <span className="mr-3 text-lg">{opt.icon}</span>
-                            {opt.label}
-                          </button>
-                        ))}
-                        {isCustomBudget && (
-                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="pt-1">
-                            <Input 
-                              placeholder="e.g. $5,000 for 2 people" 
-                              value={customBudget}
-                              onChange={(e) => setCustomBudget(e.target.value)}
-                              className="bg-zinc-50 dark:bg-zinc-900/50 border-blue-200 dark:border-blue-800/50 focus-visible:ring-blue-500"
-                            />
-                          </motion.div>
-                        )}
-                    </div>
+                    <div className="relative">
+                        <Wallet className="absolute left-4 top-3.5 h-5 w-5 text-emerald-500" />
+                        <Input 
+                          placeholder="e.g. $5,000, or 50,000 INR for 2 adults" 
+                          value={budget}
+                          onChange={(e) => setBudget(e.target.value)}
+                          className="pl-12 h-12 text-base bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 focus-visible:ring-blue-500 shadow-sm rounded-xl"
+                        />
+                      </div>
                   </div>
 
                   {/* Travel Style */}
@@ -534,9 +500,9 @@ export default function Home() {
                           📍 {destination}
                         </Badge>
                       )}
-                      {(budget || customBudget) && (
+                      {budget && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          💰 {isCustomBudget ? customBudget : budget}
+                          💰 {budget}
                         </Badge>
                       )}
                       {travelStyle && travelStyle.length > 0 && (
