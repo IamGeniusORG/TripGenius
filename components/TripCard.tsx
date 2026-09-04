@@ -59,7 +59,7 @@ export function TripCard({ trip }: { trip: any }) {
           </span>
           <span className="flex items-center text-sm font-medium">
             <Clock className="w-4 h-4 mr-2 text-blue-500" />
-            Saved on {new Date(trip.createdAt).toLocaleDateString()}
+            Saved on {new Date(trip.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
           </span>
         </CardDescription>
 
