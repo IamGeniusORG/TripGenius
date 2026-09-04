@@ -1,6 +1,6 @@
-﻿<div align="center">
+<div align="center">
   
-# âœ¨ T R I P G E N I U S âœ¨
+# ✨ T R I P G E N I U S ✨
 ### An Elite AI-Powered Travel Concierge
 
 > *"You don't just visit the future. You let the AI forge it for you."*
@@ -16,47 +16,47 @@ TripGenius is a next-generation AI travel planner that moves beyond static itine
 
 <br/>
 
-## ðŸ“‹ Table of Contents
-- [âœ¨ Key Features](#-key-features)
-- [ðŸ› ï¸ Tech Stack](#-tech-stack)
-- [âš™ï¸ Installation & Setup](#-installation--setup)
-- [ðŸ” Environment Variables](#-environment-variables)
-- [ðŸ—ºï¸ Future Roadmap](#-future-roadmap)
-- [ðŸ“œ Legal & Compliance](#-legal--compliance)
+## 📋 Table of Contents
+- [✨ Key Features](#-key-features)
+- [🛠️ Tech Stack](#-tech-stack)
+- [⚙️ Installation & Setup](#-installation--setup)
+- [🔐 Environment Variables](#-environment-variables)
+- [🗺️ Future Roadmap](#-future-roadmap)
+- [📜 Legal & Compliance](#-legal--compliance)
 
 ---
 
-## âœ¨ Key Features
+## ✨ Key Features
 
 TripGenius is packed with cutting-edge features designed to provide a seamless, premium UX:
 
-### ðŸ§  Cognitive AI Routing
-- **Universal Currency Engine:** No standard "Budget/Luxury" dropdowns. Users input free-text budgets in any currency (e.g., *"50,000 INR"* or *"Â£2000 for 4 people"*). The AI silently parses the destination's purchasing power and calibrates a hidden comfort tier automatically.
+### 🧠 Cognitive AI Routing
+- **Universal Currency Engine:** No standard "Budget/Luxury" dropdowns. Users input free-text budgets in any currency (e.g., *"50,000 INR"* or *"£2000 for 4 people"*). The AI silently parses the destination's purchasing power and calibrates a hidden comfort tier automatically.
 - **Multi-Style Blending:** Select multiple travel vibes (Culture, Adventure, Nightlife, Foodie). The engine seamlessly blends them, ensuring every requested style is represented in the final itinerary.
 - **Post-Generation Mutation:** Don't like a specific day? Use the minimalist modification interface to chat with your itinerary. Ask the AI to *"Make the dinners cheaper"* or *"Add a day trip to Kyoto"*, and it natively patches the JSON tree in real-time.
 
-### ðŸ“ Advanced Geolocation
+### 📍 Advanced Geolocation
 - **Interactive GPS Origin:** Click the origin navigator to trigger the browser's native Geolocation API.
 - **Smart Reverse-Geocoding:** Converts raw Latitude/Longitude into precise City/Country strings via OpenStreetMap.
 - **Graceful IP Fallback:** If GPS is denied or unavailable, the system silently falls back to IPStack to securely approximate the user's origin via their IP address.
 
-### ðŸŽ¨ Dark Matter UI & Typography
+### 🎨 Dark Matter UI & Typography
 - **Premium Glassmorphism:** Built on Tailwind CSS v4, featuring reactive cursor-tracking radial energy fields, beautiful backdrop-blurs, and fluid Framer Motion transitions.
-- **Dynamic Contextual Iconography:** Activity timelines automatically parse the time of day and inject situational icons (ðŸŒ… Morning, â˜€ï¸ Afternoon, ðŸŒ‡ Evening, ðŸŒ™ Night).
-- **Live Maps Binding:** Top destination cards aren't just textâ€”they are interactively bound to dynamically encoded Google Maps search queries, complete with hover state indicators.
+- **Dynamic Contextual Iconography:** Activity timelines automatically parse the time of day and inject situational icons (🌅 Morning, ☀️ Afternoon, 🌇 Evening, 🌙 Night).
+- **Live Maps Binding:** Top destination cards aren't just text—they are interactively bound to dynamically encoded Google Maps search queries, complete with hover state indicators.
 
-### ðŸ“¸ Real-World Media Integration
+### 📸 Real-World Media Integration
 - **Unsplash API Holographics:** Fetches real-world, high-resolution photography for destinations and accommodations based on AI-generated image keywords.
 - **Deterministic Caching:** Uses cryptographic `tripSeed` locks to ensure a unique but consistent visual matrix for every generated simulation.
 - **Robust Fallbacks:** Integrates sleek placeholder UI systems if rate limits are hit, ensuring the site never breaks.
 
-### ðŸ”’ Accounts & Sharing
+### 🔒 Accounts & Sharing
 - **Secure Dashboards:** Authenticated via Clerk. Logged-in users have their trips securely persisted to a PostgreSQL database via Prisma.
 - **Public Share Links:** Every trip generates a beautiful, shareable `/share/[id]` URL so users can send their itineraries to friends and family.
 
 ---
 
-## ðŸ› ï¸ Tech Stack
+## 🛠️ Tech Stack
 
 **Frontend Architecture:**
 - **Framework:** Next.js 16.3 (App Router, Turbopack)
@@ -72,7 +72,7 @@ TripGenius is packed with cutting-edge features designed to provide a seamless, 
 
 ---
 
-## âš™ï¸ Installation & Setup
+## ⚙️ Installation & Setup
 
 Initiate the development environment using standard protocols:
 
@@ -95,7 +95,7 @@ npm run dev
 
 ---
 
-## ðŸ” Environment Variables
+## 🔐 Environment Variables
 
 To run TripGenius locally, you must configure a `.env.local` file in the root directory with your respective API keys:
 
@@ -119,7 +119,7 @@ IPSTACK_API_KEY=your_ipstack_api_key
 
 ---
 
-## ðŸ—ºï¸ Future Roadmap
+## 🗺️ Future Roadmap
 
 While the core engine is fully operational, the following premium features are slated for future releases:
 - **Interactive Map Canvas:** Plotting the entire itinerary onto a live Mapbox/Google Maps canvas with day-to-day routing.
@@ -130,10 +130,10 @@ While the core engine is fully operational, the following premium features are s
 
 ---
 
-## ðŸ“œ Legal & Compliance
+## 📜 Legal & Compliance
 TripGenius features a comprehensive suite of SaaS legal compliance pages, including a fully animated global Cookie Consent banner, Privacy Policy, and Terms of Service.
 
 <div align="center">
   <br/>
-  <b>Crafted with â¤ï¸ by Teddy.</b>
+  <b>Crafted with ❤️ by Teddy.</b>
 </div>
