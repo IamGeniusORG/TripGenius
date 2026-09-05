@@ -224,7 +224,7 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
+      className="min-h-screen flex flex-col font-sans bg-gradient-to-b from-indigo-50/50 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-indigo-950/20 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <Navbar />
@@ -280,15 +280,24 @@ export default function Home() {
               <span>AI-Powered Trip Planning</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter max-w-4xl mb-6 drop-shadow-sm text-zinc-900 dark:text-zinc-50 leading-[1.1]">
-              Design your perfect trip in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">seconds</span>
-            </h1>
             
-            <p className="text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide">
-              Tell us where you want to go and what you love doing. Our AI will craft a personalized itinerary that matches your vibe and budget perfectly.
-            </p>
+              <div className="relative w-full flex flex-col items-center justify-center pt-10 pb-4">
+                <div className="absolute inset-0 pointer-events-none -z-10 translate-y-[20%] scale-150 md:scale-100 opacity-60 dark:opacity-40">
+                  <Globe />
+                </div>
+                
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter max-w-5xl mb-6 drop-shadow-md text-zinc-900 dark:text-zinc-50 leading-[1.05] relative z-10 text-center">
+                  Discover the world in <br className="hidden md:block"/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 drop-shadow-sm filter">breathtaking detail.</span>
+                </h1>
+                
+                <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide text-center relative z-10">
+                  Tell us your dream destination. Our AI will instantly craft a stunning, hyper-personalized itinerary mapped beautifully across the globe.
+                </p>
+              </div>
 
-            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-zinc-200/60 dark:border-zinc-800/60 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl mb-8">
+
+            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-white/20 dark:border-white/10 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] mb-8">
               <CardHeader className="pb-6 text-center md:text-left">
                 <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
                 <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>

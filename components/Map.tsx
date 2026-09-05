@@ -44,7 +44,10 @@ export default function TripMap({ locations }: { locations: any[] }) {
         if (!loc) continue;
 
         // If the AI already provided coordinates (new trips)
-        if (loc.coordinates && typeof loc.coordinates.lat === 'number' && typeof loc.coordinates.lng === 'number') {
+        const lat = parseFloat(loc.coordinates?.lat);
+        const lng = parseFloat(loc.coordinates?.lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          loc.coordinates = { lat, lng };
           resolved.push(loc);
         } else if (loc.name) {
           // Legacy trips: AI didn't provide coordinates. We must geocode dynamically.
