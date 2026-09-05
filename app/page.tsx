@@ -1,5 +1,6 @@
 "use client";
 
+import DownloadPdfButton from "@/components/DownloadPdfButton";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
 import InteractiveGlobe from "@/components/Globe";
 ﻿
@@ -594,6 +595,7 @@ export default function Home() {
                             <Train className="w-4 h-4 mr-2" /> Train Tickets (IRCTC)
                           </Button>
                         </a>
+                        <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
 </div>
 
                     {/* Interactive Map */}

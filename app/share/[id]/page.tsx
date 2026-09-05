@@ -2,6 +2,7 @@
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
+import DownloadPdfButton from "@/components/DownloadPdfButton";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,7 +49,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
       <Navbar />
       
       <main className="container mx-auto px-4 pt-24 pb-20">
-        <div className="max-w-5xl mx-auto space-y-12">
+        <div id="itinerary-results" className="max-w-5xl mx-auto space-y-12 bg-zinc-50 dark:bg-zinc-950 p-2 md:p-8 rounded-3xl">
           <div className="space-y-6">
             <div className="inline-flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
               <Sparkles className="w-4 h-4" />
@@ -68,8 +69,9 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                       <a href="https://www.irctc.co.in/nget/train-search" target="_blank" rel="noopener noreferrer">
                         <Button className="bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Train className="w-4 h-4 mr-2" /> Train Tickets (IRCTC)
-                        </Button>
-                      </a>
+                          </Button>
+                        </a>
+                        <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
                     </div>
 
             <div className="flex flex-wrap gap-3 pt-4">
