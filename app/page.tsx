@@ -226,7 +226,7 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
+      className="min-h-screen flex flex-col font-sans text-zinc-900 dark:text-zinc-50 relative overflow-hidden bg-transparent"
       onMouseMove={handleMouseMove}
     >
       <Navbar />
@@ -240,7 +240,7 @@ export default function Home() {
       />
 
       {/* Soft Dot Pattern Background */}
-      <main className="flex-1 relative z-10 w-full overflow-x-hidden bg-gradient-to-b from-indigo-50/50 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-indigo-950/20">
+      <main className="flex-1 relative z-10 w-full overflow-x-hidden bg-transparent">
         
         <section className="relative w-full min-h-screen pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center overflow-hidden">
           {/* Subtle gradient overlay to fade the dots out towards edges */}
