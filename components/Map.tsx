@@ -80,7 +80,7 @@ export default function TripMap({ locations }: { locations: any[] }) {
 
   if (isGeocoding) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900 rounded-xl">
+      <div className="mb-12 w-full h-[400px] md:h-[500px] flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900 rounded-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-xl">
         <Loader2 className="h-8 w-8 text-blue-500 animate-spin mb-3" />
         <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
           Mapping legacy locations...
@@ -90,19 +90,16 @@ export default function TripMap({ locations }: { locations: any[] }) {
   }
 
   if (markers.length === 0) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-zinc-50 dark:bg-zinc-900 rounded-xl">
-        <p className="text-zinc-500 font-medium">Map data unavailable for this trip.</p>
-      </div>
-    );
+    return null;
   }
 
   return (
+    <div className="mb-12 w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 relative z-0">
     <MapContainer 
       center={[markers[0].coordinates.lat, markers[0].coordinates.lng]} 
       zoom={13} 
       scrollWheelZoom={false}
-      className="w-full h-full rounded-xl z-0"
+      className="w-full h-full z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -120,5 +117,6 @@ export default function TripMap({ locations }: { locations: any[] }) {
       ))}
       <ChangeView markers={markers} />
     </MapContainer>
+    </div>
   );
 }

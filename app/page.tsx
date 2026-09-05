@@ -579,17 +579,17 @@ export default function Home() {
                   
                     
                     <div className="mt-6 mb-12 flex flex-wrap justify-center gap-3">
-                      <a href={`https://www.google.com/travel/flights?q=${encodeURIComponent('Flights to ' + (itinerary.title || ''))}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.google.com/travel/flights?q=${encodeURIComponent('Flights to ' + destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Plane className="w-4 h-4 mr-2" /> Flights
                         </Button>
                       </a>
-                      <a href={`https://www.rome2rio.com/search?q=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.rome2rio.com/search?q=${encodeURIComponent(destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Train className="w-4 h-4 mr-2" /> Trains & Buses
                         </Button>
                       </a>
-                      <a href={`https://www.rentalcars.com/search-results?locn=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.rentalcars.com/search-results?locn=${encodeURIComponent(destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Car className="w-4 h-4 mr-2" /> Rental Cars
                         </Button>
@@ -598,12 +598,10 @@ export default function Home() {
 
                     {/* Interactive Map */}
                     {(itinerary.topDestinations || itinerary.accommodations) && (
-                      <motion.div variants={containerVariants} initial="hidden" animate="show" className="mb-12 w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 relative z-0">
-                        <TripMapDynamic locations={[
+                      <TripMapDynamic locations={[
                           ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
                           ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
                         ]} />
-                      </motion.div>
                     )}
   
                     {itinerary.topDestinations && Array.isArray(itinerary.topDestinations) && itinerary.topDestinations.length > 0 && (
@@ -673,7 +671,7 @@ export default function Home() {
                                 </p>
                               </CardContent>
                                 <div className="p-4 pt-0 mt-auto w-full">
-                                  <a href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(acc.name + ' ' + (itinerary.title || ''))}`} target="_blank" rel="noopener noreferrer" className="block w-full">
+                                  <a href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(acc.name + ' ' + destination)}`} target="_blank" rel="noopener noreferrer" className="block w-full">
                                     <Button variant="outline" className="w-full font-bold border-blue-200 dark:border-blue-900/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-400 group flex items-center justify-center">
                                       Check Availability <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                                     </Button>

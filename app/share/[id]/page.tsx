@@ -60,17 +60,17 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
             </p>
 
                     <div className="mt-6 mb-12 flex flex-wrap justify-center gap-3">
-                      <a href={`https://www.google.com/travel/flights?q=${encodeURIComponent('Flights to ' + (itinerary.title || ''))}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.google.com/travel/flights?q=${encodeURIComponent('Flights to ' + trip.destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Plane className="w-4 h-4 mr-2" /> Flights
                         </Button>
                       </a>
-                      <a href={`https://www.rome2rio.com/search?q=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.rome2rio.com/search?q=${encodeURIComponent(trip.destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Train className="w-4 h-4 mr-2" /> Trains & Buses
                         </Button>
                       </a>
-                      <a href={`https://www.rentalcars.com/search-results?locn=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.rentalcars.com/search-results?locn=${encodeURIComponent(trip.destination)}`} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
                           <Car className="w-4 h-4 mr-2" /> Rental Cars
                         </Button>
@@ -101,12 +101,10 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
           
                     {/* Interactive Map */}
                     {(itinerary.topDestinations || itinerary.accommodations) && (
-                      <div className="mb-12 w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 relative z-0">
-                        <TripMapDynamic locations={[
+                      <TripMapDynamic locations={[
                           ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
                           ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
                         ]} />
-                      </div>
                     )}
   
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
