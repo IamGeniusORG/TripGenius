@@ -1,11 +1,12 @@
 "use client";
 
 import { TripMapDynamic } from "@/components/TripMapDynamic";
+import InteractiveGlobe from "@/components/Globe";
 ﻿
 
 import { useState } from "react";
 import { format } from "date-fns";
-import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
+import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe as GlobeIcon, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -238,9 +239,9 @@ export default function Home() {
       />
 
       {/* Soft Dot Pattern Background */}
-      <main className="flex-1 relative z-10 bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#3f3f46_1px,transparent_1px)]">
+      <main className="flex-1 relative z-10 w-full overflow-x-hidden">
         
-        <section className="relative pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center min-h-[80vh]">
+        <section className="relative w-full min-h-screen pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center overflow-hidden">
           {/* Subtle gradient overlay to fade the dots out towards edges */}
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--tw-gradient-stops)_80%)] from-transparent to-background" />
           
@@ -272,7 +273,7 @@ export default function Home() {
                 transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} 
                 className="absolute hidden lg:flex right-[18%] bottom-12 w-16 h-16 bg-white dark:bg-zinc-800 rounded-full shadow-lg items-center justify-center border border-zinc-100 dark:border-zinc-700/50"
               >
-                <Globe className="w-7 h-7 text-emerald-500" />
+                <GlobeIcon className="w-7 h-7 text-emerald-500" />
               </motion.div>
 
               <div className="inline-flex items-center rounded-full border border-blue-200 bg-white/50 dark:bg-blue-900/10 px-4 py-1.5 text-[11px] uppercase tracking-widest font-bold text-blue-600 mb-8 dark:border-blue-800 dark:text-blue-400 backdrop-blur-sm shadow-sm relative z-10">
@@ -281,10 +282,12 @@ export default function Home() {
             </div>
             
             
-              <div className="relative w-full flex flex-col items-center justify-center pt-10 pb-4">
-                <div className="absolute inset-0 pointer-events-none -z-10 translate-y-[20%] scale-150 md:scale-100 opacity-60 dark:opacity-40">
-                  <Globe />
-                </div>
+              
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-20 opacity-80 mix-blend-screen translate-y-[15%] scale-150 lg:scale-100 lg:translate-y-[10%]">
+                 <InteractiveGlobe />
+              </div>
+              <div className="relative w-full flex flex-col items-center justify-center pt-10 pb-4 z-10">
+
                 
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter max-w-5xl mb-6 drop-shadow-md text-zinc-900 dark:text-zinc-50 leading-[1.05] relative z-10 text-center">
                   Discover the world in <br className="hidden md:block"/>
@@ -297,8 +300,8 @@ export default function Home() {
               </div>
 
 
-            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-white/20 dark:border-white/10 bg-white/70 dark:bg-zinc-900/60 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] mb-8">
-              <CardHeader className="pb-6 text-center md:text-left">
+            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-white/10 dark:border-white/5 bg-white/40 dark:bg-zinc-950/40 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] mb-8">
+              <CardHeader className="pb-6 text-center md:text-left hidden">
                 <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
                 <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
               </CardHeader>
