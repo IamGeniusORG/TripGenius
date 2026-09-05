@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,7 +25,7 @@ export function TripCard({ trip }: { trip: any }) {
       if (res.ok) {
         router.refresh();
       } else {
-        alert("Failed to delete trip.");
+        toast.error("Failed to delete trip");
         setIsDeleting(false);
       }
     } catch (e) {
@@ -78,7 +79,7 @@ export function TripCard({ trip }: { trip: any }) {
           size="icon" 
           onClick={() => {
             navigator.clipboard.writeText(window.location.origin + "/share/" + trip.id);
-            alert("Share link copied to clipboard!");
+            toast.success("Share link copied!", { description: "Link copied to your clipboard.", icon: "✨" });
           }} 
           className="shadow-sm"
           title="Share Trip"

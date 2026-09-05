@@ -1,3 +1,4 @@
+import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";

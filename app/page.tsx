@@ -4,6 +4,7 @@ import { TripMapDynamic } from "@/components/TripMapDynamic";
 import InteractiveGlobe from "@/components/Globe";
 ﻿
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { format } from "date-fns";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe as GlobeIcon, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
@@ -171,11 +172,11 @@ export default function Home() {
           document.getElementById('itinerary-results')?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
       } else {
-        alert("Failed to generate itinerary.");
+        toast.error("Generation failed", { description: "We could not craft your itinerary. Please try again." });
       }
     } catch (error) {
       console.error("Error fetching itinerary:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("Oops! Something went wrong", { description: "An error occurred while building your trip. Please try again." });
     } finally {
       setIsLoading(false);
     }
