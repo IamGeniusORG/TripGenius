@@ -9,25 +9,20 @@ export async function GET(request: Request) {
   }
 
   try {
-    // We use Open-Meteo's free geocoding API which is highly reliable and doesn't block generic User-Agents
-    const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q)}&count=1&language=en&format=json`);
+    // Strictly follow Nominatim's usage policy by providing a unique contact email in the User-Agent
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=1`, {
+      headers: {
+        "User-Agent": "TripGenius/3.0 (admin@tripgenius.com)",
+        "Accept-Language": "en-US,en;q=0.9"
+      }
+    });
 
     if (!res.ok) {
-      throw new Error("Geocoding failed");
+      throw new Error(`Geocoding failed with status ${res.status}`);
     }
 
     const data = await res.json();
-    
-    // Transform Open-Meteo response to match the expected legacy Nominatim format
-    if (data && data.results && data.results.length > 0) {
-      const result = data.results[0];
-      return NextResponse.json([{
-        lat: result.latitude,
-        lon: result.longitude
-      }]);
-    }
-    
-    return NextResponse.json([]);
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Server geocoding error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

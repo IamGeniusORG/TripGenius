@@ -300,17 +300,14 @@ export default function Home() {
               </div>
 
 
-            <Card className="w-full max-w-5xl text-left shadow-xl hover:shadow-2xl transition-shadow duration-500 border-white/10 dark:border-white/5 bg-white/40 dark:bg-zinc-950/40 backdrop-blur-3xl shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] mb-8">
-              <CardHeader className="pb-6 text-center md:text-left hidden">
-                <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
-                <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                                  <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onSubmit={handleSubmit}>
+            
+              <div className="w-full max-w-5xl mx-auto p-2 md:p-4 rounded-3xl md:rounded-full bg-white/70 dark:bg-black/40 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-2xl mb-12 relative z-20">
+                <div className="w-full">
+
+                                  <form className="flex flex-col lg:flex-row items-center gap-2 md:gap-4 w-full" onSubmit={handleSubmit}>
                     
                     {/* Origin */}
-                    <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
-                      <Label htmlFor="origin" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Departing From</Label>
+                    <div className="w-full lg:w-1/5 relative group">
                       <div className="relative">
                         <button 
                           type="button"
@@ -327,7 +324,7 @@ export default function Home() {
                         <Input 
                           id="origin" 
                           placeholder={isLocating ? "Detecting location..." : "Add your location"} 
-                          className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
+                          className="pl-12 h-14 md:h-16 text-base font-medium bg-transparent border-none shadow-none focus-visible:ring-0 px-4 placeholder:text-zinc-500 dark:placeholder:text-zinc-400" 
                           value={origin}
                           onChange={(e) => setOrigin(e.target.value)}
                         />
@@ -335,14 +332,13 @@ export default function Home() {
                     </div>
 
                     {/* Destination */}
-                    <div className="space-y-3 md:col-span-1 lg:col-span-2 mb-4 relative z-50">
-                    <Label htmlFor="destination" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Where to?</Label>
+                    <div className="w-full lg:w-1/4 relative z-50 group border-t lg:border-t-0 lg:border-l border-zinc-200/50 dark:border-zinc-800/50">
                     <div className="relative">
                       <MapPin className="absolute left-4 top-4 h-6 w-6 text-blue-500" />
                       <Input 
                         id="destination" 
                         placeholder="e.g. Japan, Italy, France, USA..." 
-                        className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
+                        className="pl-12 h-14 md:h-16 text-base font-medium bg-transparent border-none shadow-none focus-visible:ring-0 px-4 placeholder:text-zinc-500 dark:placeholder:text-zinc-400" 
                         value={destination}
                         onChange={handleDestinationChange}
                         onFocus={() => destination.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
@@ -500,8 +496,7 @@ export default function Home() {
                   </div>
 
                 </form>
-              </CardContent>
-            </Card>
+              </div></div>
 
             {/* Features Section - Only shown before generating an itinerary */}
             {!itinerary && !isLoading && (
