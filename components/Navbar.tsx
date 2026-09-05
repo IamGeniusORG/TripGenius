@@ -44,7 +44,7 @@ export function Navbar() {
               <Link href="/dashboard">
                 <Button variant="secondary" className="flex items-center space-x-2 font-bold shadow-sm px-3 sm:px-4">
                   <Map className="w-4 h-4" />
-                  <span className="hidden sm:inline">Dashboard</span>
+                  <span className="hidden sm:inline">My Trips</span>
                 </Button>
               </Link>
               <div className="h-6 sm:h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
