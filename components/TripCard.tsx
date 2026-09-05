@@ -17,7 +17,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -31,7 +31,6 @@ export function TripCard({ trip }: { trip: any }) {
   const imageKeyword = (trip.itinerary as any)?.imageKeyword || trip.destination;
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this trip?")) return;
     setIsDeleting(true);
     try {
       const res = await fetch(`/api/trips/${trip.id}`, { method: "DELETE" });
@@ -99,9 +98,23 @@ export function TripCard({ trip }: { trip: any }) {
         >
           <Share2 className="w-4 h-4" />
         </Button>
-        <Button variant="destructive" size="icon" onClick={handleDelete} disabled={isDeleting} className="shadow-sm">
-          {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger disabled={isDeleting} className={buttonVariants({ variant: "destructive", size: "icon" }) + " shadow-sm"}>
+            {isDeleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete this trip to {trip.destination}. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-700 text-white">Delete Trip</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardFooter>
     </Card>
   );
