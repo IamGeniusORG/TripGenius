@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
@@ -51,7 +51,7 @@ export default function TripMap({ locations }: { locations: any[] }) {
           neededGeocoding = true;
           try {
             const query = encodeURIComponent(loc.name);
-            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+            const res = await fetch(`/api/geocode?q=${query}`);
             const data = await res.json();
             if (data && data.length > 0) {
               resolved.push({ 

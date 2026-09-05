@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
-import { Plane, MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock } from "lucide-react";
+import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -58,6 +58,25 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
             <p className="text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl leading-relaxed">
               {itinerary.summary}
             </p>
+
+                    <div className="mt-6 mb-12 flex flex-wrap justify-center gap-3">
+                      <a href={`https://www.google.com/travel/flights?q=${encodeURIComponent('Flights to ' + (itinerary.title || ''))}`} target="_blank" rel="noopener noreferrer">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
+                          <Plane className="w-4 h-4 mr-2" /> Flights
+                        </Button>
+                      </a>
+                      <a href={`https://www.rome2rio.com/search?q=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
+                          <Train className="w-4 h-4 mr-2" /> Trains & Buses
+                        </Button>
+                      </a>
+                      <a href={`https://www.rentalcars.com/search-results?locn=${encodeURIComponent(itinerary.title || '')}`} target="_blank" rel="noopener noreferrer">
+                        <Button className="bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-md transition-all hover:scale-105 active:scale-95 text-xs sm:text-sm">
+                          <Car className="w-4 h-4 mr-2" /> Rental Cars
+                        </Button>
+                      </a>
+                    </div>
+
             <div className="flex flex-wrap gap-3 pt-4">
               <Badge variant="outline" className="px-4 py-2 text-sm bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
                 <MapPin className="w-4 h-4 mr-2 text-blue-500" />
