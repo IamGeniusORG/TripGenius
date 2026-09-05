@@ -225,7 +225,7 @@ export default function Home() {
 
   return (
     <div 
-      className="min-h-screen flex flex-col font-sans bg-gradient-to-b from-indigo-50/50 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-indigo-950/20 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
+      className="min-h-screen flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 relative overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <Navbar />
@@ -239,13 +239,16 @@ export default function Home() {
       />
 
       {/* Soft Dot Pattern Background */}
-      <main className="flex-1 relative z-10 w-full overflow-x-hidden">
+      <main className="flex-1 relative z-10 w-full overflow-x-hidden bg-gradient-to-b from-indigo-50/50 via-white to-zinc-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-indigo-950/20">
         
         <section className="relative w-full min-h-screen pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center overflow-hidden">
           {/* Subtle gradient overlay to fade the dots out towards edges */}
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--tw-gradient-stops)_80%)] from-transparent to-background" />
           
-          <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center relative">
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-70">
+<InteractiveGlobe />
+</div>
+<div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center relative z-10">
               {/* Decorative Floating Icons */}
               <motion.div 
                 animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }} 
@@ -281,65 +284,57 @@ export default function Home() {
               <span>AI-Powered Trip Planning</span>
             </div>
             
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter max-w-4xl mb-6 drop-shadow-sm text-zinc-900 dark:text-zinc-50 leading-[1.1]">
+              Design your perfect trip in <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400">seconds</span>
+            </h1>
             
-              
-              <div className="absolute inset-0 pointer-events-none overflow-hidden -z-20 opacity-80">
-                 <InteractiveGlobe />
-              </div>
-              <div className="relative w-full flex flex-col items-center justify-center pt-10 pb-4 z-10">
+            <p className="text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide">
+              Tell us where you want to go and what you love doing. Our AI will craft a personalized itinerary that matches your vibe and budget perfectly.
+            </p>
 
-                
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter max-w-5xl mb-6 drop-shadow-md text-zinc-900 dark:text-zinc-50 leading-[1.05] relative z-10 text-center">
-                  Discover the world in <br className="hidden md:block"/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 drop-shadow-sm filter">breathtaking detail.</span>
-                </h1>
-                
-                <p className="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide text-center relative z-10">
-                  Tell us your dream destination. Our AI will instantly craft a stunning, hyper-personalized itinerary mapped beautifully across the globe.
-                </p>
-              </div>
-
-
-            
-              <div className="w-full max-w-5xl mx-auto p-2 md:p-4 rounded-3xl md:rounded-full bg-white/70 dark:bg-black/40 backdrop-blur-2xl border border-white/40 dark:border-white/10 shadow-2xl mb-12 relative z-20">
-                <div className="w-full">
-
-                                  
-                <form className="flex flex-col lg:flex-row items-center gap-0 w-full" onSubmit={handleSubmit}>
-                  
-                  {/* Origin */}
-                  <div className="w-full lg:w-[22%] relative group p-2">
-                    <div className="relative flex items-center bg-zinc-100/50 dark:bg-zinc-800/50 rounded-2xl lg:rounded-l-full lg:rounded-r-none hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors">
-                      <button 
-                        type="button"
-                        onClick={handleGetLocation}
-                        className="absolute left-3 p-2 rounded-full hover:bg-white dark:hover:bg-zinc-900 shadow-sm transition-all z-10 group/btn"
-                        title="Use my exact location"
-                      >
-                        {isLocating ? (
-                          <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
-                        ) : (
-                          <Navigation className="h-4 w-4 text-blue-500 group-hover/btn:scale-110 transition-transform" />
-                        )}
-                      </button>
-                      <Input 
-                        id="origin" 
-                        placeholder={isLocating ? "Detecting..." : "Where from?"} 
-                        className="pl-14 h-16 text-base font-medium bg-transparent border-none shadow-none focus-visible:ring-0 focus-visible:bg-white dark:focus-visible:bg-zinc-900 rounded-2xl lg:rounded-l-full lg:rounded-r-none transition-colors" 
-                        value={origin}
-                        onChange={(e) => setOrigin(e.target.value)}
-                      />
+            <Card className="w-full max-w-5xl text-left shadow-2xl hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transition-all duration-500 border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl mb-8">
+              <CardHeader className="pb-6 text-center md:text-left">
+                <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
+                <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                                  <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onSubmit={handleSubmit}>
+                    
+                    {/* Origin */}
+                    <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
+                      <Label htmlFor="origin" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Departing From</Label>
+                      <div className="relative">
+                        <button 
+                          type="button"
+                          onClick={handleGetLocation}
+                          className="absolute left-2.5 top-2.5 p-1.5 rounded-md hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors z-10 group"
+                          title="Use my exact location"
+                        >
+                          {isLocating ? (
+                            <Loader2 className="h-5 w-5 text-emerald-500 animate-spin" />
+                          ) : (
+                            <Navigation className="h-5 w-5 text-emerald-500 group-hover:scale-110 transition-transform" />
+                          )}
+                        </button>
+                        <Input 
+                          id="origin" 
+                          placeholder={isLocating ? "Detecting location..." : "Add your location"} 
+                          className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
+                          value={origin}
+                          onChange={(e) => setOrigin(e.target.value)}
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Destination */}
-                  <div className="w-full lg:w-[26%] relative group p-2 border-t lg:border-t-0 lg:border-l border-white/20 dark:border-zinc-700/50">
-                    <div className="relative flex items-center bg-zinc-100/50 dark:bg-zinc-800/50 rounded-2xl lg:rounded-none hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors">
-                      <MapPin className="absolute left-4 h-5 w-5 text-indigo-500" />
+                    {/* Destination */}
+                    <div className="space-y-3 md:col-span-1 lg:col-span-2 mb-4 relative z-50">
+                    <Label htmlFor="destination" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Where to?</Label>
+                    <div className="relative">
+                      <MapPin className="absolute left-4 top-4 h-6 w-6 text-blue-500" />
                       <Input 
                         id="destination" 
-                        placeholder="Where to? (e.g. Japan)" 
-                        className="pl-12 h-16 text-base font-medium bg-transparent border-none shadow-none focus-visible:ring-0 focus-visible:bg-white dark:focus-visible:bg-zinc-900 rounded-2xl lg:rounded-none transition-colors" 
+                        placeholder="e.g. Japan, Italy, France, USA..." 
+                        className="pl-12 h-14 text-lg bg-zinc-50 dark:bg-zinc-900/50 border-zinc-300 dark:border-zinc-700 focus-visible:ring-blue-500" 
                         value={destination}
                         onChange={handleDestinationChange}
                         onFocus={() => destination.length >= 2 && suggestions.length > 0 && setShowSuggestions(true)}
@@ -355,31 +350,34 @@ export default function Home() {
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
-                          className="absolute left-0 right-0 top-full mt-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-xl border border-white/20 dark:border-zinc-700 rounded-2xl shadow-2xl max-h-64 overflow-y-auto z-[100]"
+                          className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl shadow-2xl max-h-64 overflow-y-auto overflow-x-hidden z-[100]"
                         >
                           <div className="p-2">
                             <button
                               type="button"
-                              className="w-full text-left px-4 py-3 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 rounded-xl transition-colors text-indigo-700 dark:text-indigo-300 font-bold flex items-center"
-                              onClick={() => setShowSuggestions(false)}
+                              className="w-full text-left px-4 py-3 bg-blue-50/50 hover:bg-blue-100 dark:bg-blue-900/10 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-blue-700 dark:text-blue-300 font-bold flex items-center border border-blue-100 dark:border-blue-800/50"
+                              onClick={() => {
+                                setShowSuggestions(false);
+                              }}
                             >
-                              <Sparkles className="h-4 w-4 mr-3 text-indigo-500" />
+                              <Sparkles className="h-4 w-4 mr-3 text-blue-500" />
                               Plan trip to "{destination}"
                             </button>
+                            
                             {suggestions.length > 0 && (
                               <div className="mt-2">
-                                <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places</div>
+                                <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Top places in this country (A-Z)</div>
                                 {suggestions.map((place, idx) => (
                                   <button
                                     key={idx}
                                     type="button"
-                                    className="w-full text-left px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors text-zinc-700 dark:text-zinc-200 font-medium flex items-center"
+                                    className="w-full text-left px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors text-zinc-700 dark:text-zinc-200 font-medium flex items-center"
                                     onClick={() => {
                                       setDestination(place);
                                       setShowSuggestions(false);
                                     }}
                                   >
-                                    <MapPin className="h-4 w-4 mr-3 text-zinc-400" />
+                                    <MapPin className="h-4 w-4 mr-3 text-blue-400" />
                                     {place}
                                   </button>
                                 ))}
@@ -392,64 +390,110 @@ export default function Home() {
                   </div>
 
                   {/* Dates */}
-                  <div className="w-full lg:w-[20%] relative group p-2 border-t lg:border-t-0 lg:border-l border-white/20 dark:border-zinc-700/50">
+                  <div className="space-y-2 md:col-span-1">
+                    <Label className="text-sm font-semibold">Dates</Label>
                     <Popover>
                       <PopoverTrigger
-                          id="date"
-                          className={cn(
-                            "w-full h-16 flex items-center justify-start text-left font-medium text-base bg-zinc-100/50 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-700/50 rounded-2xl lg:rounded-none border-none transition-colors px-4",
-                            !(date?.from && date?.to) && "text-zinc-500 dark:text-zinc-400"
-                          )}
-                        >
-                          <CalendarIcon className="mr-3 h-5 w-5 text-purple-500" />
-                          {date?.from ? (
-                            date.to ? (
-                              <span className="truncate">{format(date.from, "LLL dd")} - {format(date.to, "LLL dd")}</span>
-                            ) : (
-                              format(date.from, "LLL dd")
-                            )
+                        id="date"
+                        className={cn(
+                          buttonVariants({ variant: "outline" }),
+                          "w-full h-11 justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4 text-zinc-500" />
+                        {date?.from ? (
+                          date.to ? (
+                            <>
+                              {format(date.from, "LLL dd")} - {format(date.to, "LLL dd")}
+                            </>
                           ) : (
-                            <span>Dates</span>
-                          )}
-                        </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 rounded-3xl overflow-hidden shadow-2xl border-white/20 dark:border-zinc-700/50" align="start">
+                            format(date.from, "LLL dd")
+                          )
+                        ) : (
+                          <span>Pick dates</span>
+                        )}
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="range"
                           defaultMonth={date?.from}
                           selected={date}
-                          onSelect={setDate}
+                          onSelect={setDate as any}
                           numberOfMonths={2}
-                          className="bg-white/95 dark:bg-zinc-900/95 backdrop-blur-xl p-4"
                         />
                       </PopoverContent>
                     </Popover>
                   </div>
 
                   {/* Budget */}
-                  <div className="w-full lg:w-[17%] relative group p-2 border-t lg:border-t-0 lg:border-l border-white/20 dark:border-zinc-700/50">
-                    <div className="relative flex items-center bg-zinc-100/50 dark:bg-zinc-800/50 rounded-2xl lg:rounded-none hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-colors">
-                      <Wallet className="absolute left-4 h-5 w-5 text-emerald-500" />
-                      <Input 
-                        id="budget" 
-                        placeholder="Budget" 
-                        className="pl-12 h-16 text-base font-medium bg-transparent border-none shadow-none focus-visible:ring-0 focus-visible:bg-white dark:focus-visible:bg-zinc-900 rounded-2xl lg:rounded-none transition-colors" 
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value)}
-                        required
-                      />
+                  <div className="space-y-3 md:col-span-1">
+                    <Label className="text-sm font-semibold">Budget</Label>
+                    <div className="relative">
+                        <Wallet className="absolute left-4 top-3.5 h-5 w-5 text-emerald-500" />
+                        <Input 
+                          placeholder="e.g. $5,000, or 50,000 INR for 2 adults" 
+                          value={budget}
+                          onChange={(e) => setBudget(e.target.value)}
+                          className="pl-12 h-12 text-base bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 focus-visible:ring-blue-500 shadow-sm rounded-xl"
+                        />
+                      </div>
+                  </div>
+
+                  {/* Travel Style */}
+                  <div className="space-y-3 md:col-span-1">
+                    <Label className="text-sm font-semibold">Travel Style</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                          { id: "relaxed", label: "Relaxed", icon: "🌴" },
+                          { id: "adventure", label: "Adventure", icon: "🏔️" },
+                          { id: "culture", label: "Culture", icon: "🏛️" },
+                          { id: "foodie", label: "Foodie", icon: "🍜" },
+                          { id: "party", label: "Nightlife", icon: "🎉" }
+                        ].map(opt => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setTravelStyle(prev => prev.includes(opt.id) ? prev.filter(id => id !== opt.id) : [...prev, opt.id])}
+                          className={cn(
+                            "flex items-center px-4 py-2 text-sm font-bold rounded-full transition-all duration-200 border-2",
+                            travelStyle.includes(opt.id) 
+                              ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 shadow-sm" 
+                              : "border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-200 dark:hover:border-zinc-700 text-zinc-600 dark:text-zinc-400"
+                          )}
+                        >
+                          <span className="mr-2">{opt.icon}</span>
+                          {opt.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  {/* Generate Button */}
-                  <div className="w-full lg:w-[15%] p-2 mt-2 lg:mt-0">
-                    <Button type="submit" disabled={isLoading || !destination || !(date?.from && date?.to)} className="w-full h-16 rounded-2xl lg:rounded-r-full lg:rounded-l-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-lg shadow-lg shadow-blue-500/25 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                      {isLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : "Search"}
+                  {/* Submit Button */}
+                  <div className="md:col-span-3 mt-6 flex justify-center">
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full max-w-sm h-12 text-base font-bold tracking-wide bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 rounded-xl" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          Crafting your itinerary...
+                        </>
+                      ) : (
+                        <>
+                          Generate Itinerary
+                          <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
                     </Button>
                   </div>
-                </form>
-              </div>
-            </div>
 
+                </form>
+              </CardContent>
+            </Card>
 
             {/* Features Section - Only shown before generating an itinerary */}
             {!itinerary && !isLoading && (
