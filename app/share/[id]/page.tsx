@@ -1,6 +1,7 @@
 ﻿import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
+import { TripMapDynamic } from "@/components/TripMapDynamic";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -77,7 +78,18 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+                    {/* Interactive Map */}
+                    {(itinerary.topDestinations || itinerary.accommodations) && (
+                      <div className="mb-12 w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 relative z-0">
+                        <TripMapDynamic locations={[
+                          ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
+                          ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
+                        ]} />
+                      </div>
+                    )}
+  
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
               <div className="flex items-center space-x-3 mb-6">
                 <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-xl">

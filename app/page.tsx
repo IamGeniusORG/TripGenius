@@ -1,3 +1,4 @@
+import { TripMapDynamic } from "@/components/TripMapDynamic";
 ﻿"use client";
 
 import { useState } from "react";
@@ -573,7 +574,18 @@ export default function Home() {
                     )}
                   </div>
 
-                  {itinerary.topDestinations && Array.isArray(itinerary.topDestinations) && itinerary.topDestinations.length > 0 && (
+                  
+                    {/* Interactive Map */}
+                    {(itinerary.topDestinations || itinerary.accommodations) && (
+                      <motion.div variants={containerVariants} initial="hidden" animate="show" className="mb-12 w-full h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 relative z-0">
+                        <TripMapDynamic locations={[
+                          ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
+                          ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
+                        ]} />
+                      </motion.div>
+                    )}
+  
+                    {itinerary.topDestinations && Array.isArray(itinerary.topDestinations) && itinerary.topDestinations.length > 0 && (
                     <motion.div variants={containerVariants} initial="hidden" animate="show" className="mb-16">
                       <h3 className="flex items-center text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 px-2">
                         <MapPin className="h-6 w-6 mr-3 text-blue-500" />
