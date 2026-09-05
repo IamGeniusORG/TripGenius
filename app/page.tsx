@@ -653,7 +653,14 @@ export default function Home() {
                                   {acc.description}
                                 </p>
                               </CardContent>
-                            </Card>
+                                <div className="p-4 pt-0 mt-auto w-full">
+                                  <a href={`https://www.booking.com/searchresults.html?ss=${encodeURIComponent(acc.name + ' ' + (itinerary.title || ''))}`} target="_blank" rel="noopener noreferrer" className="block w-full">
+                                    <Button variant="outline" className="w-full font-bold border-blue-200 dark:border-blue-900/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-700 dark:text-blue-400 group flex items-center justify-center">
+                                      Check Availability <ExternalLink className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </Button>
+                                  </a>
+                                </div>
+                              </Card>
                           </motion.div>
                         ))}
                       </div>
