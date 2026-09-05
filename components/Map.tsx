@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { Loader2 } from "lucide-react";
 
 // Fix Leaflet's default icon path issues in Next.js
 const customIcon = new L.Icon({
@@ -29,20 +30,76 @@ function ChangeView({ markers }: { markers: any[] }) {
 }
 
 export default function TripMap({ locations }: { locations: any[] }) {
-  // Filter out any locations that didn't get proper coordinates from the AI
-  const validLocations = locations.filter(loc => loc && loc.coordinates && typeof loc.coordinates.lat === 'number' && typeof loc.coordinates.lng === 'number');
+  const [markers, setMarkers] = useState<any[]>([]);
+  const [isGeocoding, setIsGeocoding] = useState(true);
 
-  if (validLocations.length === 0) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const resolveLocations = async () => {
+      const resolved = [];
+      let neededGeocoding = false;
+
+      for (const loc of locations) {
+        if (!loc) continue;
+
+        // If the AI already provided coordinates (new trips)
+        if (loc.coordinates && typeof loc.coordinates.lat === 'number' && typeof loc.coordinates.lng === 'number') {
+          resolved.push(loc);
+        } else if (loc.name) {
+          // Legacy trips: AI didn't provide coordinates. We must geocode dynamically.
+          neededGeocoding = true;
+          try {
+            const query = encodeURIComponent(loc.name);
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+            const data = await res.json();
+            if (data && data.length > 0) {
+              resolved.push({ 
+                ...loc, 
+                coordinates: { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) } 
+              });
+            }
+            // Sleep for 1.1s to strictly respect OpenStreetMap's free tier rate limits (1 req/sec)
+            await new Promise(r => setTimeout(r, 1100));
+          } catch (e) {
+            console.error("Geocoding failed for", loc.name);
+          }
+        }
+      }
+
+      if (isMounted) {
+        setMarkers(resolved);
+        setIsGeocoding(false);
+      }
+    };
+
+    resolveLocations();
+
+    return () => { isMounted = false; };
+  }, [locations]);
+
+  if (isGeocoding) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-zinc-100 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700">
-        <p className="text-zinc-500 font-medium">Map data unavailable</p>
+      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-900 rounded-xl">
+        <Loader2 className="h-8 w-8 text-blue-500 animate-spin mb-3" />
+        <span className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+          Mapping legacy locations...
+        </span>
+      </div>
+    );
+  }
+
+  if (markers.length === 0) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-zinc-50 dark:bg-zinc-900 rounded-xl">
+        <p className="text-zinc-500 font-medium">Map data unavailable for this trip.</p>
       </div>
     );
   }
 
   return (
     <MapContainer 
-      center={[validLocations[0].coordinates.lat, validLocations[0].coordinates.lng]} 
+      center={[markers[0].coordinates.lat, markers[0].coordinates.lng]} 
       zoom={13} 
       scrollWheelZoom={false}
       className="w-full h-full rounded-xl z-0"
@@ -51,7 +108,7 @@ export default function TripMap({ locations }: { locations: any[] }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {validLocations.map((loc, idx) => (
+      {markers.map((loc, idx) => (
         <Marker key={idx} position={[loc.coordinates.lat, loc.coordinates.lng]} icon={customIcon}>
           <Popup>
             <div className="font-sans">
@@ -61,7 +118,7 @@ export default function TripMap({ locations }: { locations: any[] }) {
           </Popup>
         </Marker>
       ))}
-      <ChangeView markers={validLocations} />
+      <ChangeView markers={markers} />
     </MapContainer>
   );
 }
