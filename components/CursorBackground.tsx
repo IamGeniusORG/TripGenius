@@ -17,6 +17,9 @@ function Starfield() {
     
     groupRef.current.rotation.y += (targetX - groupRef.current.rotation.y) * 0.03;
     groupRef.current.rotation.x += (-targetY - groupRef.current.rotation.x) * 0.03;
+    // Add constant drift so stars are always moving beautifully
+    groupRef.current.rotation.z += 0.0005;
+    groupRef.current.rotation.y += 0.0005;
   });
 
   return (

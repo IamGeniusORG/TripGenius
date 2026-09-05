@@ -235,7 +235,7 @@ export default function Home() {
       <div 
         className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColor}, transparent 80%)`
+          background: `radial-gradient(100px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColor}, transparent 80%)`
         }}
       />
 
