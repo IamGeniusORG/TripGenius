@@ -42,6 +42,7 @@ export default function RootLayout({
           >
             <CookieBanner />
             {children}
+            <Toaster position="bottom-right" richColors theme="system" />
           </ThemeProvider>
         </body>
       </html>
