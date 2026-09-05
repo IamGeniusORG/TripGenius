@@ -10,22 +10,22 @@ export default function Globe() {
     let phi = 0;
     if (!canvasRef.current) return;
 
-    // Use window width to scale the globe
+    // Use window width to scale the globe properly
     const width = typeof window !== 'undefined' ? window.innerWidth : 1000;
     
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      width: width * 2.5,
+      height: width * 2.5,
       phi: 0,
-      theta: 0.3,
+      theta: 0.15,
       dark: 1,
       diffuse: 1.2,
-      mapSamples: 30000,
+      mapSamples: 25000,
       mapBrightness: 6,
       baseColor: [0.05, 0.05, 0.08],
       markerColor: [0.3, 0.6, 1],
-      glowColor: [0.05, 0.05, 0.1],
+      glowColor: [0.1, 0.1, 0.2],
       markers: [
         { location: [35.6762, 139.6503], size: 0.08 },
         { location: [40.7128, -74.0060], size: 0.08 },
@@ -43,7 +43,7 @@ export default function Globe() {
   }, []);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0 translate-x-[20%] translate-y-[20%] opacity-80 mix-blend-screen overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center pointer-events-none z-0 translate-y-[15%] lg:translate-y-[10%] opacity-90 mix-blend-screen">
       <canvas
         ref={canvasRef}
         style={{
@@ -52,6 +52,7 @@ export default function Globe() {
           maxWidth: '1200px',
           maxHeight: '1200px',
           aspectRatio: "1/1",
+          objectFit: 'contain'
         }}
       />
     </div>
