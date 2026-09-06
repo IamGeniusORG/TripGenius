@@ -472,11 +472,11 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Travel Style</Label>
                     <div className="flex flex-wrap gap-2">
                       {[
-                          { id: "relaxed", label: "Relaxed", icon: "ðŸŒ´" },
-                          { id: "adventure", label: "Adventure", icon: "ðŸ”ï¸" },
-                          { id: "culture", label: "Culture", icon: "ðŸ›ï¸" },
-                          { id: "foodie", label: "Foodie", icon: "ðŸœ" },
-                          { id: "party", label: "Nightlife", icon: "ðŸŽ‰" }
+                          { id: "relaxed", label: "Relaxed", icon: <Sun className="w-4 h-4" /> },
+                          { id: "adventure", label: "Adventure", icon: <Compass className="w-4 h-4" /> },
+                          { id: "culture", label: "Culture", icon: <GlobeIcon className="w-4 h-4" /> },
+                          { id: "foodie", label: "Foodie", icon: <Utensils className="w-4 h-4" /> },
+                          { id: "party", label: "Nightlife", icon: <Moon className="w-4 h-4" /> }
                         ].map(opt => (
                         <button
                           key={opt.id}
