@@ -121,6 +121,9 @@ Provide a daily itinerary, recommended activities, and dining options.
 
     let tripId = null;
     if (userId && !parsedResponse.error) {
+      // Embed original inputs so the Modify dialog can display them
+      parsedResponse.budget = budget;
+      parsedResponse.travelStyle = travelStyle;
       try {
         const trip = await prisma.trip.create({
           data: {

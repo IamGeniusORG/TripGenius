@@ -81,6 +81,9 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
 
     let tripId = null;
     if (userId && !parsedResponse.error) {
+      // Carry over original inputs if available
+      if (originalItinerary?.budget) parsedResponse.budget = originalItinerary.budget;
+      if (originalItinerary?.travelStyle) parsedResponse.travelStyle = originalItinerary.travelStyle;
       try {
         const newTrip = await prisma.trip.create({
           data: {
