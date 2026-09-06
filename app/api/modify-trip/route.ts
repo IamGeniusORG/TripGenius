@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   try {
     const { userId } = await auth();
     const body = await request.json();
-    const { originalItinerary, modificationPrompt, destination } = body;
+    const { originalItinerary, modificationPrompt, destination, tripId } = body;
 
     const systemPrompt = `You are an elite AI travel concierge. 
 The user already has a generated itinerary, but they want to modify it.
@@ -79,27 +79,48 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
       parsedResponse = { error: "Failed to parse AI response" };
     }
 
-    let tripId = null;
+    
+    let finalTripId = tripId || null;
     if (userId && !parsedResponse.error) {
       // Carry over original inputs if available
       if (originalItinerary?.budget) parsedResponse.budget = originalItinerary.budget;
       if (originalItinerary?.travelStyle) parsedResponse.travelStyle = originalItinerary.travelStyle;
+      
+      // Add a Modified Tag
+      parsedResponse.isModified = true;
+      if (parsedResponse.title && !parsedResponse.title.includes("(Modified)")) {
+         parsedResponse.title = parsedResponse.title + " (Modified)";
+      }
+
       try {
-        const newTrip = await prisma.trip.create({
-          data: {
-            userId,
-            destination: destination || parsedResponse.title || "Unknown",
-            dates: "Modified Trip",
-            itinerary: parsedResponse,
-          },
-        });
-        tripId = newTrip.id;
+        if (tripId) {
+          // Verify ownership
+          const existing = await prisma.trip.findUnique({ where: { id: tripId } });
+          if (existing && existing.userId === userId) {
+            await prisma.trip.update({
+              where: { id: tripId },
+              data: { itinerary: parsedResponse }
+            });
+            finalTripId = tripId;
+          }
+        } else {
+          const newTrip = await prisma.trip.create({
+            data: {
+              userId,
+              destination: destination || parsedResponse.title || "Unknown",
+              dates: "Modified Trip",
+              itinerary: parsedResponse,
+            },
+          });
+          finalTripId = newTrip.id;
+        }
       } catch (dbError) {
         console.error("Failed to save modified trip to database:", dbError);
       }
     }
 
-    return NextResponse.json({ itinerary: parsedResponse, tripId });
+    return NextResponse.json({ itinerary: parsedResponse, tripId: finalTripId });
+
   } catch (error) {
     console.error("Error in modify API:", error);
     return NextResponse.json({ error: "Failed to modify trip." }, { status: 500 });

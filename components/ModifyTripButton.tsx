@@ -26,16 +26,17 @@ export default function ModifyTripButton({ trip }: { trip: any }) {
           originalItinerary: trip.itinerary,
           modificationPrompt: prompt,
           destination: trip.destination,
+          tripId: trip.id,
         }),
       });
 
       const data = await response.json();
       
       if (data.tripId) {
-        toast.success("Trip successfully modified!", { description: "Redirecting to your new itinerary..." });
+        toast.success("Trip successfully modified!", { description: "Your itinerary has been updated." });
         setIsOpen(false);
         setPrompt("");
-        router.push("/share/" + data.tripId);
+        router.refresh();
       } else {
         toast.error("Modification failed", { description: "We couldn't process your request." });
       }
