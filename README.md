@@ -1,139 +1,86 @@
-<div align="center">
-  
-# ✨ T R I P G E N I U S ✨
-### An Elite AI-Powered Travel Concierge
+# 🌍 TripGenius
 
-> *"You don't just visit the future. You let the AI forge it for you."*
+**TripGenius** is the world's most advanced AI-powered travel concierge. Built with Next.js 14 and modern web architectures, it allows users to generate highly detailed, personalized, day-by-day travel itineraries in seconds using advanced AI models.
 
-[![Next.js](https://img.shields.io/badge/Engine-Next.js_16.3-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![Cognitive Core](https://img.shields.io/badge/Core-Gemini_2.5_Flash-1A73E8?style=for-the-badge&logo=google)](https://deepmind.google/)
-[![Security](https://img.shields.io/badge/Auth-Clerk_v3-6C47FF?style=for-the-badge&logo=clerk)](https://clerk.com/)
-[![Database](https://img.shields.io/badge/DB-Prisma_PostgreSQL-316192?style=for-the-badge&logo=postgresql)](https://prisma.io)
-
-TripGenius is a next-generation AI travel planner that moves beyond static itineraries. It uses advanced cognitive reasoning to dynamically forge magazine-style, hyper-personalized travel plans based on exact spending power, geographic context, and blended travel styles.
-
-</div>
-
-<br/>
-
-## 📋 Table of Contents
-- [✨ Key Features](#-key-features)
-- [🛠️ Tech Stack](#-tech-stack)
-- [⚙️ Installation & Setup](#-installation--setup)
-- [🔐 Environment Variables](#-environment-variables)
-- [🗺️ Future Roadmap](#-future-roadmap)
-- [📜 Legal & Compliance](#-legal--compliance)
+![TripGenius Hero](https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2000&auto=format&fit=crop)
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-TripGenius is packed with cutting-edge features designed to provide a seamless, premium UX:
-
-### 🧠 Cognitive AI Routing
-- **Universal Currency Engine:** No standard "Budget/Luxury" dropdowns. Users input free-text budgets in any currency (e.g., *"50,000 INR"* or *"£2000 for 4 people"*). The AI silently parses the destination's purchasing power and calibrates a hidden comfort tier automatically.
-- **Multi-Style Blending:** Select multiple travel vibes (Culture, Adventure, Nightlife, Foodie). The engine seamlessly blends them, ensuring every requested style is represented in the final itinerary.
-- **Post-Generation Mutation:** Don't like a specific day? Use the minimalist modification interface to chat with your itinerary. Ask the AI to *"Make the dinners cheaper"* or *"Add a day trip to Kyoto"*, and it natively patches the JSON tree in real-time.
-
-### 📍 Advanced Geolocation
-- **Interactive GPS Origin:** Click the origin navigator to trigger the browser's native Geolocation API.
-- **Smart Reverse-Geocoding:** Converts raw Latitude/Longitude into precise City/Country strings via OpenStreetMap.
-- **Graceful IP Fallback:** If GPS is denied or unavailable, the system silently falls back to IPStack to securely approximate the user's origin via their IP address.
-
-### 🎨 Dark Matter UI & Typography
-- **Premium Glassmorphism:** Built on Tailwind CSS v4, featuring reactive cursor-tracking radial energy fields, beautiful backdrop-blurs, and fluid Framer Motion transitions.
-- **Dynamic Contextual Iconography:** Activity timelines automatically parse the time of day and inject situational icons (🌅 Morning, ☀️ Afternoon, 🌇 Evening, 🌙 Night).
-- **Live Maps Binding:** Top destination cards aren't just text—they are interactively bound to dynamically encoded Google Maps search queries, complete with hover state indicators.
-
-### 📸 Real-World Media Integration
-- **Unsplash API Holographics:** Fetches real-world, high-resolution photography for destinations and accommodations based on AI-generated image keywords.
-- **Deterministic Caching:** Uses cryptographic `tripSeed` locks to ensure a unique but consistent visual matrix for every generated simulation.
-- **Robust Fallbacks:** Integrates sleek placeholder UI systems if rate limits are hit, ensuring the site never breaks.
-
-### 🔒 Accounts & Sharing
-- **Secure Dashboards:** Authenticated via Clerk. Logged-in users have their trips securely persisted to a PostgreSQL database via Prisma.
-- **Public Share Links:** Every trip generates a beautiful, shareable `/share/[id]` URL so users can send their itineraries to friends and family.
+- **🧠 Intelligent Itinerary Generation:** Give the AI your destination, budget, duration, and travel style (vibe), and receive a meticulously crafted, rich JSON itinerary complete with activities, schedules, and hotel recommendations.
+- **🪄 Edit with AI:** Don't like a specific day? Want to make the trip cheaper? Click "Edit with AI" and just tell it what to change in natural language. The AI will intelligently patch your itinerary.
+- **🌐 Discover Community Feed:** Publish your favorite trips to the global Discover feed to share your perfect vacation blueprints with the world.
+- **📱 PWA Offline Mode:** Once you visit your trip link, a custom Service Worker securely caches it. You can view your dynamic itineraries while on an airplane or hiking with zero cellular service.
+- **📄 Native PDF Export:** Download high-quality, perfectly formatted vector PDFs of your trip natively to email to hotels or print for your luggage.
+- **🖼️ Dynamic Unsplash Imagery:** The AI generates highly specific image keywords for every single location and hotel, automatically pulling stunning photography from Unsplash to bring your trip to life.
+- **🔒 Secure Authentication:** Fully integrated with Clerk for seamless, secure user sign-ups and route protection.
 
 ---
 
 ## 🛠️ Tech Stack
 
-**Frontend Architecture:**
-- **Framework:** Next.js 16.3 (App Router, Turbopack)
-- **Styling:** Tailwind CSS v4, Lucide React (Icons)
-- **Animation:** Framer Motion
-- **Components:** Shadcn UI (Radix Primitives)
-
-**Backend & Data:**
-- **Database:** PostgreSQL (via Prisma ORM)
-- **Authentication:** Clerk Core v3
-- **AI Engine:** OpenRouter (Google Gemini 2.5 Flash / OpenAI GPT-4o-mini)
-- **External APIs:** Unsplash (Images), IPStack (Fallback Geolocation), OpenStreetMap Nominatim (GPS Reverse-Geocoding)
+- **Framework:** Next.js 14 (App Router) with React 19 & Turbopack
+- **Styling:** Tailwind CSS v4 + Framer Motion for buttery-smooth animations
+- **Components:** Shadcn UI (Radix / Base UI)
+- **Database:** PostgreSQL (via Supabase)
+- **ORM:** Prisma
+- **Authentication:** Clerk
+- **AI Engine:** OpenRouter (Gemini 2.5 Flash / GPT-4o-mini)
+- **Icons:** Lucide React
 
 ---
 
-## ⚙️ Installation & Setup
+## 🚀 Getting Started
 
-Initiate the development environment using standard protocols:
-
+### 1. Clone the repository
 ```bash
-# 01. Clone the repository
 git clone https://github.com/IamGeniusORG/TripGenius.git
-cd TripGenius
+cd ai-trip-planner
+```
 
-# 02. Install dependencies
+### 2. Install Dependencies
+```bash
 npm install
+```
 
-# 03. Push Prisma Database Schema
+### 3. Environment Variables
+Create a `.env` file in the root directory and add the following keys:
+```env
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+
+# PostgreSQL Database (Supabase/Neon)
+DATABASE_URL="postgres://user:password@host:port/db"
+DIRECT_URL="postgres://user:password@host:port/db"
+
+# OpenRouter AI
+OPENROUTER_API_KEY=your_openrouter_api_key
+
+# Unsplash API
+UNSPLASH_ACCESS_KEY=your_unsplash_key
+```
+
+### 4. Database Setup
+Push the Prisma schema to your database:
+```bash
 npx prisma db push
+npx prisma generate
+```
 
-# 04. Ignite the local development server
+### 5. Run the Development Server
+```bash
 npm run dev
 ```
-
-*Access the application at `http://localhost:3000`*
-
----
-
-## 🔐 Environment Variables
-
-To run TripGenius locally, you must configure a `.env.local` file in the root directory with your respective API keys:
-
-```env
-# --- Identity Matrix (Clerk) ---
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-
-# --- Cognitive Engine (OpenRouter/OpenAI) ---
-OPENROUTER_API_KEY=sk-or-v1-...
-
-# --- Neural Memory Bank (PostgreSQL) ---
-DATABASE_URL=postgresql://user:password@host:port/db_name
-
-# --- Holographic Fetcher (Unsplash) ---
-UNSPLASH_ACCESS_KEY=your_unsplash_access_key
-
-# --- Geolocation Fallback (IPStack) ---
-IPSTACK_API_KEY=your_ipstack_api_key
-```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ---
 
-## 🗺️ Future Roadmap
-
-While the core engine is fully operational, the following premium features are slated for future releases:
-- **Interactive Map Canvas:** Plotting the entire itinerary onto a live Mapbox/Google Maps canvas with day-to-day routing.
-- **Live Booking Integration:** Direct affiliate links (Skyscanner, Airbnb, Booking.com) dynamically attached to the AI's recommendations.
-- **Multi-Destination Routing:** Support for complex Euro-trips and cross-country road trips.
-- **Collaborative Editing:** Multiplayer workspaces allowing friends to upvote activities and tweak the itinerary together in real-time.
-- **Offline PDF Exports:** Sleek, downloadable PDF generations of the itinerary for offline travel use.
+## 💡 Architecture Notes
+- **Server Components:** Heavily utilizes React Server Components (RSC) to directly fetch data from Prisma, drastically reducing client-side bundle sizes.
+- **Offline Fallback:** The custom `sw.js` uses a `Network-First` caching strategy for pages and a `Cache-First` strategy for Unsplash images, ensuring flawless PWA behavior.
 
 ---
 
-## 📜 Legal & Compliance
-TripGenius features a comprehensive suite of SaaS legal compliance pages, including a fully animated global Cookie Consent banner, Privacy Policy, and Terms of Service.
-
-<div align="center">
-  <br/>
-  <b>Crafted with ❤️ by Teddy.</b>
-</div>
+*Built for modern travelers, powered by AI.*
