@@ -1,5 +1,7 @@
 ﻿import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
+import ModifyTripButton from "@/components/ModifyTripButton";
 import { Navbar } from "@/components/Navbar";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
 import DownloadPdfButton from "@/components/DownloadPdfButton";
@@ -11,6 +13,7 @@ import { Button } from "@/components/ui/button";
 
 export default async function SharedTripPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
+  const { userId } = await auth();
   
   const trip = await prisma.trip.findUnique({
     where: { id: resolvedParams.id }
@@ -71,7 +74,10 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           <Train className="w-4 h-4 mr-2" /> Train Tickets (IRCTC)
                           </Button>
                         </a>
-                        <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
+                        
+                          {userId === trip.userId && <ModifyTripButton trip={trip} />}
+                          <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
+
                     </div>
 
             <div className="flex flex-wrap gap-3 pt-4">
@@ -87,8 +93,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
           </div>
 
           <div className="w-full h-[250px] md:h-[500px] rounded-3xl overflow-hidden relative shadow-2xl ring-1 ring-zinc-200 dark:ring-zinc-800">
-            <img 
-              src={"/api/image?query=" + encodeURIComponent(itinerary.imageKeyword || trip.destination)} 
+            <img crossOrigin="anonymous" src={"/api/image?query=" + encodeURIComponent(itinerary.imageKeyword || trip.destination)} 
               alt="Destination"
               className="w-full h-full object-cover"
             />
@@ -125,7 +130,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                   <TabsContent key={idx} value={"day-" + idx} className="mt-6 space-y-6 focus-visible:outline-none focus-visible:ring-0">
                     <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-none bg-white dark:bg-zinc-900/50 backdrop-blur-xl ring-1 ring-zinc-200 dark:ring-zinc-800">
                       <div className="h-48 w-full relative overflow-hidden rounded-t-xl">
-                        <img src={"/api/image?query=" + encodeURIComponent(day.imageKeyword)} alt={day.day} className="w-full h-full object-cover"/>
+                        <img crossOrigin="anonymous" src={"/api/image?query=" + encodeURIComponent(day.imageKeyword)} alt={day.day} className="w-full h-full object-cover"/>
                       </div>
                       <CardHeader className="pb-4">
                         <CardTitle className="text-2xl">{day.description}</CardTitle>
@@ -139,7 +144,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                                   <span>{act.time}</span>
                                 </div>
                               <div className="prose prose-zinc dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
-                                <p dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
+                                <div dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
                               </div>
                             </div>
                           ))}
@@ -165,7 +170,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           <ExternalLink className="w-4 h-4 text-zinc-400" />
                         </div>
                       <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-zinc-100 dark:bg-zinc-800">
-                        <img src={"/api/image?query=" + encodeURIComponent(dest.imageKeyword)} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+                        <img crossOrigin="anonymous" src={"/api/image?query=" + encodeURIComponent(dest.imageKeyword)} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
                       </div>
                       <div>
                         <h4 className="font-medium text-sm line-clamp-1">{dest.name}</h4>

@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const systemPrompt = `You are an elite, high-end travel concierge and expert AI trip planner.
 You must deeply analyze the EXACT location the user asks for (do not just give generic country advice).
 Provide highly specific places, restaurants, and hidden gems that exist in that exact locale.
-The user is departing from: . If relevant, suggest feasible arrival logistics or first-day activities that make sense coming from there.
+The user is departing from: ${origin}. If relevant, suggest feasible arrival logistics or first-day activities that make sense coming from there.
 MULTI-STYLE OPTIMIZATION: The user may select multiple Travel Styles. Your response MUST make it highly visible and feasible how you are catering to EVERY SINGLE selected style. Blend them seamlessly so the itinerary flows logically.
 BUDGET & CURRENCY INTELLIGENCE: The user will provide a free-text budget which may be in any global currency (e.g., "50,000 INR", "£2000", "$500 a day"). You must seamlessly accept this. In the background, silently evaluate the purchasing power of their entered amount for their specific destination. Automatically determine the "comfort tier" (Backpacker, Moderate, Luxury, Ultra-Luxury) based on their budget and plan all hotels, dining, and activities to fit within it. Do NOT explain your currency conversion or math to the user—just deliver a flawless itinerary that respects their limits.
   CRITICAL: You MUST include a 'topDestinations' array containing the most popular tourist places and attractions of the requested destination, strictly sorted in ALPHABETICAL ORDER (A to Z).
@@ -70,8 +70,8 @@ Do NOT include any conversational text before or after the JSON.`;
 
     const userPrompt = `
 Please plan a trip with the following details:
-- Departing From: 
-- Destination: 
+- Departing From: ${origin || "Not specified"}
+- Destination: ${destination || "Not specified"}
 - Dates: ${dateRange?.from ? new Date(dateRange.from).toLocaleDateString() : "Not specified"} to ${dateRange?.to ? new Date(dateRange.to).toLocaleDateString() : "Not specified"}
 - Budget: ${budget || "Not specified"}
 - Travel Style: ${travelStyle || "Not specified"}
@@ -119,9 +119,10 @@ Provide a daily itinerary, recommended activities, and dining options.
       };
     }
 
+    let tripId = null;
     if (userId && !parsedResponse.error) {
       try {
-        await prisma.trip.create({
+        const trip = await prisma.trip.create({
           data: {
             userId,
             destination: destination || "Unknown",
@@ -129,12 +130,13 @@ Provide a daily itinerary, recommended activities, and dining options.
             itinerary: parsedResponse,
           },
         });
+        tripId = trip.id;
       } catch (dbError) {
         console.error("Failed to save trip to database:", dbError);
       }
     }
 
-    return NextResponse.json({ itinerary: parsedResponse });
+    return NextResponse.json({ itinerary: parsedResponse, tripId });
   } catch (error) {
     console.error("Error in AI trip planning API:", error);
     return NextResponse.json(

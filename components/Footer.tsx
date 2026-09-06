@@ -25,7 +25,7 @@ export function Footer() {
             <ul className="space-y-2 md:space-y-3 text-xs md:text-sm text-zinc-500 dark:text-zinc-400">
               <li><Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Plan a Trip</Link></li>
               <li><Link href="/dashboard" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">My Trips</Link></li>
-              <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Destinations</Link></li>
+              <li><Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About Us</Link></li>
             </ul>
           </div>
 

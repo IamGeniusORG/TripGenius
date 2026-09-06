@@ -1,10 +1,11 @@
-import { Toaster } from "sonner";
+﻿import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CookieBanner } from "@/components/CookieBanner";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import CursorBackground from "@/components/CursorBackground";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -20,6 +21,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "TripGenius",
   description: "The worlds most advanced AI travel concierge.",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -42,6 +44,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <CursorBackground />
+            <ServiceWorkerRegister />
             <CookieBanner />
             {children}
             <Toaster position="bottom-right" richColors theme="system" />

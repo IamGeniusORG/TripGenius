@@ -14,5 +14,7 @@ model Trip {
   destination String
   dates       String
   itinerary   Json
+  isPublic    Boolean  @default(false)
+  likes       Int      @default(0)
   createdAt   DateTime @default(now())
 }

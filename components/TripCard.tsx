@@ -18,15 +18,41 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2 } from "lucide-react";
+import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function TripCard({ trip }: { trip: any }) {
   
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPublic, setIsPublic] = useState(trip.isPublic || false);
+  const [isToggling, setIsToggling] = useState(false);
   const router = useRouter();
 
   // Create a stable integer seed from the UUID for the image lock
+  
+  const handleTogglePublic = async () => {
+    setIsToggling(true);
+    try {
+      const res = await fetch(`/api/trips/${trip.id}`, { 
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isPublic: !isPublic })
+      });
+      if (res.ok) {
+        setIsPublic(!isPublic);
+        toast.success(isPublic ? "Trip is now Private" : "Trip is now Public and visible in Discover!");
+        router.refresh();
+      } else {
+        toast.error("Failed to update visibility");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("An error occurred");
+    } finally {
+      setIsToggling(false);
+    }
+  };
+
   const lockSeed = parseInt(trip.id.replace(/\D/g, '').slice(0, 5)) || Math.floor(Math.random() * 1000);
   const imageKeyword = (trip.itinerary as any)?.imageKeyword || trip.destination;
 
@@ -50,7 +76,7 @@ export function TripCard({ trip }: { trip: any }) {
     <Card className="flex flex-col bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md hover:shadow-xl transition-all duration-300 border-zinc-200/60 dark:border-zinc-800/60 overflow-hidden group">
       {/* Cover Image */}
       <div onClick={() => router.push(`/share/${trip.id}`)} className="h-48 w-full relative overflow-hidden bg-zinc-100 dark:bg-zinc-800 cursor-pointer">
-        <img 
+        <img crossOrigin="anonymous" 
           src={`/api/image?query=${encodeURIComponent(imageKeyword)}`}
           alt={trip.destination}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -85,6 +111,16 @@ export function TripCard({ trip }: { trip: any }) {
       <CardFooter className="flex space-x-2 pt-2 pb-6 px-6 border-t border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/50 dark:bg-zinc-900/50">
                 <Button variant="default" className="flex-1 font-bold shadow-sm bg-blue-600 hover:bg-blue-700 text-white" onClick={() => router.push("/share/" + trip.id)}>
           View Itinerary
+        </Button>
+        <Button 
+          variant={isPublic ? "default" : "secondary"}
+          size="icon" 
+          disabled={isToggling}
+          onClick={handleTogglePublic} 
+          className={isPublic ? "bg-green-600 hover:bg-green-700 text-white shadow-sm" : "shadow-sm"}
+          title={isPublic ? "Unpublish from Discover" : "Publish to Discover"}
+        >
+          {isToggling ? <Loader2 className="w-4 h-4 animate-spin" /> : (isPublic ? <Globe className="w-4 h-4" /> : <Globe className="w-4 h-4 opacity-50" />)}
         </Button>
         <Button 
           variant="secondary" 

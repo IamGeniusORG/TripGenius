@@ -2,7 +2,7 @@
 
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { Sparkles, Map, Moon, Sun } from "lucide-react";
+import { Sparkles, Map, Moon, Sun, Globe } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -41,6 +41,12 @@ export function Navbar() {
 
           {userId ? (
             <div className="flex items-center space-x-2 sm:space-x-4">
+              <Link href="/discover" className="mr-2">
+                <Button variant="ghost" className="flex items-center space-x-2 font-bold px-3 sm:px-4 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-900/30 dark:hover:text-indigo-400">
+                  <Globe className="w-4 h-4" />
+                  <span className="hidden sm:inline">Discover</span>
+                </Button>
+              </Link>
               <Link href="/dashboard">
                 <Button variant="secondary" className="flex items-center space-x-2 font-bold shadow-sm px-3 sm:px-4">
                   <Map className="w-4 h-4" />

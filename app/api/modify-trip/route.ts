@@ -79,9 +79,10 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
       parsedResponse = { error: "Failed to parse AI response" };
     }
 
+    let tripId = null;
     if (userId && !parsedResponse.error) {
       try {
-        await prisma.trip.create({
+        const newTrip = await prisma.trip.create({
           data: {
             userId,
             destination: destination || parsedResponse.title || "Unknown",
@@ -89,12 +90,13 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
             itinerary: parsedResponse,
           },
         });
+        tripId = newTrip.id;
       } catch (dbError) {
         console.error("Failed to save modified trip to database:", dbError);
       }
     }
 
-    return NextResponse.json({ itinerary: parsedResponse });
+    return NextResponse.json({ itinerary: parsedResponse, tripId });
   } catch (error) {
     console.error("Error in modify API:", error);
     return NextResponse.json({ error: "Failed to modify trip." }, { status: 500 });

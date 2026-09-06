@@ -3,9 +3,10 @@
 import DownloadPdfButton from "@/components/DownloadPdfButton";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
 import InteractiveGlobe from "@/components/Globe";
-﻿
 
 import { toast } from "sonner";
+import { useAuth, SignInButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { format } from "date-fns";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe as GlobeIcon, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
@@ -45,6 +46,8 @@ const POPULAR_DESTINATIONS: Record<string, string[]> = {
 };
 
 export default function Home() {
+  const { userId } = useAuth();
+  const router = useRouter();
   const [date, setDate] = useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
@@ -165,7 +168,10 @@ export default function Home() {
       });
 
       const data = await response.json();
-      if (data.itinerary) {
+      if (data.tripId) {
+        toast.success("Trip Generated successfully!", { description: "Redirecting to your itinerary..." });
+        router.push('/share/' + data.tripId);
+      } else if (data.itinerary) {
         setItinerary(data.itinerary);
         setTripSeed(Math.floor(Math.random() * 1000));
         setActiveTab("day-0");
@@ -218,7 +224,7 @@ export default function Home() {
   const formatMarkdown = (text: string) => {
     if (!text) return "";
     return text
-      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">✨ $1</strong>')
+      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">âœ¨ $1</strong>')
       .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
       .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
       .replace(/\n\n/g, '<br /><br />')
@@ -300,7 +306,26 @@ export default function Home() {
                 <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
               </CardHeader>
               <CardContent>
-                                  <form className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onSubmit={handleSubmit}>
+                                  
+  <div className="relative">
+    {!userId && (
+      <div className="absolute inset-0 z-20 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl transition-all duration-500">
+        <div className="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 text-center max-w-sm w-full mx-4 transform transition-transform hover:scale-105">
+          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 rotate-12">
+            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400 -rotate-12" />
+          </div>
+          <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2 tracking-tight">Unlock TripGenius</h3>
+          <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-8">Sign in to start crafting beautiful, personalized AI itineraries for free.</p>
+          <SignInButton mode="modal">
+            <Button className="w-full font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg transition-all h-12 text-base">
+              Sign In to Plan
+            </Button>
+          </SignInButton>
+        </div>
+      </div>
+    )}
+    <form className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500", !userId && "opacity-30 pointer-events-none blur-sm select-none")} onSubmit={handleSubmit}>
+  
                     
                     {/* Origin */}
                     <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
@@ -447,11 +472,11 @@ export default function Home() {
                     <Label className="text-sm font-semibold">Travel Style</Label>
                     <div className="flex flex-wrap gap-2">
                       {[
-                          { id: "relaxed", label: "Relaxed", icon: "🌴" },
-                          { id: "adventure", label: "Adventure", icon: "🏔️" },
-                          { id: "culture", label: "Culture", icon: "🏛️" },
-                          { id: "foodie", label: "Foodie", icon: "🍜" },
-                          { id: "party", label: "Nightlife", icon: "🎉" }
+                          { id: "relaxed", label: "Relaxed", icon: "ðŸŒ´" },
+                          { id: "adventure", label: "Adventure", icon: "ðŸ”ï¸" },
+                          { id: "culture", label: "Culture", icon: "ðŸ›ï¸" },
+                          { id: "foodie", label: "Foodie", icon: "ðŸœ" },
+                          { id: "party", label: "Nightlife", icon: "ðŸŽ‰" }
                         ].map(opt => (
                         <button
                           key={opt.id}
@@ -494,6 +519,7 @@ export default function Home() {
                   </div>
 
                 </form>
+  </div>
               </CardContent>
             </Card>
 
@@ -541,8 +567,7 @@ export default function Home() {
                 >
                   {itinerary.imageKeyword && (
                     <motion.div variants={itemVariants} className="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-10 shadow-xl border border-zinc-200/60 dark:border-zinc-800/60">
-                      <img 
-                        src={`/api/image?query=${encodeURIComponent(itinerary.imageKeyword)}`} 
+                      <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(itinerary.imageKeyword)}`} 
                         alt={itinerary.title}
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                       />
@@ -553,22 +578,22 @@ export default function Home() {
                                         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                       {origin && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50">
-                          🛫 {origin}
+                          ðŸ›« {origin}
                         </Badge>
                       )}
                       {destination && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                          📍 {destination}
+                          ðŸ“ {destination}
                         </Badge>
                       )}
                       {budget && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          💰 {budget}
+                          ðŸ’° {budget}
                         </Badge>
                       )}
                       {travelStyle && travelStyle.length > 0 && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
-                          ✨ {travelStyle.join(" + ")}
+                          âœ¨ {travelStyle.join(" + ")}
                         </Badge>
                       )}
                     </div>
@@ -622,8 +647,7 @@ export default function Home() {
                                 <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-xl hover:border-blue-500/40 transition-all duration-300 overflow-hidden">
                               <div className="h-32 w-full relative overflow-hidden bg-zinc-200 dark:bg-zinc-800">
                                 {dest.imageKeyword && (
-                                  <img 
-                                    src={`/api/image?query=${encodeURIComponent(dest.imageKeyword)}`} 
+                                  <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(dest.imageKeyword)}`} 
                                     alt={dest.name}
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                   />
@@ -656,8 +680,7 @@ export default function Home() {
                             <Card className="h-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-zinc-200/60 dark:border-zinc-800/60 hover:shadow-lg transition-shadow duration-300">
                               <CardHeader className="pb-3 relative overflow-hidden rounded-t-xl p-0 h-40 mb-4">
                                 {acc.imageKeyword ? (
-                                  <img 
-                                    src={`/api/image?query=${encodeURIComponent(acc.imageKeyword)}`} 
+                                  <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(acc.imageKeyword)}`} 
                                     alt={acc.name}
                                     className="w-full h-full object-cover"
                                   />
@@ -713,8 +736,7 @@ export default function Home() {
                               <motion.div variants={itemVariants} className="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
                                 {day.imageKeyword && (
                                   <div className="w-full h-48 md:h-64 rounded-xl overflow-hidden mb-6 shadow-md border border-zinc-200/60 dark:border-zinc-800/60">
-                                    <img 
-                                      src={`/api/image?query=${encodeURIComponent(day.imageKeyword)}`} 
+                                    <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(day.imageKeyword)}`} 
                                       alt={`Day ${idx + 1}`}
                                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                     />
