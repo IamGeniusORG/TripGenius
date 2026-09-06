@@ -180,6 +180,35 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                     ))}
                 </CardContent>
               </Card>
+
+              <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-none bg-white dark:bg-zinc-900/50 ring-1 ring-zinc-200 dark:ring-zinc-800 mt-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <Bed className="w-5 h-5 mr-2 text-indigo-500" />
+                    Where to Stay
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {itinerary.accommodations?.map((acc: any, i: number) => (
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.name)}`} target="_blank" rel="noopener noreferrer" key={i} className="group flex gap-4 items-center p-2 -mx-2 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors relative cursor-pointer pr-8">
+                        <div className="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <ExternalLink className="w-4 h-4 text-zinc-400" />
+                        </div>
+                      <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-zinc-100 dark:bg-zinc-800">
+                        <img crossOrigin="anonymous" src={"/api/image?query=" + encodeURIComponent(acc.imageKeyword)} alt={acc.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/>
+                      </div>
+                      <div>
+                        <div className="flex items-center space-x-2">
+                           <h4 className="font-medium text-sm line-clamp-1">{acc.name}</h4>
+                           <Badge variant="outline" className="text-[10px] px-1.5 py-0 rounded-sm bg-zinc-100 dark:bg-zinc-800/50">{acc.tier || "Standard"}</Badge>
+                        </div>
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">{acc.description}</p>
+                      </div>
+                      </a>
+                    ))}
+                </CardContent>
+              </Card>
+
             </div>
           </div>
         </div>
