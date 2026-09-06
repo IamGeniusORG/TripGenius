@@ -65,14 +65,27 @@ export default function ModifyTripButton({ trip }: { trip: any }) {
           </DialogDescription>
         </DialogHeader>
         
-        <div className="py-4">
+        
+        <div className="py-2 space-y-4">
+          <div className="bg-zinc-50 dark:bg-zinc-900/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 text-sm">
+            <h4 className="font-bold text-zinc-900 dark:text-zinc-50 mb-2">Current Trip Details</h4>
+            <div className="space-y-1 text-zinc-600 dark:text-zinc-400">
+              <p><span className="font-semibold text-zinc-800 dark:text-zinc-300">Destination:</span> {trip.destination}</p>
+              <p><span className="font-semibold text-zinc-800 dark:text-zinc-300">Dates:</span> {trip.dates}</p>
+              {trip.itinerary?.summary && (
+                <p className="line-clamp-2 mt-2 text-xs italic">"{trip.itinerary.summary}"</p>
+              )}
+            </div>
+          </div>
+          
           <Textarea
             placeholder="e.g., 'Make it cheaper', 'Swap day 2 for a beach day', 'I am traveling with a toddler'"
-            className="min-h-[120px] resize-none"
+            className="min-h-[100px] resize-none"
             value={prompt}
             onChange={(e: any) => setPrompt(e.target.value)}
           />
         </div>
+
 
         <DialogFooter className="sm:justify-between">
           <Button variant="ghost" onClick={() => setIsOpen(false)} disabled={isModifying}>
