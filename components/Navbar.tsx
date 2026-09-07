@@ -27,6 +27,13 @@ export function Navbar() {
           <span className="font-black tracking-tight text-xl">TripGenius</span>
         </Link>
         
+        <div className="hidden lg:flex items-center space-x-2 sm:space-x-4 mr-4">
+          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50">
+            <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <span className="text-xs font-bold text-blue-700 dark:text-blue-300">5 Free Trips / Day</span>
+          </div>
+        </div>
+        
         <div className="flex items-center space-x-2 sm:space-x-4">
           {mounted && (
             <button

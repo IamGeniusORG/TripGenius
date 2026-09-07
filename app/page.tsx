@@ -273,14 +273,14 @@ export default function Home() {
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--tw-gradient-stops)_80%)] from-transparent to-background" />
 
           {/* Left Decorative Image (Ocean) */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 hidden 2xl:block w-[350px] h-[600px] z-0 opacity-80 dark:opacity-30 pointer-events-none mix-blend-luminosity">
+          <div className="absolute left-0 top-0 h-full hidden xl:block w-[450px] 2xl:w-[600px] z-0 opacity-80 dark:opacity-30 pointer-events-none mix-blend-luminosity">
             <img crossOrigin="anonymous" src="/api/image?query=ocean+waves+aerial+view+portrait" alt="Ocean" className="w-full h-full object-cover rounded-r-3xl" />
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-zinc-50 dark:to-[#09090b]" />
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-50 dark:from-[#09090b] via-transparent to-zinc-50 dark:to-[#09090b]" />
           </div>
 
           {/* Right Decorative Image (Mountains) */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 hidden 2xl:block w-[350px] h-[600px] z-0 opacity-80 dark:opacity-30 pointer-events-none mix-blend-luminosity">
+          <div className="absolute right-0 top-0 h-full hidden xl:block w-[450px] 2xl:w-[600px] z-0 opacity-80 dark:opacity-30 pointer-events-none mix-blend-luminosity">
             <img crossOrigin="anonymous" src="/api/image?query=majestic+snowy+mountains+portrait" alt="Mountains" className="w-full h-full object-cover rounded-l-3xl" />
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-zinc-50 dark:to-[#09090b]" />
             <div className="absolute inset-0 bg-gradient-to-b from-zinc-50 dark:from-[#09090b] via-transparent to-zinc-50 dark:to-[#09090b]" />
