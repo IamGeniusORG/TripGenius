@@ -9,33 +9,38 @@ export default function BudgetChart({ data }: { data: { category: string, estima
   const total = data.reduce((acc, curr) => acc + curr.estimatedCost, 0);
 
   return (
-    <div className="w-full h-64 mt-4">
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            paddingAngle={5}
-            dataKey="estimatedCost"
-            nameKey="category"
-          >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip 
-            formatter={(value: any) => `${Number(value).toLocaleString()}`}
-            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-          />
-          <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }} />
-        </PieChart>
-      </ResponsiveContainer>
-      <div className="text-center mt-2">
-        <span className="text-xs text-zinc-500 font-medium uppercase tracking-wider">Estimated Total</span>
-        <div className="text-2xl font-black text-zinc-900 dark:text-zinc-100">${total.toLocaleString()}</div>
+    <div className="w-full flex flex-col items-center mt-2">
+      <div className="text-center mb-2">
+        <span className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Estimated Total</span>
+        <div className="text-3xl font-black text-blue-600 dark:text-blue-400">${total.toLocaleString()}</div>
+      </div>
+      <div className="w-full h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={65}
+              outerRadius={90}
+              paddingAngle={5}
+              dataKey="estimatedCost"
+              nameKey="category"
+            >
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip 
+              formatter={(value: any) => `$${Number(value).toLocaleString()}`}
+              contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+            />
+            <Legend 
+              verticalAlign="bottom" 
+              wrapperStyle={{ fontSize: '13px', paddingTop: '20px', lineHeight: '24px' }} 
+            />
+          </PieChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
