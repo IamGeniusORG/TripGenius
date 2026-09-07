@@ -76,7 +76,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           </Button>
                         </a>
                         
-                          {userId !== trip.userId && <SaveTripButton tripId={trip.id} />}
+                          <SaveTripButton tripId={trip.id} />
                             {userId === trip.userId && <ModifyTripButton trip={trip} />}
                           <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
 

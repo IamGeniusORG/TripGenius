@@ -20,6 +20,7 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Map, Calendar as CalendarIcon, Clock, ChevronDown, ChevronUp, Trash2, Loader2, Sparkles, Share2, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import SaveTripButton from "./SaveTripButton";
 
 export function TripCard({ trip }: { trip: any }) {
   
@@ -82,6 +83,9 @@ export function TripCard({ trip }: { trip: any }) {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute top-4 right-4 z-20">
+          <SaveTripButton tripId={trip.id} compact={true} />
+        </div>
         <div className="absolute bottom-4 left-4 right-4">
           <CardTitle className="flex items-center text-2xl font-black tracking-tight text-white drop-shadow-md">
             <Map className="w-5 h-5 mr-2 text-blue-400" />
