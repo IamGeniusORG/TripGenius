@@ -29,9 +29,9 @@ export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: an
             
             {/* Top Tags */}
             <div className="absolute top-4 left-4 flex gap-2">
-              <div className="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-white text-xs font-bold flex items-center shadow-lg">
-                <User className="w-3 h-3 mr-1.5" /> Anonymous
-              </div>
+              <Link href={`/user/${trip.userId}`} onClick={(e) => e.stopPropagation()} className="bg-white/20 hover:bg-white/30 transition-colors backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-white text-xs font-bold flex items-center shadow-lg">
+                <User className="w-3 h-3 mr-1.5" /> View Profile
+              </Link>
             </div>
             
             <div className="absolute top-4 right-4 flex gap-2 items-center z-20">

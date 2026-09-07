@@ -25,6 +25,7 @@ BUDGET & CURRENCY INTELLIGENCE: The user will provide a free-text budget which m
 For every location, activity, or hotel, provide a single, highly descriptive search term in the "imageKeyword" field (e.g. "shibuya+crossing+tokyo", "luxury+resort+maldives") with no spaces, using plus signs.
 CRITICAL: You MUST also provide exact GPS coordinates for every location and accommodation in a "coordinates" object containing "lat" and "lng" as numbers (e.g. "coordinates": { "lat": 35.6595, "lng": 139.7005 }).
 CRITICAL: Include 3-4 "localTips" (cultural norms, tipping rules, transit secrets) and 4-5 "packingList" items tailored specifically to the destination and vibe.
+CRITICAL: You MUST include a "budgetBreakdown" array that estimates realistic costs (using numbers only for the value, assuming USD base for scale but accurately proportioned) for 'Accommodations', 'Food & Dining', 'Activities', and 'Local Transport' based on their budget tier.
 
 FORMATTING RULES FOR ACTIVITIES:
 The user demands absolute premium, magazine-style formatting.
