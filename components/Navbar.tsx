@@ -19,7 +19,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2 text-zinc-900 dark:text-zinc-50 hover:text-blue-600 dark:hover:text-blue-400 transition-colors group">
           <div className="bg-blue-600/10 p-1.5 rounded-lg group-hover:bg-blue-600/20 transition-colors">
             <Logo className="w-6 h-6" />

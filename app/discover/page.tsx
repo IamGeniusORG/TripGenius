@@ -21,7 +21,7 @@ export default async function DiscoverPage() {
       
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-4 md:px-6 pt-32 pb-24 relative z-10">
+      <main className="flex-1 w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 pt-32 pb-24 relative z-10">
         <div className="mb-20 text-center max-w-3xl mx-auto space-y-6">
           <div className="inline-flex items-center space-x-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-blue-600 dark:text-blue-400 px-4 py-2 rounded-full text-sm font-bold shadow-sm">
             <Globe className="w-4 h-4 animate-pulse" />

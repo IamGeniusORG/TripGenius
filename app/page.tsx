@@ -285,7 +285,7 @@ export default function Home() {
           <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 opacity-70">
 <InteractiveGlobe />
 </div>
-<div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center relative z-10">
+<div className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 flex flex-col items-center text-center relative z-10">
               {/* Decorative Floating Icons */}
               <motion.div 
                 animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }} 

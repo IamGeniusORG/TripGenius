@@ -33,7 +33,7 @@ export default async function Dashboard() {
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 font-sans">
       <Navbar />
       
-      <main className="container mx-auto px-4 md:px-6 pt-32 pb-24">
+      <main className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 pt-32 pb-24">
         <div className="mb-12">
           <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-zinc-900 dark:text-zinc-50 mb-3">
             Your Dashboard

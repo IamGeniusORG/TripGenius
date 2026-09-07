@@ -7,7 +7,7 @@ export default function AboutUs() {
   return (
     <div className="min-h-screen flex flex-col bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       <Navbar />
-      <main className="flex-1 container mx-auto px-4 py-32 max-w-4xl space-y-10">
+      <main className="flex-1 w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 py-32 max-w-4xl space-y-10">
         <Link href="/" className="inline-flex items-center text-sm font-semibold text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors mb-6">
           <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
         </Link>

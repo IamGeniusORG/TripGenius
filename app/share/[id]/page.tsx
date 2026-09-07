@@ -54,8 +54,8 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
       <Navbar />
       
-      <main className="container mx-auto px-4 pt-24 pb-20">
-        <div id="itinerary-results" className="max-w-5xl mx-auto space-y-12 bg-zinc-50 dark:bg-zinc-950 p-2 md:p-8 rounded-3xl">
+      <main className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 pt-24 pb-20">
+        <div id="itinerary-results" className="w-full mx-auto space-y-12 bg-zinc-50 dark:bg-zinc-950 p-2 md:p-8 rounded-3xl">
           <div className="space-y-6">
             <div className="inline-flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
               <Sparkles className="w-4 h-4" />

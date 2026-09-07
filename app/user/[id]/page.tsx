@@ -25,7 +25,7 @@ export default async function UserProfilePage({ params }: { params: Promise<{ id
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 font-sans">
       <Navbar />
       
-      <main className="container mx-auto px-4 md:px-6 pt-32 pb-24">
+      <main className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 pt-32 pb-24">
         <div className="mb-12 flex items-center gap-6">
           <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-xl">
             <User className="w-10 h-10 text-white" />
