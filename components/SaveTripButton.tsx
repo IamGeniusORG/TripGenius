@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function SaveTripButton({ tripId, initialSaved = false, compact = false }: { tripId: string; initialSaved?: boolean, compact?: boolean }) {
   const [isSaved, setIsSaved] = useState(initialSaved);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     // Fetch initial state just to be safe if not provided
@@ -37,6 +39,7 @@ export default function SaveTripButton({ tripId, initialSaved = false, compact =
       const data = await res.json();
       setIsSaved(data.saved);
       toast.success(data.saved ? "Trip saved to your bookmarks!" : "Trip removed from bookmarks.");
+      router.refresh();
     } catch (e) {
       toast.error("Something went wrong.");
     } finally {
