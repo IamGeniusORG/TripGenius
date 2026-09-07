@@ -101,9 +101,7 @@ export default function Home() {
   const [tripSeed, setTripSeed] = useState(1);
   
   const [activeTab, setActiveTab] = useState("day-0");
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const { resolvedTheme } = useTheme();
@@ -113,11 +111,7 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
-
-  const handleDestinationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDestinationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setDestination(val);
     
@@ -190,10 +184,7 @@ export default function Home() {
     show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.4 } }
   };
 
-  // Determine glow color depending on theme (neon violet/cyan for dark mode, subtle blue for light mode)
-  const glowColor = mounted && resolvedTheme === "dark" 
-    ? "rgba(139, 92, 246, 0.45)" // Strong violet/indigo
-    : "rgba(59, 130, 246, 0.35)"; // Solid blue
+  
 
   // Helper for dynamic time icons
   const getTimeIcon = (timeStr: string) => {
@@ -220,8 +211,7 @@ export default function Home() {
   return (
     <div 
       className="min-h-screen flex flex-col font-sans text-zinc-900 dark:text-zinc-50 relative overflow-hidden bg-transparent"
-      onMouseMove={handleMouseMove}
-    >
+          >
       <Navbar />
 
 {/* Full-Screen Loading Overlay */}
@@ -258,14 +248,7 @@ export default function Home() {
 
       
       {/* Reactive cursor glow */}
-      <div 
-        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(100px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColor}, transparent 80%)`
-        }}
-      />
-
-      {/* Soft Dot Pattern Background */}
+            {/* Soft Dot Pattern Background */}
       <main className="flex-1 relative z-10 w-full overflow-x-hidden bg-transparent">
         
         <section className="relative w-full min-h-screen pt-32 pb-48 lg:pt-40 lg:pb-56 flex flex-col items-center justify-center overflow-hidden">
