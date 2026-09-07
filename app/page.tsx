@@ -30,19 +30,48 @@ import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 const POPULAR_DESTINATIONS: Record<string, string[]> = {
-  "japan": ["Akihabara, Tokyo, Japan", "Arashiyama Bamboo Grove, Kyoto, Japan", "Fushimi Inari Taisha, Kyoto, Japan", "Mount Fuji, Honshu, Japan", "Osaka Castle, Osaka, Japan", "Shibuya Crossing, Tokyo, Japan"],
-  "france": ["Eiffel Tower, Paris, France", "Louvre Museum, Paris, France", "Mont Saint-Michel, Normandy, France", "French Riviera, France", "Palace of Versailles, France"],
-  "italy": ["Amalfi Coast, Campania, Italy", "Colosseum, Rome, Italy", "Cinque Terre, Liguria, Italy", "Duomo di Milano, Milan, Italy", "Florence Cathedral, Florence, Italy", "Leaning Tower of Pisa, Pisa, Italy", "Pantheon, Rome, Italy", "Pompeii, Campania, Italy", "Trevi Fountain, Rome, Italy", "Vatican Museums, Vatican City"],
-  "usa": ["Central Park, New York, USA", "Disneyland, California, USA", "Golden Gate Bridge, San Francisco, USA", "Grand Canyon, Arizona, USA", "Las Vegas Strip, Nevada, USA", "Statue of Liberty, New York, USA", "Times Square, New York, USA", "Walt Disney World, Florida, USA", "Yellowstone, Wyoming, USA", "Yosemite, California, USA"],
-  "india": ["Amber Palace, Jaipur, India", "Gateway of India, Mumbai, India", "Hawa Mahal, Jaipur, India", "Qutub Minar, Delhi, India", "Red Fort, Delhi, India", "Taj Mahal, Agra, India", "Varanasi Ghats, Uttar Pradesh, India", "Victoria Memorial, Kolkata, India"],
-  "spain": ["Alhambra, Granada, Spain", "Casa Batllo, Barcelona, Spain", "Ibiza, Balearic Islands, Spain", "La Sagrada Familia, Barcelona, Spain", "Park Guell, Barcelona, Spain", "Plaza Mayor, Madrid, Spain"],
-  "morocco": ["Jemaa el-Fnaa, Marrakech, Morocco", "Hassan II Mosque, Casablanca, Morocco", "Chefchaouen (Blue City), Morocco", "Sahara Desert Dunes, Merzouga, Morocco", "Bahia Palace, Marrakech, Morocco", "Medina of Fez, Fez, Morocco"],
-  "uk": ["Big Ben, London, UK", "Stonehenge, Wiltshire, UK", "Tower of London, London, UK", "Edinburgh Castle, Edinburgh, UK", "British Museum, London, UK", "Lake District, Cumbria, UK"],
-  "australia": ["Sydney Opera House, Sydney, Australia", "Great Barrier Reef, Queensland, Australia", "Uluru, Northern Territory, Australia", "Bondi Beach, Sydney, Australia", "Great Ocean Road, Victoria, Australia"],
-  "greece": ["Acropolis of Athens, Athens, Greece", "Santorini Caldera, Santorini, Greece", "Mykonos Town, Mykonos, Greece", "Parthenon, Athens, Greece", "Meteora Monasteries, Thessaly, Greece"],
-  "mexico": ["Chichen Itza, Yucatan, Mexico", "Cancun Beaches, Quintana Roo, Mexico", "Teotihuacan, State of Mexico, Mexico", "Tulum Ruins, Quintana Roo, Mexico", "Frida Kahlo Museum, Mexico City, Mexico"],
-  "thailand": ["Grand Palace, Bangkok, Thailand", "Phi Phi Islands, Krabi, Thailand", "Ayutthaya Historical Park, Thailand", "Wat Arun, Bangkok, Thailand", "Chiang Mai Night Bazaar, Thailand"],
-  "uae": ["Burj Khalifa, Dubai, UAE", "Sheikh Zayed Grand Mosque, Abu Dhabi, UAE", "Palm Jumeirah, Dubai, UAE", "The Dubai Mall, Dubai, UAE", "Louvre Abu Dhabi, UAE"]
+  // Asia
+  "japan": ["Akihabara, Tokyo, Japan", "Arashiyama Bamboo Grove, Kyoto, Japan", "Fushimi Inari Taisha, Kyoto, Japan", "Mount Fuji, Honshu, Japan", "Osaka Castle, Osaka, Japan", "Shibuya Crossing, Tokyo, Japan", "Dotonbori, Osaka, Japan", "Nara Park, Nara, Japan", "Shirakawa-go, Gifu, Japan", "Miyajima, Hiroshima, Japan", "Sapporo Snow Festival, Hokkaido, Japan", "Senso-ji Temple, Tokyo, Japan"],
+  "thailand": ["Grand Palace, Bangkok, Thailand", "Phi Phi Islands, Krabi, Thailand", "Ayutthaya Historical Park, Thailand", "Wat Arun, Bangkok, Thailand", "Chiang Mai Night Bazaar, Thailand", "Phuket Old Town, Thailand", "Khao Sok National Park, Thailand", "Railay Beach, Krabi, Thailand"],
+  "india": ["Amber Palace, Jaipur, India", "Gateway of India, Mumbai, India", "Hawa Mahal, Jaipur, India", "Qutub Minar, Delhi, India", "Red Fort, Delhi, India", "Taj Mahal, Agra, India", "Varanasi Ghats, Uttar Pradesh, India", "Victoria Memorial, Kolkata, India", "Kerala Backwaters, India", "Goa Beaches, India", "Golden Temple, Amritsar, India", "Meenakshi Temple, Madurai, India", "Pangong Lake, Ladakh, India"],
+  "indonesia": ["Ubud Monkey Forest, Bali, Indonesia", "Borobudur Temple, Java, Indonesia", "Mount Batur, Bali, Indonesia", "Nusa Penida, Indonesia", "Raja Ampat Islands, Indonesia", "Tanah Lot, Bali, Indonesia", "Komodo National Park, Indonesia"],
+  "vietnam": ["Ha Long Bay, Vietnam", "Hoi An Ancient Town, Vietnam", "Cu Chi Tunnels, Ho Chi Minh, Vietnam", "Phong Nha Caves, Vietnam", "Sapa Terraces, Vietnam", "Bui Vien Street, Ho Chi Minh, Vietnam"],
+  "china": ["Great Wall of China, Beijing", "Forbidden City, Beijing", "Terracotta Army, Xi'an", "Zhangjiajie National Forest, Hunan", "The Bund, Shanghai", "West Lake, Hangzhou", "Potala Palace, Tibet"],
+  "south korea": ["Gyeongbokgung Palace, Seoul", "N Seoul Tower, Seoul", "Bukchon Hanok Village, Seoul", "Jeju Island, South Korea", "Haeundae Beach, Busan", "DMZ, South Korea"],
+  "singapore": ["Gardens by the Bay, Singapore", "Marina Bay Sands, Singapore", "Sentosa Island, Singapore", "Singapore Botanic Gardens", "Universal Studios Singapore"],
+  
+  // Europe
+  "france": ["Eiffel Tower, Paris, France", "Louvre Museum, Paris, France", "Mont Saint-Michel, Normandy, France", "French Riviera, France", "Palace of Versailles, France", "Chamonix Mont-Blanc, France", "Loire Valley Chateaux, France", "Saint-Tropez, France", "Arc de Triomphe, Paris, France"],
+  "italy": ["Amalfi Coast, Campania, Italy", "Colosseum, Rome, Italy", "Cinque Terre, Liguria, Italy", "Duomo di Milano, Milan, Italy", "Florence Cathedral, Florence, Italy", "Leaning Tower of Pisa, Italy", "Pantheon, Rome, Italy", "Pompeii, Italy", "Trevi Fountain, Rome", "Vatican Museums, Vatican City", "Lake Como, Italy", "Venice Grand Canal, Italy", "Capri Island, Italy"],
+  "spain": ["Alhambra, Granada, Spain", "Casa Batllo, Barcelona", "Ibiza, Balearic Islands", "La Sagrada Familia, Barcelona", "Park Guell, Barcelona", "Plaza Mayor, Madrid", "Seville Cathedral, Spain", "Mallorca, Spain", "Canary Islands, Spain"],
+  "uk": ["Big Ben, London, UK", "Stonehenge, Wiltshire, UK", "Tower of London, London", "Edinburgh Castle, Edinburgh", "British Museum, London", "Lake District, UK", "Giant's Causeway, Northern Ireland", "Roman Baths, Bath, UK", "Windsor Castle, UK"],
+  "greece": ["Acropolis of Athens, Greece", "Santorini Caldera, Greece", "Mykonos Town, Greece", "Parthenon, Athens", "Meteora Monasteries, Greece", "Delphi Ruins, Greece", "Navagio Beach, Zakynthos", "Crete, Greece"],
+  "switzerland": ["Matterhorn, Zermatt, Switzerland", "Lake Geneva, Switzerland", "Jungfraujoch, Switzerland", "Chapel Bridge, Lucerne", "Chillon Castle, Montreux", "Interlaken, Switzerland"],
+  "germany": ["Neuschwanstein Castle, Bavaria", "Brandenburg Gate, Berlin", "Cologne Cathedral, Germany", "The Black Forest, Germany", "Berlin Wall Memorial", "Oktoberfest, Munich", "Miniatur Wunderland, Hamburg"],
+  "portugal": ["Belem Tower, Lisbon, Portugal", "Pena Palace, Sintra", "Algarve Coast, Portugal", "Jeronimos Monastery, Lisbon", "Douro Valley, Portugal", "Madeira Island, Portugal"],
+  "netherlands": ["Rijksmuseum, Amsterdam", "Anne Frank House, Amsterdam", "Keukenhof Gardens, Lisse", "Van Gogh Museum, Amsterdam", "Zaanse Schans Windmills, Netherlands", "Vondelpark, Amsterdam"],
+
+  // North America
+  "usa": ["Central Park, New York", "Disneyland, California", "Golden Gate Bridge, San Francisco", "Grand Canyon, Arizona", "Las Vegas Strip, Nevada", "Statue of Liberty, New York", "Times Square, New York", "Walt Disney World, Florida", "Yellowstone, Wyoming", "Yosemite, California", "Niagara Falls, New York", "Zion National Park, Utah", "Waikiki Beach, Hawaii", "Glacier National Park, Montana", "French Quarter, New Orleans"],
+  "mexico": ["Chichen Itza, Yucatan, Mexico", "Cancun Beaches, Mexico", "Teotihuacan, Mexico", "Tulum Ruins, Mexico", "Frida Kahlo Museum, Mexico City", "Cenotes of Yucatan, Mexico", "Los Cabos, Mexico", "Copper Canyon, Mexico"],
+  "canada": ["Banff National Park, Alberta, Canada", "CN Tower, Toronto", "Niagara Falls, Ontario", "Old Quebec, Quebec", "Stanley Park, Vancouver", "Lake Louise, Alberta", "Whistler Blackcomb, BC"],
+
+  // South America
+  "brazil": ["Christ the Redeemer, Rio de Janeiro", "Copacabana Beach, Rio", "Iguazu Falls, Brazil", "Sugarloaf Mountain, Brazil", "Amazon Rainforest, Brazil", "Pelourinho, Salvador"],
+  "peru": ["Machu Picchu, Peru", "Sacred Valley, Peru", "Cusco Cathedral, Peru", "Lake Titicaca, Peru", "Nazca Lines, Peru", "Rainbow Mountain, Peru"],
+  "colombia": ["Walled City of Cartagena, Colombia", "Cocora Valley, Colombia", "Gold Museum, Bogota", "Tayrona National Park, Colombia", "Monserrate, Bogota", "Comuna 13, Medellin"],
+  "argentina": ["Perito Moreno Glacier, Patagonia", "Iguazu Falls, Argentina", "La Boca, Buenos Aires", "Mount Fitz Roy, Patagonia", "Tierra del Fuego, Argentina", "Mendoza Wine Region, Argentina"],
+
+  // Middle East & Africa
+  "uae": ["Burj Khalifa, Dubai", "Sheikh Zayed Grand Mosque, Abu Dhabi", "Palm Jumeirah, Dubai", "The Dubai Mall", "Louvre Abu Dhabi", "Dubai Marina", "Burj Al Arab, Dubai"],
+  "morocco": ["Jemaa el-Fnaa, Marrakech", "Hassan II Mosque, Casablanca", "Chefchaouen (Blue City)", "Sahara Desert Dunes, Merzouga", "Bahia Palace, Marrakech", "Medina of Fez", "Atlas Mountains, Morocco"],
+  "egypt": ["Giza Pyramids, Egypt", "Great Sphinx of Giza, Egypt", "Valley of the Kings, Luxor", "Karnak Temple, Luxor", "Abu Simbel, Egypt", "Egyptian Museum, Cairo", "Nile River Cruise, Egypt"],
+  "south africa": ["Kruger National Park, South Africa", "Table Mountain, Cape Town", "Cape of Good Hope, South Africa", "Robben Island, South Africa", "Boulders Beach, South Africa", "Victoria & Alfred Waterfront, Cape Town"],
+  "turkey": ["Hagia Sophia, Istanbul", "Cappadocia Hot Air Balloons, Turkey", "Blue Mosque, Istanbul", "Pamukkale Thermal Pools, Turkey", "Topkapi Palace, Istanbul", "Ephesus Ruins, Turkey", "Grand Bazaar, Istanbul"],
+
+  // Oceania
+  "australia": ["Sydney Opera House, Australia", "Great Barrier Reef, Queensland", "Uluru, Northern Territory", "Bondi Beach, Sydney", "Great Ocean Road, Victoria", "Daintree Rainforest, Queensland", "Sydney Harbour Bridge"],
+  "new zealand": ["Milford Sound, New Zealand", "Hobbiton Movie Set, New Zealand", "Tongariro National Park, New Zealand", "Rotorua Geysers, New Zealand", "Mount Cook, New Zealand", "Franz Josef Glacier, New Zealand", "Bay of Islands, New Zealand"]
 };
 
 export default function Home() {
