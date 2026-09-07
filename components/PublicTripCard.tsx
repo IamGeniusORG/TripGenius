@@ -4,9 +4,11 @@ import Link from "next/link";
 import { Card, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Map, Calendar as CalendarIcon, Clock, Sparkles, Heart, User } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import SaveTripButton from "./SaveTripButton";
 
 export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: any, featured?: boolean, index?: number }) {
+  const router = useRouter();
   const imageKeyword = (trip.itinerary as any)?.imageKeyword || trip.destination;
   // Deterministic fake likes for visual flair until we build the real interactive like system
   const fakeLikes = trip.likes > 0 ? trip.likes : Math.floor(parseInt(trip.id.replace(/\D/g, '').slice(0, 5) || "123") % 150) + 12;
@@ -18,7 +20,7 @@ export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: an
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className=""
     >
-      <Link href={`/share/${trip.id}`} className="block h-full">
+      <div onClick={() => router.push(`/share/${trip.id}`)} className="block h-full cursor-pointer">
         <Card className="flex flex-col h-full bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)] dark:hover:shadow-[0_20px_50px_rgba(0,_0,_0,_0.5)] transition-all duration-500 border-zinc-200/50 dark:border-zinc-800/50 overflow-hidden group hover:-translate-y-2">
           <div className="h-56 w-full relative overflow-hidden bg-zinc-100 dark:bg-zinc-800">
             <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(imageKeyword)}`}
@@ -80,7 +82,7 @@ export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: an
             )}
           </CardContent>
         </Card>
-      </Link>
+      </div>
     </motion.div>
   );
 }
