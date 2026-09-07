@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Card, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Map, Calendar as CalendarIcon, Clock, Sparkles, Heart, User } from "lucide-react";
 import { motion } from "framer-motion";
+import SaveTripButton from "./SaveTripButton";
 
 export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: any, featured?: boolean, index?: number }) {
   const imageKeyword = (trip.itinerary as any)?.imageKeyword || trip.destination;
@@ -29,14 +30,18 @@ export function PublicTripCard({ trip, featured = false, index = 0 }: { trip: an
             {/* Top Tags */}
             <div className="absolute top-4 left-4 flex gap-2">
               <div className="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/30 text-white text-xs font-bold flex items-center shadow-lg">
-                <User className="w-3 h-3 mr-1.5" /> Anonymous Explorer
+                <User className="w-3 h-3 mr-1.5" /> Anonymous
               </div>
             </div>
-            {featured && (
-              <div className="absolute top-4 right-4 bg-blue-600/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-blue-400/30 text-white text-xs font-bold flex items-center shadow-lg">
-                <Sparkles className="w-3 h-3 mr-1.5" /> Featured
-              </div>
-            )}
+            
+            <div className="absolute top-4 right-4 flex gap-2 items-center z-20">
+              {featured && (
+                <div className="bg-blue-600/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-blue-400/30 text-white text-xs font-bold flex items-center shadow-lg">
+                  <Sparkles className="w-3 h-3 mr-1.5" /> Featured
+                </div>
+              )}
+              <SaveTripButton tripId={trip.id} compact={true} />
+            </div>
 
             {/* Bottom Content */}
             <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
