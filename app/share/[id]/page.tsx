@@ -136,19 +136,20 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                         <CardTitle className="text-2xl">{day.description}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-8">
-                        <div className="space-y-6">
-                          {day.activities?.map((act: any, i: number) => (
-                            <div key={i} className="flex gap-4">
-                              <div className="w-24 shrink-0 font-medium text-sm text-zinc-500 dark:text-zinc-400 pt-1 flex items-start mt-1">
-                                  {getTimeIcon(act.time)}
-                                  <span>{act.time}</span>
+                        <div className="space-y-8 relative before:absolute before:inset-y-0 before:left-[4.5rem] md:before:left-[6.5rem] before:w-0.5 before:bg-zinc-200 dark:before:bg-zinc-800">
+                            {day.activities?.map((act: any, i: number) => (
+                              <div key={i} className="relative flex gap-4 md:gap-6 z-10">
+                                <div className="w-16 md:w-24 shrink-0 font-bold text-xs md:text-sm text-zinc-900 dark:text-zinc-100 pt-3 flex items-start justify-end pr-3 md:pr-4 bg-white dark:bg-zinc-900/50 rounded-r-xl">
+                                    {getTimeIcon(act.time)}
+                                    <span className="hidden md:inline">{act.time}</span>
                                 </div>
-                              <div className="prose prose-zinc dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
-                                <div dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
+                                <div className="absolute left-[4.5rem] md:left-[6.5rem] top-3.5 w-3 h-3 bg-blue-500 rounded-full -translate-x-[5px] ring-4 ring-white dark:ring-zinc-900 shadow-sm" />
+                                <div className="prose prose-zinc dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400 bg-zinc-50/50 dark:bg-zinc-900/40 p-4 md:p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800/60 shadow-sm w-full transition-all hover:shadow-md hover:border-blue-200 dark:hover:border-blue-900/50">
+                                  <div dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
                       </CardContent>
                     </Card>
                   </TabsContent>
