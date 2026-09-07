@@ -5,6 +5,7 @@ import ModifyTripButton from "@/components/ModifyTripButton";
 import { Navbar } from "@/components/Navbar";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
 import DownloadPdfButton from "@/components/DownloadPdfButton";
+import SaveTripButton from "@/components/SaveTripButton";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils, Lightbulb, Briefcase } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -75,7 +76,8 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           </Button>
                         </a>
                         
-                          {userId === trip.userId && <ModifyTripButton trip={trip} />}
+                          {userId !== trip.userId && <SaveTripButton tripId={trip.id} />}
+                            {userId === trip.userId && <ModifyTripButton trip={trip} />}
                           <DownloadPdfButton targetId="itinerary-results" filename={itinerary.title || "My_Trip"} />
 
                     </div>
