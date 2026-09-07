@@ -223,6 +223,39 @@ export default function Home() {
       onMouseMove={handleMouseMove}
     >
       <Navbar />
+
+{/* Full-Screen Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl">
+          <div className="relative w-32 h-32 mb-8">
+            <div className="absolute inset-0 rounded-full border-4 border-blue-100 dark:border-blue-900/30"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-blue-600 dark:border-blue-500 border-t-transparent animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <GlobeIcon className="w-8 h-8 text-blue-600 dark:text-blue-500 animate-pulse" />
+            </div>
+          </div>
+          
+          <h2 className="text-3xl font-black text-zinc-900 dark:text-white mb-4 text-center">
+            Crafting your perfect trip...
+          </h2>
+          
+          <div className="h-8 overflow-hidden relative w-full max-w-sm text-center">
+            <motion.div
+              animate={{ y: [0, -32, -64, -96, -128, -160] }}
+              transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+              className="text-zinc-500 dark:text-zinc-400 font-medium flex flex-col space-y-2"
+            >
+              <div className="h-6">Analyzing millions of data points...</div>
+              <div className="h-6">Finding the best local hidden gems...</div>
+              <div className="h-6">Balancing your budget mathematically...</div>
+              <div className="h-6">Mapping out your daily routes...</div>
+              <div className="h-6">Writing insider local tips...</div>
+              <div className="h-6">Finalizing your perfect itinerary...</div>
+            </motion.div>
+          </div>
+        </div>
+      )}
+
       
       {/* Reactive cursor glow */}
       <div 

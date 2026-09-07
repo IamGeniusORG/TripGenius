@@ -1,4 +1,5 @@
-﻿import { prisma } from "@/lib/prisma";
+﻿import { Metadata } from "next";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import ModifyTripButton from "@/components/ModifyTripButton";
@@ -13,6 +14,36 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const trip = await prisma.trip.findUnique({ where: { id: resolvedParams.id } });
+  
+  if (!trip) return { title: "Trip Not Found | TripGenius" };
+  
+  const itinerary = trip.itinerary as any;
+  const title = itinerary?.title || `Trip to ${trip.destination}`;
+  const imageKeyword = itinerary?.imageKeyword || trip.destination;
+
+  const ogImageUrl = `/api/image?query=${encodeURIComponent(imageKeyword)}`;
+
+  return {
+    title: `${title} | TripGenius`,
+    description: `Check out my AI-generated travel itinerary to ${trip.destination} for ${trip.dates}!`,
+    openGraph: {
+      title: `${title} | TripGenius`,
+      description: `Check out my AI-generated travel itinerary to ${trip.destination} for ${trip.dates}!`,
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: trip.destination }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | TripGenius`,
+      description: `Check out my AI-generated travel itinerary to ${trip.destination} for ${trip.dates}!`,
+      images: [ogImageUrl],
+    }
+  };
+}
 
 export default async function SharedTripPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;

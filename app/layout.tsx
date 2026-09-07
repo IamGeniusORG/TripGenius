@@ -1,4 +1,5 @@
 ﻿import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
@@ -47,7 +48,8 @@ export default function RootLayout({
             <ServiceWorkerRegister />
             <CookieBanner />
             {children}
-            <Toaster position="bottom-right" richColors theme="system" />
+            <Analytics />
+        <Toaster position="bottom-right" richColors theme="system" />
           </ThemeProvider>
         </body>
       </html>
