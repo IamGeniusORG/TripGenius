@@ -5,7 +5,7 @@ import ModifyTripButton from "@/components/ModifyTripButton";
 import { Navbar } from "@/components/Navbar";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
 import DownloadPdfButton from "@/components/DownloadPdfButton";
-import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils } from "lucide-react";
+import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils, Lightbulb, Briefcase } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
