@@ -214,6 +214,58 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                 </CardContent>
               </Card>
 
+              {/* BUDGET CHART */}
+              {itinerary.budgetBreakdown && Array.isArray(itinerary.budgetBreakdown) && itinerary.budgetBreakdown.length > 0 && (
+                <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-none bg-white dark:bg-zinc-900/50 ring-1 ring-zinc-200 dark:ring-zinc-800 mt-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-xl">
+                      <Wallet className="w-5 h-5 mr-2 text-blue-500" />
+                      Estimated Budget
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <BudgetChart data={itinerary.budgetBreakdown.map((item: any) => ({ category: item.category, estimatedCost: item.estimatedCost || item.value || 0 }))} />
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* LOCAL TIPS */}
+              {itinerary.localTips && Array.isArray(itinerary.localTips) && itinerary.localTips.length > 0 && (
+                <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-none bg-white dark:bg-zinc-900/50 ring-1 ring-zinc-200 dark:ring-zinc-800 mt-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-xl">
+                      <Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
+                      Local Insider Tips
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {itinerary.localTips.map((tip: any, i: number) => (
+                        <li key={i} className="flex items-start text-sm text-zinc-600 dark:text-zinc-400">
+                          <span className="text-amber-500 mr-2 font-bold">•</span>
+                          <span dangerouslySetInnerHTML={{ __html: String(tip).replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100">$1</strong>') }} />
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* INTERACTIVE PACKING LIST */}
+              {itinerary.packingList && Array.isArray(itinerary.packingList) && itinerary.packingList.length > 0 && (
+                <Card className="border-0 shadow-xl shadow-zinc-200/50 dark:shadow-none bg-white dark:bg-zinc-900/50 ring-1 ring-zinc-200 dark:ring-zinc-800 mt-8">
+                  <CardHeader>
+                    <CardTitle className="flex items-center text-xl">
+                      <Briefcase className="w-5 h-5 mr-2 text-emerald-500" />
+                      Packing Checklist
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <InteractivePackingList items={itinerary.packingList} tripId={trip.id} />
+                  </CardContent>
+                </Card>
+              )}
+
             </div>
           </div>
         </div>
