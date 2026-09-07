@@ -52,32 +52,45 @@ To maintain absolute transparency regarding the current state of the application
 
 ## 🚀 Getting Started
 
-1. Clone the repository and install dependencies:
-   \\\ash
-   git clone https://github.com/IamGeniusORG/TripGenius.git
-   cd ai-trip-planner
-   npm install
-   \\\
+Follow these steps to run the application locally:
 
-2. Set up your \.env.local\ environment variables:
-   \\\env
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-   CLERK_SECRET_KEY=sk_test_...
-   DATABASE_URL=postgresql://postgres...
-   DIRECT_URL=postgresql://postgres...
-   OPENROUTER_API_KEY=sk-or-v1-...
-   UNSPLASH_ACCESS_KEY=your_key...
-   \\\
+### 1. Clone the Repository
+```bash
+git clone https://github.com/IamGeniusORG/TripGenius.git
+cd TripGenius
+npm install
+```
 
-3. Run Prisma Migrations to initialize your database:
-   \\\ash
-   npx prisma db push
-   npx prisma generate
-   \\\
+### 2. Configure Environment Variables
+Create a `.env.local` file in the root directory and add the following keys. You will need to create free accounts on Clerk, Supabase, OpenRouter, and Unsplash to get these:
 
-4. Run the development server:
-   \\\ash
-   npm run dev
-   \\\
+```env
+# Clerk Authentication (Get from clerk.com)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
 
-5. Open [http://localhost:3000](http://localhost:3000) to start generating trips!
+# Supabase Database (Get from supabase.com/dashboard)
+# Important: Ensure DIRECT_URL uses port 5432 and DATABASE_URL uses port 6543
+DATABASE_URL="postgresql://postgres.[YOUR_PROJECT]:[PASSWORD]@aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres"
+DIRECT_URL="postgresql://postgres.[YOUR_PROJECT]:[PASSWORD]@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres"
+
+# AI Generation (Get from openrouter.ai)
+OPENROUTER_API_KEY=sk-or-v1-...
+
+# Dynamic Imagery (Get from unsplash.com/developers)
+UNSPLASH_ACCESS_KEY=your_unsplash_access_key...
+```
+
+### 3. Initialize the Database
+Push the Prisma schema to your Supabase instance to create the necessary tables:
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Run the Development Server
+```bash
+npm run dev
+```
+
+Your application will now be running at [http://localhost:3000](http://localhost:3000).
