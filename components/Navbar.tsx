@@ -12,6 +12,31 @@ export function Navbar() {
   const { userId } = useAuth();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [tripCount, setTripCount] = useState({ count: 0, limit: 2 });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+    const fetchCount = async () => {
+      try {
+        const res = await fetch("/api/user/trip-count");
+        if (res.ok) {
+          const data = await res.json();
+          setTripCount(data);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    
+    fetchCount();
+    // Reactively update count when window regains focus (e.g. after generating a trip and coming back to top, or just active usage)
+    window.addEventListener("focus", fetchCount);
+    return () => window.removeEventListener("focus", fetchCount);
+  }, [userId]);
 
   useEffect(() => {
     setMounted(true);
@@ -27,14 +52,15 @@ export function Navbar() {
           <span className="font-black tracking-tight text-xl">TripGenius</span>
         </Link>
         
-        <div className="hidden lg:flex items-center space-x-2 sm:space-x-4 mr-4">
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50">
-            <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-            <span className="text-xs font-bold text-blue-700 dark:text-blue-300">5 Free Trips / Day</span>
-          </div>
-        </div>
-        
         <div className="flex items-center space-x-2 sm:space-x-4">
+          {mounted && userId && (
+            <div className="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 transition-all">
+              <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-bold text-blue-700 dark:text-blue-300">
+                {Math.max(0, tripCount.limit - tripCount.count)}/{tripCount.limit} Free Trips Left
+              </span>
+            </div>
+          )}
           {mounted && (
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
