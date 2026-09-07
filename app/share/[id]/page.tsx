@@ -32,10 +32,30 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
   const getTimeIcon = (timeStr: string) => {
     if (!timeStr) return null;
     const t = timeStr.toLowerCase();
+    
+    // Meals
+    if (t.includes('breakfast')) return <Utensils className="w-4 h-4 mr-1.5 inline text-orange-400" />;
+    if (t.includes('lunch')) return <Utensils className="w-4 h-4 mr-1.5 inline text-amber-500" />;
+    if (t.includes('dinner') || t.includes('supper')) return <Utensils className="w-4 h-4 mr-1.5 inline text-rose-500" />;
+    
+    // Exact Times (AM/PM logic)
+    if (t.match(/am|a.m./)) {
+      if (t.match(/10|11/)) return <Sun className="w-4 h-4 mr-1.5 inline text-amber-500" />;
+      return <Sunrise className="w-4 h-4 mr-1.5 inline text-blue-500" />;
+    }
+    if (t.match(/pm|p.m./)) {
+      if (t.match(/12|1|2|3|4/)) return <Sun className="w-4 h-4 mr-1.5 inline text-amber-500" />;
+      if (t.match(/5|6|7/)) return <Sunset className="w-4 h-4 mr-1.5 inline text-orange-500" />;
+      return <Moon className="w-4 h-4 mr-1.5 inline text-indigo-500" />;
+    }
+
+    // Fallbacks for words
     if (t.includes('morning')) return <Sunrise className="w-4 h-4 mr-1.5 inline text-blue-500" />;
-    if (t.includes('afternoon')) return <Sun className="w-4 h-4 mr-1.5 inline text-amber-500" />;
+    if (t.includes('afternoon') || t.includes('noon')) return <Sun className="w-4 h-4 mr-1.5 inline text-amber-500" />;
     if (t.includes('evening')) return <Sunset className="w-4 h-4 mr-1.5 inline text-orange-500" />;
-    if (t.includes('night')) return <Moon className="w-4 h-4 mr-1.5 inline text-indigo-500" />;
+    if (t.includes('night') || t.includes('midnight')) return <Moon className="w-4 h-4 mr-1.5 inline text-indigo-500" />;
+    
+    // Catch-all
     return <Clock className="w-4 h-4 mr-1.5 inline text-zinc-500" />;
   };
 
