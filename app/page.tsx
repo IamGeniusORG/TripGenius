@@ -317,11 +317,11 @@ export default function Home() {
             </p>
 
             <Card className="w-full max-w-5xl text-left shadow-2xl hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transition-all duration-500 border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl mb-8">
-              <CardHeader className="pb-6 text-center md:text-left">
+              <CardHeader className="pb-4 md:pb-6 text-center md:text-left">
                 <CardTitle className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Plan your next adventure</CardTitle>
                 <CardDescription className="text-base text-zinc-500 dark:text-zinc-400 font-medium mt-1">Fill out the details below to generate your custom itinerary.</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-4 md:p-6">
                                   
   <div className="relative">
     {!userId && (
@@ -340,11 +340,11 @@ export default function Home() {
         </div>
       </div>
     )}
-    <form className={cn("grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500", !userId && "opacity-30 pointer-events-none blur-sm select-none")} onSubmit={handleSubmit}>
+    <form className={cn("flex flex-col w-full md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 transition-all duration-500", !userId && "opacity-30 pointer-events-none blur-sm select-none")} onSubmit={handleSubmit}>
   
                     
                     {/* Origin */}
-                    <div className="space-y-3 md:col-span-1 lg:col-span-1 relative">
+                    <div className="space-y-3 w-full md:w-auto md:col-span-1 lg:col-span-1 relative">
                       <Label htmlFor="origin" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Departing From</Label>
                       <div className="relative">
                         <button 
@@ -370,7 +370,7 @@ export default function Home() {
                     </div>
 
                     {/* Destination */}
-                    <div className="space-y-3 md:col-span-1 lg:col-span-2 mb-4 relative z-50">
+                    <div className="space-y-3 w-full md:w-auto md:col-span-1 lg:col-span-2 mb-4 md:mb-0 relative z-50">
                     <Label htmlFor="destination" className="text-lg font-bold text-zinc-900 dark:text-zinc-50">Where to?</Label>
                     <div className="relative">
                       <MapPin className="absolute left-4 top-4 h-6 w-6 text-blue-500" />
@@ -470,7 +470,7 @@ export default function Home() {
                   </div>
 
                   {/* Budget */}
-                  <div className="space-y-3 md:col-span-1">
+                  <div className="space-y-3 w-full md:w-auto md:col-span-1">
                     <Label className="text-sm font-semibold">Budget</Label>
                     <div className="relative">
                         <Wallet className="absolute left-4 top-3.5 h-5 w-5 text-emerald-500" />
@@ -484,7 +484,7 @@ export default function Home() {
                   </div>
 
                   {/* Travel Style */}
-                  <div className="space-y-3 md:col-span-1">
+                  <div className="space-y-3 w-full md:w-auto md:col-span-1">
                     <Label className="text-sm font-semibold">Travel Style</Label>
                     <div className="flex flex-wrap gap-2">
                       {[
@@ -705,7 +705,7 @@ export default function Home() {
                                 )}
                                 <Badge variant="outline" className="absolute top-3 left-3 bg-white/90 dark:bg-zinc-900/90 text-zinc-900 dark:text-zinc-50 font-bold tracking-wide uppercase text-[10px] backdrop-blur-sm border-none shadow-sm">{acc.tier || acc.type}</Badge>
                               </CardHeader>
-                              <CardContent>
+                              <CardContent className="p-4 md:p-6">
                                 <CardTitle className="text-xl font-bold tracking-tight leading-tight text-zinc-900 dark:text-zinc-100 mb-3">{acc.name}</CardTitle>
                                 <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed font-medium">
                                   {acc.description}
