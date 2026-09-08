@@ -2,7 +2,6 @@
 
 import DownloadPdfButton from "@/components/DownloadPdfButton";
 import { TripMapDynamic } from "@/components/TripMapDynamic";
-import InteractiveGlobe from "@/components/Globe";
 
 import { toast } from "sonner";
 import { useAuth, SignInButton } from "@clerk/nextjs";
@@ -269,9 +268,7 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="absolute inset-0 pointer-events-auto overflow-hidden z-0 opacity-70">
-<InteractiveGlobe />
-</div>
+          
 <div className="w-full mx-auto px-4 md:px-12 lg:px-24 xl:px-32 flex flex-col items-center text-center relative z-10">
               {/* Decorative Floating Icons */}
               <motion.div 
