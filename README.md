@@ -6,6 +6,16 @@
 
 ---
 
+## 🚀 Live Production App
+
+TripGenius is successfully deployed and running live on Vercel.
+
+🔗 **Live Link:** [https://trip-genius-sigma.vercel.app](https://trip-genius-sigma.vercel.app)
+
+*Note: The live application is utilizing Production Clerk authentication keys. If cloning this repository, you must supply your own development keys in `.env.local` to run it locally.*
+
+---
+
 ## ✨ Features & Capabilities
 
 TripGenius includes a massive suite of interactive and social features designed to make trip planning effortless:
