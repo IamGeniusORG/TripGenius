@@ -728,7 +728,7 @@ export default function Home() {
                   {daysData ? (
                     Array.isArray(daysData) ? (
                       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                        <TabsList className="flex flex-wrap h-auto w-full justify-start p-1.5 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-xl shadow-sm mb-10 border border-zinc-200/60 dark:border-zinc-800/60 gap-1.5">
+                        <TabsList className="flex flex-nowrap md:flex-wrap overflow-x-auto scrollbar-hide h-auto w-full justify-start p-1.5 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-xl shadow-sm mb-10 border border-zinc-200/60 dark:border-zinc-800/60 gap-1.5">
                           {daysData.map((day: any, idx: number) => (
                             <TabsTrigger 
                               key={idx} 
@@ -747,7 +747,7 @@ export default function Home() {
                               variants={containerVariants}
                               initial="hidden"
                               animate="show"
-                              className="bg-white/70 dark:bg-zinc-900/70 p-6 md:p-8 rounded-2xl shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 backdrop-blur-md"
+                              className="bg-white/70 dark:bg-zinc-900/70 p-3 sm:p-5 md:p-8 rounded-2xl shadow-xl border border-zinc-200/60 dark:border-zinc-800/60 backdrop-blur-md"
                             >
                               <motion.div variants={itemVariants} className="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
                                 {day.imageKeyword && (
@@ -775,15 +775,15 @@ export default function Home() {
                                       Activities
                                     </h4>
                                     
-                                    <div className="relative border-l-2 border-zinc-200 dark:border-zinc-800 ml-3 md:ml-4 space-y-6 pb-4">
+                                    <div className="relative border-l-2 border-zinc-200 dark:border-zinc-800 ml-1 md:ml-4 space-y-6 pb-4">
                                       {Array.isArray(day.activities) 
                                         ? day.activities.map((act: any, i: number) => (
-                                          <motion.div key={i} variants={itemVariants} className="relative pl-8 md:pl-10 group">
+                                          <motion.div key={i} variants={itemVariants} className="relative pl-5 md:pl-10 group">
                                             {/* Timeline Node */}
                                             <div className="absolute -left-[9px] top-6 h-4 w-4 rounded-full border-2 border-blue-500 bg-white dark:bg-zinc-950 shadow-sm transition-transform duration-300 group-hover:scale-125 group-hover:bg-blue-100 dark:group-hover:bg-blue-900" />
                                             
                                             <Card className="hover:shadow-md transition-shadow duration-300 border-zinc-200/60 dark:border-zinc-700/60 bg-white dark:bg-zinc-900">
-                                              <CardContent className="p-5 flex flex-col items-start pt-5 relative">
+                                              <CardContent className="p-3 md:p-5 flex flex-col items-start pt-4 md:pt-5 relative">
                                                 {act.time && (
                                                   <Badge variant="secondary" className="mb-3 font-bold uppercase tracking-wider bg-blue-100 text-blue-800 hover:bg-blue-100 dark:bg-blue-900/40 dark:text-blue-300 pointer-events-none text-[11px] px-3 py-1">
                                                     {act.time}
@@ -798,10 +798,10 @@ export default function Home() {
                                           </motion.div>
                                         ))
                                         : (
-                                          <motion.div variants={itemVariants} className="relative pl-8 md:pl-10">
+                                          <motion.div variants={itemVariants} className="relative pl-5 md:pl-10">
                                             <div className="absolute -left-[9px] top-6 h-4 w-4 rounded-full border-2 border-blue-500 bg-white dark:bg-zinc-950 shadow-sm" />
                                             <Card className="hover:shadow-md transition-shadow duration-300 bg-white dark:bg-zinc-900">
-                                              <CardContent className="p-5">
+                                              <CardContent className="p-4 md:p-5">
                                                 <p className="text-zinc-700 dark:text-zinc-300">{day.activities}</p>
                                               </CardContent>
                                             </Card>
@@ -814,7 +814,7 @@ export default function Home() {
                                 
                                 {/* Dining */}
                                 {(day.dining || day.dining_options) && (
-                                  <motion.div variants={itemVariants} className="mt-12 bg-orange-50/50 dark:bg-orange-900/10 p-6 rounded-2xl border border-orange-100/60 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow duration-300">
+                                  <motion.div variants={itemVariants} className="mt-12 bg-orange-50/50 dark:bg-orange-900/10 p-4 md:p-6 rounded-2xl border border-orange-100/60 dark:border-orange-800/30 shadow-sm hover:shadow-md transition-shadow duration-300">
                                     <h4 className="flex items-center text-xl font-bold text-orange-700 dark:text-orange-400 mb-4">
                                       <Utensils className="h-6 w-6 mr-3" /> 
                                       Dining Options
