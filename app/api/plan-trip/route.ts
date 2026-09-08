@@ -99,6 +99,9 @@ You must return your response STRICTLY as a valid JSON object matching this exac
       "description": "Why it's great"
     }
   ],
+  "budgetBreakdown": [
+    { "category": "Accommodation", "estimatedCost": 1500 }
+  ],
   "days": [
     {
       "day": "Day 1",
