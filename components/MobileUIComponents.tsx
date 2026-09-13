@@ -86,6 +86,17 @@ export function CollapsibleMobileWidget({ title, icon, children }: { title: stri
 export function MobileMapFAB({ locations }: { locations: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
   
+  // Force a window resize event after the bottom sheet animation completes
+  // This tells Leaflet (inside TripMapDynamic) to recalculate its container size and fix clipping
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 350);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   if (!locations || locations.length === 0) return null;
 
   return (
@@ -98,15 +109,37 @@ export function MobileMapFAB({ locations }: { locations: any[] }) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[100] bg-neutral-950 flex flex-col lg:hidden animate-in slide-in-from-bottom-full duration-300">
-          <div className="flex justify-between items-center p-4 bg-neutral-900 border-b border-white/10">
-            <h3 className="font-bold text-white flex items-center"><Map className="w-4 h-4 mr-2 text-blue-400"/> Interactive Map</h3>
-            <button onClick={() => setIsOpen(false)} className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors">
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-          <div className="flex-1 w-full h-full relative">
-            <TripMapDynamic locations={locations} />
+        <div className="fixed inset-0 z-[100] flex flex-col justify-end lg:hidden">
+          {/* Backdrop overlay */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Bottom Sheet Drawer */}
+          <div className="relative w-full h-[85vh] bg-white dark:bg-neutral-950 rounded-t-[2rem] shadow-2xl flex flex-col animate-in slide-in-from-bottom-full duration-300 ease-out">
+            {/* Drag Handle Pill */}
+            <div className="w-full flex justify-center pt-3 pb-2 shrink-0" onClick={() => setIsOpen(false)}>
+              <div className="w-12 h-1.5 bg-neutral-300 dark:bg-neutral-700 rounded-full" />
+            </div>
+            
+            {/* Sticky Header */}
+            <div className="flex justify-between items-center px-6 pb-4 border-b border-neutral-200 dark:border-white/10 shrink-0">
+              <h3 className="font-bold text-xl text-neutral-900 dark:text-white flex items-center">
+                <Map className="w-5 h-5 mr-2 text-blue-500" /> Interactive Map
+              </h3>
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="p-2.5 bg-neutral-100 dark:bg-white/10 hover:bg-neutral-200 dark:hover:bg-white/20 rounded-full text-neutral-600 dark:text-neutral-300 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Map Container (flex-1 forces it to fill the remaining height) */}
+            <div className="flex-1 w-full h-full relative overflow-hidden bg-neutral-100 dark:bg-neutral-900">
+              <TripMapDynamic locations={locations} />
+            </div>
           </div>
         </div>
       )}
