@@ -72,8 +72,9 @@ MULTI-STYLE OPTIMIZATION: Blend the requested travel styles logically.
 BUDGET & CURRENCY: Determine the "comfort tier" based on the user's budget. Plan all hotels, dining, and activities to fit within it.
 CRITICAL: Include a 'topDestinations' array containing popular places sorted in ALPHABETICAL ORDER.
 CRITICAL: Provide exact GPS coordinates for every location and accommodation in a "coordinates" object containing "lat" and "lng" as numbers.
-CRITICAL: Include 3-4 "localTips" and 4-5 "packingList" items.
-CRITICAL: Include a "budgetBreakdown" array that estimates realistic costs (using numbers only for the value).
+CRITICAL: Include 3-4 "localTips".
+CRITICAL: Include a structured "packingList" categorized by item type (e.g., Clothing, Electronics, Health).
+CRITICAL: PARSE the user's budget currency (e.g., $, €, ₹, INR, USD). You MUST conduct a realistic, context-aware economic analysis of the destination's cost-of-living. DO NOT simply parrot back the user's budget. Calculate highly realistic costs for the duration of the trip and breakdown the "budgetBreakdown" exactly into: 'Accommodation', 'Food & Dining', 'Activities', 'Transportation', and 'Contingency'. Provide "estimatedCost" as a raw number and "currency" as the string symbol.
 
 FORMATTING RULES FOR ACTIVITIES:
 DO NOT EVER use the phrases "Option A" or "Option B". That is banned.
@@ -100,7 +101,21 @@ You must return your response STRICTLY as a valid JSON object matching this exac
     }
   ],
   "budgetBreakdown": [
-    { "category": "Accommodation", "estimatedCost": 1500 }
+    { "category": "Accommodation", "estimatedCost": 1500, "currency": "$" },
+    { "category": "Food & Dining", "estimatedCost": 800, "currency": "$" },
+    { "category": "Activities", "estimatedCost": 450, "currency": "$" },
+    { "category": "Transportation", "estimatedCost": 300, "currency": "$" },
+    { "category": "Contingency", "estimatedCost": 200, "currency": "$" }
+  ],
+  "packingList": [
+    {
+      "category": "Electronics",
+      "items": ["Power Bank", "Universal Adapter"]
+    },
+    {
+      "category": "Clothing",
+      "items": ["Comfortable Walking Shoes", "Light Jacket"]
+    }
   ],
   "days": [
     {

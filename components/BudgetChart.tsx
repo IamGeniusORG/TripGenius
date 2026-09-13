@@ -7,11 +7,10 @@ export default function BudgetChart({ data }: { data: any[] }) {
 
   const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#ec4899', '#06b6d4'];
   
-  // Robust parsing: AI might return "cost", "amount", "price", "estimatedCost", and might be a string with "$".
+  // Robust parsing: Extract numbers and find currency symbol
   const parsedData = data.map(item => {
     const rawValue = item.estimatedCost || item.cost || item.amount || item.price || item.value || 0;
     
-    // If it's a string like "$1,000", parse it into a number
     let numericValue = typeof rawValue === "number" ? rawValue : 0;
     if (typeof rawValue === "string") {
       const stripped = rawValue.replace(/[^0-9.]/g, '');
@@ -20,7 +19,8 @@ export default function BudgetChart({ data }: { data: any[] }) {
     
     return {
       category: item.category || item.name || "Other",
-      estimatedCost: numericValue
+      estimatedCost: numericValue,
+      currency: item.currency || "$"
     };
   }).filter(item => item.estimatedCost > 0);
 
@@ -28,11 +28,16 @@ export default function BudgetChart({ data }: { data: any[] }) {
 
   if (total === 0) return null;
 
+  // Determine primary currency from the first valid item
+  const currencySymbol = parsedData[0]?.currency || "$";
+
   return (
     <div className="w-full flex flex-col items-center mt-2">
       <div className="text-center mb-2">
-        <span className="text-xs text-zinc-500 font-bold uppercase tracking-wider">Estimated Total</span>
-        <div className="text-3xl font-black text-blue-600 dark:text-blue-400">${total.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+        <span className="text-xs text-neutral-500 font-bold uppercase tracking-wider">Estimated Total</span>
+        <div className="text-3xl font-black text-blue-600 dark:text-blue-400">
+          {currencySymbol}{total.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+        </div>
       </div>
       <div className="w-full h-72">
         <ResponsiveContainer width="100%" height="100%">
@@ -52,8 +57,8 @@ export default function BudgetChart({ data }: { data: any[] }) {
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value: any) => `$${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
-              contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+              formatter={(value: any) => `${currencySymbol}${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+              contentStyle={{ borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 10px 25px -3px rgb(0 0 0 / 0.1)' }}
             />
             <Legend 
               verticalAlign="bottom" 
