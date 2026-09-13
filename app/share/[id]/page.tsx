@@ -334,7 +334,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                     <CardHeader className="pb-3">
                       <CardTitle className="flex items-center text-lg font-bold">
                         <Briefcase className="w-5 h-5 mr-2 text-purple-500" />
-                        Packing List
+                        Suggested Packing List
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
