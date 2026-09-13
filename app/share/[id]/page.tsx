@@ -11,6 +11,7 @@ import BudgetChart from "@/components/BudgetChart";
 import InteractivePackingList from "@/components/InteractivePackingList";
 import { MapPin, Sparkles, Navigation, Bed, Compass, Heart, ExternalLink, Sunrise, Sun, Sunset, Moon, Clock, Plane, Train, Car, Loader2, Wallet, Camera, Globe, CalendarIcon, ArrowRight, ImageIcon, Utensils, Lightbulb, Briefcase } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MobileDayNav, ExpandableActivityCard, CollapsibleMobileWidget, MobileMapFAB } from "@/components/MobileUIComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -162,6 +163,8 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
           </div>
         </section>
 
+        <MobileDayNav days={itinerary.days} />
+
         {/* 2-COLUMN RESPONSIVE LAYOUT */}
         <section className="w-full max-w-[1500px] mx-auto px-4 md:px-8 lg:px-12 py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
@@ -177,7 +180,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
 
               <div className="space-y-16">
                 {itinerary.days?.map((day: any, idx: number) => (
-                  <div key={idx} className="relative">
+                  <div key={idx} id={`day-${idx}`} className="relative scroll-mt-32">
                     {/* Sticky Day Header */}
                     <div className="sticky top-20 z-20 bg-neutral-50/90 dark:bg-neutral-950/90 backdrop-blur-xl py-5 mb-8 border-b border-neutral-200 dark:border-white/10 rounded-b-3xl">
                       <h3 className="text-2xl font-bold flex flex-wrap items-center gap-3">
@@ -206,9 +209,11 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                               )}
                             </div>
                             
-                            <div className="prose prose-neutral dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
+                            <ExpandableActivityCard>
+                              <div className="prose prose-neutral dark:prose-invert max-w-none prose-p:leading-relaxed prose-strong:text-blue-600 dark:prose-strong:text-blue-400">
                               <div dangerouslySetInnerHTML={{ __html: formatMarkdown(typeof act === 'string' ? act : (act.description || act.name || act.activity)) }} />
                             </div>
+                            </ExpandableActivityCard>
                           </div>
                         </div>
                       ))}
@@ -224,7 +229,7 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                 
                 {/* Interactive Map */}
                 {(itinerary.topDestinations || itinerary.accommodations) && (
-                  <div className="rounded-3xl overflow-hidden ring-1 ring-neutral-200 dark:ring-white/10 shadow-2xl h-[350px] relative group">
+                  <div className="hidden lg:block rounded-3xl overflow-hidden ring-1 ring-neutral-200 dark:ring-white/10 shadow-2xl h-[350px] relative group">
                     <TripMapDynamic locations={[
                       ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
                       ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
@@ -234,14 +239,9 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
 
                 {/* Top Sights Widget */}
                 {itinerary.topDestinations && itinerary.topDestinations.length > 0 && (
-                  <Card className="border-0 shadow-xl shadow-neutral-200/50 dark:shadow-none bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl ring-1 ring-neutral-200 dark:ring-white/10 rounded-3xl">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center text-lg font-bold">
-                        <Heart className="w-5 h-5 mr-2 text-rose-500" />
-                        Top Sights
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
+                  <CollapsibleMobileWidget title="Top Sights" icon={<Heart className="w-5 h-5 mr-2 text-rose-500" />}>
+                      <div className="space-y-4 mt-1">
+
                       {itinerary.topDestinations.map((dest: any, i: number) => (
                         <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(dest.name)}`} target="_blank" rel="noopener noreferrer" key={i} className="group flex gap-4 items-center p-2 -mx-2 rounded-2xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors relative cursor-pointer pr-8">
                           <div className="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -256,20 +256,15 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           </div>
                         </a>
                       ))}
-                    </CardContent>
-                  </Card>
+                                          </div>
+                    </CollapsibleMobileWidget>
                 )}
 
                 {/* Accommodations Widget */}
                 {itinerary.accommodations && itinerary.accommodations.length > 0 && (
-                  <Card className="border-0 shadow-xl shadow-neutral-200/50 dark:shadow-none bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl ring-1 ring-neutral-200 dark:ring-white/10 rounded-3xl">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center text-lg font-bold">
-                        <Bed className="w-5 h-5 mr-2 text-indigo-500" />
-                        Where to Stay
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
+                  <CollapsibleMobileWidget title="Where to Stay" icon={<Bed className="w-5 h-5 mr-2 text-indigo-500" />}>
+                      <div className="space-y-4 mt-1">
+
                       {itinerary.accommodations.map((acc: any, i: number) => (
                         <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.name)}`} target="_blank" rel="noopener noreferrer" key={i} className="group flex gap-4 items-center p-2 -mx-2 rounded-2xl hover:bg-neutral-100 dark:hover:bg-white/5 transition-colors relative cursor-pointer pr-8">
                           <div className="absolute right-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -287,35 +282,22 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           </div>
                         </a>
                       ))}
-                    </CardContent>
-                  </Card>
+                                          </div>
+                    </CollapsibleMobileWidget>
                 )}
 
                 {/* Budget Widget */}
                 {itinerary.budgetBreakdown && Array.isArray(itinerary.budgetBreakdown) && itinerary.budgetBreakdown.length > 0 && (
-                  <Card className="border-0 shadow-xl shadow-neutral-200/50 dark:shadow-none bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl ring-1 ring-neutral-200 dark:ring-white/10 rounded-3xl">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center text-lg font-bold">
-                        <Wallet className="w-5 h-5 mr-2 text-emerald-500" />
-                        Estimated Budget
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                  <CollapsibleMobileWidget title="Estimated Budget" icon={<Wallet className="w-5 h-5 mr-2 text-emerald-500" />}>
+
                       <BudgetChart data={itinerary.budgetBreakdown.map((item: any) => ({ category: item.category, estimatedCost: item.estimatedCost || item.value || 0 }))} />
-                    </CardContent>
-                  </Card>
+                                        </CollapsibleMobileWidget>
                 )}
 
                 {/* Insider Tips Widget */}
                 {itinerary.localTips && Array.isArray(itinerary.localTips) && itinerary.localTips.length > 0 && (
-                  <Card className="border-0 shadow-xl shadow-neutral-200/50 dark:shadow-none bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl ring-1 ring-neutral-200 dark:ring-white/10 rounded-3xl">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center text-lg font-bold">
-                        <Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
-                        Insider Tips
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                  <CollapsibleMobileWidget title="Insider Tips" icon={<Lightbulb className="w-5 h-5 mr-2 text-amber-500" />}>
+
                       <ul className="space-y-4">
                         {itinerary.localTips.map((tip: any, i: number) => (
                           <li key={i} className="flex items-start text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
@@ -324,29 +306,25 @@ export default async function SharedTripPage({ params }: { params: Promise<{ id:
                           </li>
                         ))}
                       </ul>
-                    </CardContent>
-                  </Card>
+                                        </CollapsibleMobileWidget>
                 )}
 
                 {/* Packing Checklist Widget */}
                 {itinerary.packingList && Array.isArray(itinerary.packingList) && itinerary.packingList.length > 0 && (
-                  <Card className="border-0 shadow-xl shadow-neutral-200/50 dark:shadow-none bg-white/80 dark:bg-neutral-900/70 backdrop-blur-xl ring-1 ring-neutral-200 dark:ring-white/10 rounded-3xl">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center text-lg font-bold">
-                        <Briefcase className="w-5 h-5 mr-2 text-purple-500" />
-                        Suggested Packing List
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                  <CollapsibleMobileWidget title="Suggested Packing List" icon={<Briefcase className="w-5 h-5 mr-2 text-purple-500" />}>
+
                       <InteractivePackingList items={itinerary.packingList} tripId={trip.id} />
-                    </CardContent>
-                  </Card>
+                                        </CollapsibleMobileWidget>
                 )}
               </div>
             </div>
 
           </div>
         </section>
+        <MobileMapFAB locations={[
+            ...(itinerary.topDestinations || []).map((d: any) => ({ ...d, type: 'attraction' })),
+            ...(itinerary.accommodations || []).map((a: any) => ({ ...a, type: 'hotel' }))
+          ]} />
       </main>
     </div>
   );
