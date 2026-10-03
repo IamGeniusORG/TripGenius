@@ -49,7 +49,7 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
 
     const completion = await openai.chat.completions.create(
       {
-        model: "google/gemini-2.5-flash",
+        model: "openrouter/free",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }

@@ -167,7 +167,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
         while (retries > 0) {
           try {
             completion = await openai.chat.completions.create({
-              model: "google/gemini-2.5-flash",
+              model: "openrouter/free",
               messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
