@@ -3,13 +3,12 @@ import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
-const openai = new OpenAI({
-  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-  apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "", 
-});
-
 export async function POST(request: Request) {
   try {
+    const openai = new OpenAI({
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+      apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "",
+    });
     const { userId } = await auth();
     const body = await request.json();
     const { originalItinerary, modificationPrompt, destination, tripId } = body;

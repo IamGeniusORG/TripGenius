@@ -5,11 +5,6 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-const openai = new OpenAI({
-  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-  apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "", 
-});
-
 // 1. Zod Schema for Strict Input Validation & Prompt Injection Defense
 const tripRequestSchema = z.object({
   destination: z.string().min(2).max(100, "Destination is too long. Please be specific."),
@@ -24,6 +19,10 @@ const tripRequestSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const openai = new OpenAI({
+      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+      apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "",
+    });
     // 2. Guest Bypass & Rate Limiting
     const { userId } = await auth();
     
@@ -163,7 +162,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       const abortController = new AbortController();
       const timeoutId = setTimeout(() => abortController.abort(), 45000); // 45s timeout
 
-      let completion;
+      let completion: any;
         let retries = 3;
         while (retries > 0) {
           try {
