@@ -164,7 +164,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       const timeoutId = setTimeout(() => abortController.abort(), 45000); // 45s timeout
 
       const completion = await openai.chat.completions.create({
-          model: "gemini-1.5-flash",
+          model: "gemini-3.8-flash",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt }
