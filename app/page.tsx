@@ -179,7 +179,11 @@ export default function Home() {
       });
 
       const data = await response.json();
-        if (response.status === 429) {
+        if (response.status === 402) {
+            toast.error("API Credits Empty", { description: data.error || "Please top-up your OpenRouter account." });
+            return;
+          }
+          if (response.status === 429) {
           toast.error("Guest Limit Reached", { description: data.message });
           return;
         }

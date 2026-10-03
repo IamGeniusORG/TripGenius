@@ -165,7 +165,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
 
       const completion = await openai.chat.completions.create(
         {
-          model: "openrouter/free",
+          model: "google/gemini-2.5-flash",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt }
@@ -235,11 +235,20 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
     }
 
     return NextResponse.json({ itinerary: parsedResponse, tripId });
-  } catch (error) {
-    console.error("[Unhandled API Error]:", error);
-    return NextResponse.json(
-      { error: "An unexpected server error occurred." },
-      { status: 500 }
-    );
-  }
+  } catch (error: any) {
+      console.error("[Unhandled API Error]:", error);
+      
+      // Specifically catch OpenRouter Credit Exhaustion
+      if (error?.status === 402 || error?.message?.includes("credits")) {
+        return NextResponse.json(
+          { error: "Your AI API credits have run out! Please top-up your OpenRouter account to continue generating trips." },
+          { status: 402 }
+        );
+      }
+
+      return NextResponse.json(
+        { error: "An unexpected server error occurred." },
+        { status: 500 }
+      );
+    }
 }
