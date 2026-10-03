@@ -49,7 +49,7 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
 
     const completion = await openai.chat.completions.create(
       {
-        model: "openrouter/free",
+        model: "qwen/qwen3.8-27b:free",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
