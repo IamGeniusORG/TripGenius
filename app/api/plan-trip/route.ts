@@ -165,12 +165,12 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
 
       const completion = await openai.chat.completions.create(
         {
-          model: "google/gemini-2.5-flash",
+          model: "openrouter/free",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt }
           ],
-          max_tokens: 4000,
+          max_tokens: 5000,
           response_format: { type: "json_object" } // Strict JSON enforcement
         },
         {
