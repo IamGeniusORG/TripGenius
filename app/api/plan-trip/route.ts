@@ -163,15 +163,30 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       const abortController = new AbortController();
       const timeoutId = setTimeout(() => abortController.abort(), 45000); // 45s timeout
 
-      const completion = await openai.chat.completions.create({
-          model: "gemini-flash-lite-latest",
-          messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: userPrompt }
-          ],
-          max_tokens: 5000,
-          response_format: { type: "json_object" }
-        });
+      let completion;
+        let retries = 3;
+        while (retries > 0) {
+          try {
+            completion = await openai.chat.completions.create({
+              model: "gemini-flash-lite-latest",
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: userPrompt }
+              ],
+              max_tokens: 5000,
+              response_format: { type: "json_object" }
+            });
+            break; // Success, exit loop
+          } catch (err: any) {
+            if (err?.status === 503 && retries > 1) {
+              console.log("[Google API 503] Retrying in 2.5 seconds...");
+              await new Promise(resolve => setTimeout(resolve, 2500));
+              retries--;
+            } else {
+              throw err; // Throw other errors or if out of retries
+            }
+          }
+        }
       
       clearTimeout(timeoutId);
       aiMessage = completion.choices[0]?.message?.content || "{}";
