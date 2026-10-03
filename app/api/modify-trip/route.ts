@@ -6,8 +6,8 @@ import { prisma } from "@/lib/prisma";
 export async function POST(request: Request) {
   try {
     const openai = new OpenAI({
-      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-      apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "",
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: process.env.OPENROUTER_API_KEY || "",
     });
     const { userId } = await auth();
     const body = await request.json();
@@ -49,7 +49,7 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
 
     const completion = await openai.chat.completions.create(
       {
-        model: "gemini-flash-lite-latest",
+        model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }
