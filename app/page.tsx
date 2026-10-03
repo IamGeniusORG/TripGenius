@@ -183,7 +183,7 @@ export default function Home() {
           toast.error("Guest Limit Reached", { description: data.message });
           return;
         }
-      if (data.tripId) {
+      if (data.tripId && data.tripId !== "guest_trip") {
         toast.success("Trip Generated successfully!", { description: "Redirecting to your itinerary..." });
         router.push('/share/' + data.tripId);
       } else if (data.itinerary) {
