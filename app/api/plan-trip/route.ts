@@ -235,9 +235,6 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
         );
       }
 
-      return NextResponse.json(
-        { error: "An unexpected server error occurred." },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: error?.message || "An unexpected server error occurred." }, { status: 500 });
     }
 }
