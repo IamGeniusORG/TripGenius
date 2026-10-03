@@ -4,8 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
 const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY || "", 
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+  apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "", 
 });
 
 export async function POST(request: Request) {
@@ -50,7 +50,7 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
 
     const completion = await openai.chat.completions.create(
       {
-        model: "google/gemini-2.5-flash",
+        model: "gemini-flash-lite-latest",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: userPrompt }

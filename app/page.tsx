@@ -201,7 +201,7 @@ export default function Home() {
           document.getElementById('itinerary-results')?.scrollIntoView({ behavior: 'smooth' });
         }, 100);
       } else {
-        toast.error("Generation failed", { description: "We could not craft your itinerary. Please try again." });
+        toast.error("Generation failed", { description: data.error || "We could not craft your itinerary. Please try again." });
       }
     } catch (error) {
       console.error("Error fetching itinerary:", error);
