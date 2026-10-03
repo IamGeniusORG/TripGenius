@@ -20,7 +20,8 @@ TripGenius is successfully deployed and running live on Vercel.
 
 TripGenius includes a massive suite of interactive and social features designed to make trip planning effortless:
 
-- **🧠 Intelligent AI Generation:** Give the AI your destination, budget, duration, and travel style (vibe). It mathematically balances your budget and generates a rich JSON itinerary.
+- **🚀 PLG Guest Mode ("Try Before You Buy"):** Unauthenticated users can generate one highly-detailed ephemeral trip saved to local storage (enforced by a strict 48-hour cookie rate limit). Once they authenticate, a smart background sync automatically migrates their guest itinerary into their permanent Postgres account.
+  - **🧠 Intelligent AI Generation:** Give the AI your destination, budget, duration, and travel style (vibe). It mathematically balances your budget and generates a rich JSON itinerary.
 - **🌍 Massive Global Dictionary:** The destination input features a smart auto-complete library mapping out **256 global countries and territories**, complete with smart fallback landmarks.
 - **📊 AI Budget Estimation:** Automatically calculates and visualizes your estimated trip costs using interactive Recharts Donut charts, breaking down flights, food, and activities.
 - **🎒 Interactive Packing Checklists:** A responsive, interactive packing list generated specifically for your destination's climate. It uses localStorage to remember which items you've checked off.
