@@ -29,10 +29,42 @@ import { useTheme } from "next-themes";
 import { useEffect } from "react";
 
 import { POPULAR_DESTINATIONS } from "@/lib/destinations";
+import { useGuestItinerary } from "@/hooks/useGuestItinerary";
 
 export default function Home() {
   const { userId } = useAuth();
   const router = useRouter();
+
+  const { guestTrip, saveGuestTrip, clearGuestTrip } = useGuestItinerary();
+
+  // Seamless Auth Conversion Sync
+  useEffect(() => {
+    if (userId && guestTrip) {
+      const syncTrip = async () => {
+        try {
+          const res = await fetch("/api/save-guest-trip", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              destination: guestTrip.destination,
+              dates: guestTrip.dates,
+              itinerary: guestTrip.itinerary,
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            clearGuestTrip();
+            toast.success("Guest Trip Saved!", { description: "Your itinerary has been synced to your account." });
+            router.push(`/share/${data.tripId}`);
+          }
+        } catch (e) {
+          console.error("Sync error", e);
+        }
+      };
+      syncTrip();
+    }
+  }, [userId, guestTrip, router, clearGuestTrip]);
+
   const [date, setDate] = useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
@@ -147,11 +179,18 @@ export default function Home() {
       });
 
       const data = await response.json();
+        if (response.status === 429) {
+          toast.error("Guest Limit Reached", { description: data.message });
+          return;
+        }
       if (data.tripId) {
         toast.success("Trip Generated successfully!", { description: "Redirecting to your itinerary..." });
         router.push('/share/' + data.tripId);
       } else if (data.itinerary) {
         setItinerary(data.itinerary);
+        if (!userId) {
+          saveGuestTrip(data.itinerary, destination, `${date?.from ? date.from.toLocaleDateString() : ""} to ${date?.to ? date.to.toLocaleDateString() : ""}`);
+        }
         setTripSeed(Math.floor(Math.random() * 1000));
         setActiveTab("day-0");
         setTimeout(() => {
@@ -321,23 +360,7 @@ export default function Home() {
               <CardContent className="p-4 md:p-6">
                                   
   <div className="relative">
-    {!userId && (
-      <div className="absolute inset-0 z-20 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm flex flex-col items-center justify-center rounded-3xl transition-all duration-500">
-        <div className="bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 text-center max-w-sm w-full mx-4 transform transition-transform hover:scale-105">
-          <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 rotate-12">
-            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400 -rotate-12" />
-          </div>
-          <h3 className="text-2xl font-black text-zinc-900 dark:text-zinc-50 mb-2 tracking-tight">Unlock TripGenius</h3>
-          <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-8">Sign in to start crafting beautiful, personalized AI itineraries for free.</p>
-          <SignInButton mode="modal">
-            <Button className="w-full font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg transition-all h-12 text-base">
-              Sign In to Plan
-            </Button>
-          </SignInButton>
-        </div>
-      </div>
-    )}
-    <form className={cn("flex flex-col w-full md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 transition-all duration-500", !userId && "opacity-30 pointer-events-none blur-sm select-none")} onSubmit={handleSubmit}>
+    <form className="flex flex-col w-full md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 transition-all duration-500" onSubmit={handleSubmit}>
   
                     
                     {/* Origin */}
@@ -578,6 +601,24 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
                 >
+
+                    {!userId && (
+                      <div className="w-full bg-blue-600/10 dark:bg-blue-900/30 border border-blue-500/20 rounded-2xl p-4 mb-10 flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md shadow-sm">
+                        <div className="flex items-start sm:items-center text-left">
+                          <span className="text-2xl mr-3">⚠️</span>
+                          <div>
+                            <h4 className="text-blue-700 dark:text-blue-400 font-bold text-sm">You are in Guest Mode</h4>
+                            <p className="text-blue-600 dark:text-blue-300/80 text-xs mt-0.5">Your itinerary is saved locally and will expire in 24 hours.</p>
+                          </div>
+                        </div>
+                        <SignInButton mode="modal">
+                          <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-bold text-xs px-6 rounded-full shrink-0 animate-pulse">
+                            Sign In to Save Forever
+                          </Button>
+                        </SignInButton>
+                      </div>
+                    )}
+
                   {itinerary.imageKeyword && (
                     <motion.div variants={itemVariants} className="w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden mb-10 shadow-xl border border-zinc-200/60 dark:border-zinc-800/60">
                       <img crossOrigin="anonymous" src={`/api/image?query=${encodeURIComponent(itinerary.imageKeyword)}`} 

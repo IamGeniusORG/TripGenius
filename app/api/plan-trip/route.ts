@@ -1,4 +1,5 @@
 ﻿import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
@@ -23,10 +24,22 @@ const tripRequestSchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    // 2. Strict Authentication & Boundary Check
+    // 2. Guest Bypass & Rate Limiting
     const { userId } = await auth();
+    
     if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      const cookieStore = await cookies();
+      const guestCookie = cookieStore.get('guest_trip_generated');
+      if (guestCookie) {
+        const generatedAt = parseInt(guestCookie.value);
+        const fortyEightHours = 48 * 60 * 60 * 1000;
+        if (Date.now() - generatedAt < fortyEightHours) {
+          return NextResponse.json(
+            { error: "Guest limit reached", message: "You've reached your free guest limit. Please create a free account to generate unlimited AI itineraries!" }, 
+            { status: 429 }
+          );
+        }
+      }
     }
 
     // 3. Zod Parsing & Validation
@@ -42,25 +55,27 @@ export async function POST(request: Request) {
     
     const { destination, origin, dateRange, budget, travelStyle } = parseResult.data;
 
-    // 4. Postgres Rate Limiting (2 Trips/Day)
-    try {
-      const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-      const recentTripsCount = await prisma.trip.count({
-        where: {
-          userId: userId,
-          createdAt: { gte: twentyFourHoursAgo }
-        }
-      });
+    // 4. Postgres Rate Limiting (2 Trips/Day) for Authenticated Users
+    if (userId) {
+      try {
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        const recentTripsCount = await prisma.trip.count({
+          where: {
+            userId: userId,
+            createdAt: { gte: twentyFourHoursAgo }
+          }
+        });
 
-      if (recentTripsCount >= 2) {
-        return NextResponse.json(
-          { error: "Daily limit reached", message: "You have reached your limit of 2 free AI trips per day. Please try again tomorrow!" },
-          { status: 429 }
-        );
+        if (recentTripsCount >= 2) {
+          return NextResponse.json(
+            { error: "Daily limit reached", message: "You have reached your limit of 2 free AI trips per day. Please try again tomorrow!" },
+            { status: 429 }
+          );
+        }
+      } catch (dbError) {
+        console.error("[RateLimit DB Error]:", dbError);
+        return NextResponse.json({ error: "Service temporarily unavailable. Please try again later." }, { status: 500 });
       }
-    } catch (dbError) {
-      console.error("[RateLimit DB Error]:", dbError);
-      return NextResponse.json({ error: "Service temporarily unavailable. Please try again later." }, { status: 500 });
     }
 
     // 5. Prompt Injection Defense (Clear Delimiters & Security Instructions)
@@ -193,25 +208,30 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       return NextResponse.json({ error: "The AI returned a malformed response. Please try again." }, { status: 500 });
     }
 
-    // 7. Secure DB Transaction
+    // 7. Secure DB Transaction OR Guest Cookie Setting
     let tripId = null;
-    try {
-      parsedResponse.budget = budget;
-      parsedResponse.travelStyle = travelStyle;
-      
-      const trip = await prisma.trip.create({
-        data: {
-          userId,
-          destination: destination,
-          dates: `${dateRange?.from ? new Date(dateRange.from).toLocaleDateString() : ""} to ${dateRange?.to ? new Date(dateRange.to).toLocaleDateString() : ""}`,
-          itinerary: parsedResponse,
-        },
-      });
-      tripId = trip.id;
-    } catch (dbError) {
-      // Secure logging without leaking Prisma DB structure to the client
-      console.error("[Prisma Create Error]:", dbError);
-      return NextResponse.json({ error: "Your trip was generated but could not be saved to your dashboard. Please try again." }, { status: 500 });
+    parsedResponse.budget = budget;
+    parsedResponse.travelStyle = travelStyle;
+    
+    if (userId) {
+      try {
+        const trip = await prisma.trip.create({
+          data: {
+            userId,
+            destination: destination,
+            dates: `${dateRange?.from ? new Date(dateRange.from).toLocaleDateString() : ""} to ${dateRange?.to ? new Date(dateRange.to).toLocaleDateString() : ""}`,
+            itinerary: parsedResponse,
+          },
+        });
+        tripId = trip.id;
+      } catch (dbError) {
+        console.error("[Prisma Create Error]:", dbError);
+        return NextResponse.json({ error: "Your trip was generated but could not be saved to your dashboard. Please try again." }, { status: 500 });
+      }
+    } else {
+      tripId = "guest_trip";
+      const cookieStore = await cookies();
+      cookieStore.set('guest_trip_generated', Date.now().toString(), { maxAge: 48 * 60 * 60, path: '/' });
     }
 
     return NextResponse.json({ itinerary: parsedResponse, tripId });
