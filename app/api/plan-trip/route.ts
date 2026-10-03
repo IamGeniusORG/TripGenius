@@ -170,7 +170,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt }
           ],
-          max_tokens: 5000,
+          max_tokens: 4000,
           response_format: { type: "json_object" } // Strict JSON enforcement
         },
         {
