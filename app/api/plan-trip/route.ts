@@ -6,8 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
 const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY || "", 
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
+  apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "", 
 });
 
 // 1. Zod Schema for Strict Input Validation & Prompt Injection Defense
@@ -163,26 +163,15 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       const abortController = new AbortController();
       const timeoutId = setTimeout(() => abortController.abort(), 45000); // 45s timeout
 
-      const completion = await openai.chat.completions.create(
-        {
-          model: "google/gemini-2.5-flash",
+      const completion = await openai.chat.completions.create({
+          model: "gemini-1.5-flash",
           messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userPrompt }
           ],
           max_tokens: 5000,
-          response_format: { type: "json_object" } // Strict JSON enforcement
-        },
-        {
-          signal: abortController.signal,
-          extra_body: {
-            models: [
-              "google/gemini-2.5-flash",
-              "openai/gpt-4o-mini"
-            ]
-          }
-        } as any
-      );
+          response_format: { type: "json_object" }
+        });
       
       clearTimeout(timeoutId);
       aiMessage = completion.choices[0]?.message?.content || "{}";
