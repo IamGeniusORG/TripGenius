@@ -167,7 +167,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
         while (retries > 0) {
           try {
             completion = await openai.chat.completions.create({
-              model: "qwen/qwen3.8-27b:free",
+              model: "nvidia/nemotron-3-super-120b-a12b:free",
               messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
