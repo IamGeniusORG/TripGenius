@@ -218,7 +218,24 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
     
     if (userId) {
       try {
-        const trip = await prisma.trip.create({
+        
+          const user = await currentUser();
+          if (user) {
+            const email = user.emailAddresses[0]?.emailAddress || '';
+            await prisma.user.upsert({
+              where: { id: userId },
+              update: {},
+              create: {
+                id: userId,
+                email: email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                imageUrl: user.imageUrl,
+              }
+            });
+          }
+          const trip = await prisma.trip.create({
+
           data: {
             userId,
             destination: destination,
