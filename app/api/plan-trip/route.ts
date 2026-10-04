@@ -1,7 +1,7 @@
 ﻿import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import OpenAI from "openai";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
