@@ -641,7 +641,7 @@ export default function Home() {
                       )}
                       {destination && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                          ðŸ“ {destination}
+                          📍 {destination}
                         </Badge>
                       )}
                       {budget && (
