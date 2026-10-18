@@ -30,12 +30,13 @@ import { useEffect } from "react";
 
 import { POPULAR_DESTINATIONS } from "@/lib/destinations";
 import { useGuestItinerary } from "@/hooks/useGuestItinerary";
+import { ResumeGuestTripWidget } from "@/components/ResumeGuestTripWidget";
 
 export default function Home() {
   const { userId } = useAuth();
   const router = useRouter();
 
-  const { guestTrip, saveGuestTrip, clearGuestTrip } = useGuestItinerary();
+  const { guestTrip, saveGuestTrip, clearGuestTrip, isHydrated } = useGuestItinerary();
 
   // Seamless Auth Conversion Sync
   useEffect(() => {
@@ -163,6 +164,22 @@ export default function Home() {
     } else {
       setShowSuggestions(false);
     }
+  };
+
+  const handleResumeGuestTrip = () => {
+    if (!guestTrip) return;
+    setItinerary(guestTrip.itinerary);
+    if (guestTrip.destination) {
+      setDestination(guestTrip.destination);
+    }
+    setTripSeed(Math.floor(Math.random() * 1000));
+    setActiveTab("day-0");
+    toast.success("Welcome back!", {
+      description: `Resumed your trip to ${guestTrip.destination}.`,
+    });
+    setTimeout(() => {
+      document.getElementById("itinerary-results")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -355,6 +372,20 @@ export default function Home() {
             <p className="text-lg md:text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mb-12 font-medium leading-relaxed tracking-wide">
               Tell us where you want to go and what you love doing. Our AI will craft a personalized itinerary that matches your vibe and budget perfectly.
             </p>
+
+            {/* Resume Guest Journey Widget */}
+            {!userId && isHydrated && guestTrip && !itinerary && (
+              <ResumeGuestTripWidget
+                guestTrip={guestTrip}
+                onResume={handleResumeGuestTrip}
+                onClear={() => {
+                  clearGuestTrip();
+                  toast.info("Guest itinerary cleared", {
+                    description: "You can now plan a fresh itinerary.",
+                  });
+                }}
+              />
+            )}
 
             <Card className="w-full max-w-5xl text-left shadow-2xl hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transition-all duration-500 border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl mb-8">
               <CardHeader className="pb-4 md:pb-6 text-center md:text-left">
