@@ -227,8 +227,10 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
 
     // 7. Secure DB Transaction OR Guest Cookie Setting
     let tripId = null;
-    parsedResponse.budget = budget;
-    parsedResponse.travelStyle = travelStyle;
+    parsedResponse.budget = budget || "Moderate";
+    parsedResponse.travelStyle = travelStyle || "Relaxed";
+    parsedResponse.origin = origin && origin !== "Unknown" ? origin : "Flexible Departure";
+    parsedResponse.destination = destination;
     
     if (userId) {
       try {

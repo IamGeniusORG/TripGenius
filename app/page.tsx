@@ -172,6 +172,16 @@ export default function Home() {
     if (guestTrip.destination) {
       setDestination(guestTrip.destination);
     }
+    if (guestTrip.itinerary?.origin && guestTrip.itinerary.origin !== "Unknown") {
+      setOrigin(guestTrip.itinerary.origin);
+    }
+    if (guestTrip.itinerary?.budget) {
+      setBudget(guestTrip.itinerary.budget);
+    }
+    if (guestTrip.itinerary?.travelStyle) {
+      const style = guestTrip.itinerary.travelStyle;
+      setTravelStyle(Array.isArray(style) ? style : [style]);
+    }
     setTripSeed(Math.floor(Math.random() * 1000));
     setActiveTab("day-0");
     toast.success("Welcome back!", {
@@ -665,26 +675,18 @@ export default function Home() {
                   
                   <div className="mb-12 text-center">
                                         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-                      {origin && (
-                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50">
-                          🛫 {origin}
-                        </Badge>
-                      )}
-                      {destination && (
-                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                          📍 {destination}
-                        </Badge>
-                      )}
-                      {budget && (
-                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          💰 {budget}
-                        </Badge>
-                      )}
-                      {travelStyle && travelStyle.length > 0 && (
-                        <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
-                          ✨ {travelStyle.join(" + ")}
-                        </Badge>
-                      )}
+                      <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50 shadow-sm">
+                        🛫 {origin || itinerary?.origin || "Flexible Departure"}
+                      </Badge>
+                      <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-800 shadow-sm">
+                        📍 {destination || itinerary?.destination || "Pangong Lake, Ladakh, India"}
+                      </Badge>
+                      <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50 shadow-sm">
+                        💰 {budget || itinerary?.budget || "Moderate Budget"}
+                      </Badge>
+                      <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50 shadow-sm">
+                        ✨ {(travelStyle && travelStyle.length > 0) ? travelStyle.join(" + ") : (itinerary?.travelStyle || "Curated Adventure")}
+                      </Badge>
                     </div>
                     <h2 className="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-zinc-900 to-zinc-500 dark:from-zinc-50 dark:to-zinc-400 mb-4 drop-shadow-sm pb-1">
                       {itinerary.title || "Your Custom Itinerary"}
