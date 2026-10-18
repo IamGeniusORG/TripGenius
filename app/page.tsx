@@ -243,7 +243,7 @@ export default function Home() {
   const formatMarkdown = (text: string) => {
     if (!text) return "";
     return text
-      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">âœ¨ $1</strong>')
+      .replace(/\*\*\?\s*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">✨ $1</strong>')
       .replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-900 dark:text-zinc-100 font-bold">$1</strong>')
       .replace(/\n\n---\n\n/g, '<hr class="my-6 border-zinc-200 dark:border-zinc-800" />')
       .replace(/\n\n/g, '<br /><br />')
@@ -636,7 +636,7 @@ export default function Home() {
                                         <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                       {origin && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800/50">
-                          ðŸ›« {origin}
+                          🛫 {origin}
                         </Badge>
                       )}
                       {destination && (
@@ -646,12 +646,12 @@ export default function Home() {
                       )}
                       {budget && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50">
-                          ðŸ’° {budget}
+                          💰 {budget}
                         </Badge>
                       )}
                       {travelStyle && travelStyle.length > 0 && (
                         <Badge variant="outline" className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50">
-                          âœ¨ {travelStyle.join(" + ")}
+                          ✨ {travelStyle.join(" + ")}
                         </Badge>
                       )}
                     </div>

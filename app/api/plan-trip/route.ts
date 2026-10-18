@@ -17,11 +17,25 @@ const tripRequestSchema = z.object({
   }).optional()
 });
 
+function jsonResponse(data: any, init?: ResponseInit) {
+  return NextResponse.json(data, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      ...(init?.headers || {}),
+    },
+  });
+}
+
 export async function POST(request: Request) {
   try {
+    const isGemini = !!process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "";
     const openai = new OpenAI({
-      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-      apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "",
+      baseURL: isGemini
+        ? "https://generativelanguage.googleapis.com/v1beta/openai/"
+        : "https://openrouter.ai/api/v1",
+      apiKey: apiKey,
     });
     // 2. Guest Bypass & Rate Limiting
     const { userId } = await auth();
@@ -33,7 +47,7 @@ export async function POST(request: Request) {
         const generatedAt = parseInt(guestCookie.value);
         const fortyEightHours = 48 * 60 * 60 * 1000;
         if (Date.now() - generatedAt < fortyEightHours) {
-          return NextResponse.json(
+          return jsonResponse(
             { error: "Guest limit reached", message: "You've reached your free guest limit. Please create a free account to generate unlimited AI itineraries!" }, 
             { status: 429 }
           );
@@ -46,7 +60,7 @@ export async function POST(request: Request) {
     const parseResult = tripRequestSchema.safeParse(body);
     
     if (!parseResult.success) {
-      return NextResponse.json(
+      return jsonResponse(
         { error: "Invalid input data", details: parseResult.error.flatten() },
         { status: 400 }
       );
@@ -66,14 +80,14 @@ export async function POST(request: Request) {
         });
 
         if (recentTripsCount >= 2) {
-          return NextResponse.json(
+          return jsonResponse(
             { error: "Daily limit reached", message: "You have reached your limit of 2 free AI trips per day. Please try again tomorrow!" },
             { status: 429 }
           );
         }
       } catch (dbError) {
         console.error("[RateLimit DB Error]:", dbError);
-        return NextResponse.json({ error: "Service temporarily unavailable. Please try again later." }, { status: 500 });
+        return jsonResponse({ error: "Service temporarily unavailable. Please try again later." }, { status: 500 });
       }
     }
 
@@ -192,9 +206,9 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
     } catch (llmError: any) {
       console.error("[LLM API Error]:", llmError);
       if (llmError.name === 'AbortError') {
-        return NextResponse.json({ error: "The AI is taking too long to respond. Please try again." }, { status: 504 });
+        return jsonResponse({ error: "The AI is taking too long to respond. Please try again." }, { status: 504 });
       }
-      return NextResponse.json({ error: "AI service is currently overwhelmed. Please try again later." }, { status: 503 });
+      return jsonResponse({ error: "AI service is currently overwhelmed. Please try again later." }, { status: 503 });
     }
     
     // Clean potential conversational text
@@ -208,7 +222,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       parsedResponse = JSON.parse(aiMessage);
     } catch (e) {
       console.error("[JSON Parse Error]:", e);
-      return NextResponse.json({ error: "The AI returned a malformed response. Please try again." }, { status: 500 });
+      return jsonResponse({ error: "The AI returned a malformed response. Please try again." }, { status: 500 });
     }
 
     // 7. Secure DB Transaction OR Guest Cookie Setting
@@ -246,7 +260,7 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
         tripId = trip.id;
       } catch (dbError) {
         console.error("[Prisma Create Error]:", dbError);
-        return NextResponse.json({ error: "Your trip was generated but could not be saved to your dashboard. Please try again." }, { status: 500 });
+        return jsonResponse({ error: "Your trip was generated but could not be saved to your dashboard. Please try again." }, { status: 500 });
       }
     } else {
       tripId = "guest_trip";
@@ -254,18 +268,18 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       cookieStore.set('guest_trip_generated', Date.now().toString(), { maxAge: 48 * 60 * 60, path: '/' });
     }
 
-    return NextResponse.json({ itinerary: parsedResponse, tripId });
+    return jsonResponse({ itinerary: parsedResponse, tripId });
   } catch (error: any) {
       console.error("[Unhandled API Error]:", error);
       
       // Specifically catch OpenRouter Credit Exhaustion
       if (error?.status === 402 || error?.message?.includes("credits")) {
-        return NextResponse.json(
+        return jsonResponse(
           { error: "Your AI API credits have run out! Please top-up your OpenRouter account to continue generating trips." },
           { status: 402 }
         );
       }
 
-      return NextResponse.json({ error: error?.message || "An unexpected server error occurred." }, { status: 500 });
+      return jsonResponse({ error: error?.message || "An unexpected server error occurred." }, { status: 500 });
     }
 }

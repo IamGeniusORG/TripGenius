@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const GUEST_STORAGE_KEY = 'tripgenius_guest_itinerary';
 const GUEST_TTL = 24 * 60 * 60 * 1000; // 24 hours
@@ -10,7 +10,14 @@ export function useGuestItinerary() {
     const stored = localStorage.getItem(GUEST_STORAGE_KEY);
     if (stored) {
       try {
-        const { itinerary, destination, dates, timestamp } = JSON.parse(stored);
+        let rawData = stored;
+        try {
+          rawData = decodeURIComponent(stored);
+        } catch {
+          // Fallback if legacy stored data was not URI-encoded
+          rawData = stored;
+        }
+        const { itinerary, destination, dates, timestamp } = JSON.parse(rawData);
         if (Date.now() - timestamp > GUEST_TTL) {
           // Expired
           localStorage.removeItem(GUEST_STORAGE_KEY);
@@ -31,7 +38,12 @@ export function useGuestItinerary() {
       dates,
       timestamp: Date.now()
     };
-    localStorage.setItem(GUEST_STORAGE_KEY, JSON.stringify(data));
+    try {
+      const serialized = JSON.stringify(data);
+      localStorage.setItem(GUEST_STORAGE_KEY, encodeURIComponent(serialized));
+    } catch (err) {
+      console.error("[useGuestItinerary] Failed to encode and save guest itinerary:", err);
+    }
     setGuestTrip({ itinerary, destination, dates });
   };
 

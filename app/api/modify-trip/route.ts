@@ -3,11 +3,25 @@ import OpenAI from "openai";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
+function jsonResponse(data: any, init?: ResponseInit) {
+  return jsonResponse(data, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      ...(init?.headers || {}),
+    },
+  });
+}
+
 export async function POST(request: Request) {
   try {
+    const isGemini = !!process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "";
     const openai = new OpenAI({
-      baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/",
-      apiKey: process.env.GEMINI_API_KEY || process.env.OPENROUTER_API_KEY || "",
+      baseURL: isGemini
+        ? "https://generativelanguage.googleapis.com/v1beta/openai/"
+        : "https://openrouter.ai/api/v1",
+      apiKey: apiKey,
     });
     const { userId } = await auth();
     const body = await request.json();
@@ -122,10 +136,10 @@ Rewrite the itinerary to include these modifications. Return ONLY the new JSON o
       }
     }
 
-    return NextResponse.json({ itinerary: parsedResponse, tripId: finalTripId });
+    return jsonResponse({ itinerary: parsedResponse, tripId: finalTripId });
 
   } catch (error) {
     console.error("Error in modify API:", error);
-    return NextResponse.json({ error: "Failed to modify trip." }, { status: 500 });
+    return jsonResponse({ error: "Failed to modify trip." }, { status: 500 });
   }
 }
