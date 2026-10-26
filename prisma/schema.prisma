@@ -9,15 +9,22 @@ datasource db {
 }
 
 model User {
-  id        String      @id
-  email     String      @unique
-  firstName String?
-  lastName  String?
-  imageUrl  String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  trips     Trip[]
-  savedTrips SavedTrip[]
+  id                 String          @id
+  email              String          @unique
+  firstName          String?
+  lastName           String?
+  imageUrl           String?
+  generationCount    Int             @default(0)
+  lastGenerationDate DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  trips              Trip[]
+  savedTrips         SavedTrip[]
+}
+
+model GuestRateLimit {
+  ipHash             String   @id
+  lastGenerationDate DateTime @default(now())
 }
 
 model Trip {

@@ -31,6 +31,7 @@ import { useEffect } from "react";
 import { POPULAR_DESTINATIONS } from "@/lib/destinations";
 import { useGuestItinerary } from "@/hooks/useGuestItinerary";
 import { ResumeGuestTripWidget } from "@/components/ResumeGuestTripWidget";
+import { LimitReachedModal } from "@/components/LimitReachedModal";
 
 export default function Home() {
   const { userId } = useAuth();
@@ -73,6 +74,7 @@ export default function Home() {
     const [destination, setDestination] = useState("");
   const [origin, setOrigin] = useState("");
   const [isLocating, setIsLocating] = useState(false);
+  const [limitModal, setLimitModal] = useState<{ isOpen: boolean; message?: string; resetsAt?: string }>({ isOpen: false });
 
   
   
@@ -210,8 +212,15 @@ export default function Home() {
             toast.error("API Credits Empty", { description: data.error || "Please top-up your OpenRouter account." });
             return;
           }
-          if (response.status === 429) {
-          toast.error("Guest Limit Reached", { description: data.message });
+        if (response.status === 429) {
+          setLimitModal({
+            isOpen: true,
+            message: data.message || "You have reached your itinerary generation limit for this month.",
+            resetsAt: data.resetsAt,
+          });
+          toast.error(userId ? "Monthly Limit Reached" : "Guest Limit Reached", {
+            description: data.message || "Please check your quota.",
+          });
           return;
         }
       if (data.tripId && data.tripId !== "guest_trip") {
@@ -395,6 +404,25 @@ export default function Home() {
                   });
                 }}
               />
+            )}
+
+            {!userId && !itinerary && (
+              <div className="w-full max-w-5xl mb-6 bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-purple-600/10 border border-blue-500/20 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 backdrop-blur-md shadow-sm">
+                <div className="flex items-center text-left gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center shrink-0">
+                    <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-zinc-900 dark:text-zinc-100 font-bold text-sm">Guest Mode: 1 free itinerary per month</h4>
+                    <p className="text-zinc-500 dark:text-zinc-400 text-xs mt-0.5">Sign in to double your quota!</p>
+                  </div>
+                </div>
+                <SignInButton mode="modal">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md font-bold text-xs px-5 h-9 rounded-full shrink-0">
+                    Sign In to Double Quota
+                  </Button>
+                </SignInButton>
+              </div>
             )}
 
             <Card className="w-full max-w-5xl text-left shadow-2xl hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.2)] transition-all duration-500 border-white/20 dark:border-white/10 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-3xl mb-8">
@@ -652,8 +680,8 @@ export default function Home() {
                         <div className="flex items-start sm:items-center text-left">
                           <span className="text-2xl mr-3">⚠️</span>
                           <div>
-                            <h4 className="text-blue-700 dark:text-blue-400 font-bold text-sm">You are in Guest Mode</h4>
-                            <p className="text-blue-600 dark:text-blue-300/80 text-xs mt-0.5">Your itinerary is saved locally and will expire in 24 hours.</p>
+                            <h4 className="text-blue-700 dark:text-blue-400 font-bold text-sm">Guest Mode: 1 free itinerary per month</h4>
+                            <p className="text-blue-600 dark:text-blue-300/80 text-xs mt-0.5">Sign in to double your quota!</p>
                           </div>
                         </div>
                         <SignInButton mode="modal">
@@ -929,6 +957,13 @@ export default function Home() {
         </section>
 
 <Footer />
+      <LimitReachedModal
+        isOpen={limitModal.isOpen}
+        onClose={() => setLimitModal({ isOpen: false })}
+        message={limitModal.message}
+        resetsAt={limitModal.resetsAt}
+        isGuest={!userId}
+      />
       </main>
     </div>
   );

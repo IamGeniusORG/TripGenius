@@ -4,6 +4,9 @@ import OpenAI from "openai";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import crypto from "crypto";
+
+const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
 // 1. Zod Schema for Strict Input Validation & Prompt Injection Defense
 const tripRequestSchema = z.object({
@@ -37,25 +40,61 @@ export async function POST(request: Request) {
         : "https://openrouter.ai/api/v1",
       apiKey: apiKey,
     });
-    // 2. Guest Bypass & Rate Limiting
+    // 2. Authentication & Client IP Extraction
     const { userId } = await auth();
-    
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const realIp = request.headers.get("x-real-ip");
+    const clientIp = forwardedFor ? forwardedFor.split(",")[0].trim() : (realIp || "127.0.0.1");
+    const ipHash = crypto.createHash("sha256").update(clientIp).digest("hex");
+
+    // 3. Quota Enforcement for Guests (1 Itinerary per Rolling 30-Day Window)
     if (!userId) {
-      const cookieStore = await cookies();
-      const guestCookie = cookieStore.get('guest_trip_generated');
-      if (guestCookie) {
-        const generatedAt = parseInt(guestCookie.value);
-        const fortyEightHours = 48 * 60 * 60 * 1000;
-        if (Date.now() - generatedAt < fortyEightHours) {
-          return jsonResponse(
-            { error: "Guest limit reached", message: "You've reached your free guest limit. Please create a free account to generate unlimited AI itineraries!" }, 
-            { status: 429 }
-          );
+      try {
+        const guestRecord = await prisma.guestRateLimit.findUnique({
+          where: { ipHash },
+        });
+
+        if (guestRecord) {
+          const lastGen = new Date(guestRecord.lastGenerationDate).getTime();
+          if (Date.now() - lastGen < THIRTY_DAYS_MS) {
+            const resetDate = new Date(lastGen + THIRTY_DAYS_MS);
+            return jsonResponse(
+              {
+                error: "Guest monthly limit reached",
+                message: "Guest mode is limited to 1 free itinerary per month. Sign in to double your quota!",
+                limit: 1,
+                count: 1,
+                resetsAt: resetDate.toISOString(),
+              },
+              { status: 429 }
+            );
+          }
         }
+
+        const cookieStore = await cookies();
+        const guestCookie = cookieStore.get('guest_trip_generated');
+        if (guestCookie) {
+          const generatedAt = parseInt(guestCookie.value);
+          if (!isNaN(generatedAt) && Date.now() - generatedAt < THIRTY_DAYS_MS) {
+            const resetDate = new Date(generatedAt + THIRTY_DAYS_MS);
+            return jsonResponse(
+              {
+                error: "Guest monthly limit reached",
+                message: "Guest mode is limited to 1 free itinerary per month. Sign in to double your quota!",
+                limit: 1,
+                count: 1,
+                resetsAt: resetDate.toISOString(),
+              },
+              { status: 429 }
+            );
+          }
+        }
+      } catch (guestErr) {
+        console.error("[Guest RateLimit Error]:", guestErr);
       }
     }
 
-    // 3. Zod Parsing & Validation
+    // 4. Zod Parsing & Validation
     const body = await request.json();
     const parseResult = tripRequestSchema.safeParse(body);
     
@@ -68,20 +107,47 @@ export async function POST(request: Request) {
     
     const { destination, origin, dateRange, budget, travelStyle } = parseResult.data;
 
-    // 4. Postgres Rate Limiting (2 Trips/Day) for Authenticated Users
+    // 5. Quota Enforcement for Authenticated Users (2 Itineraries per Rolling 30-Day Window)
+    let isUserWindowExpired = false;
     if (userId) {
       try {
-        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        const recentTripsCount = await prisma.trip.count({
-          where: {
-            userId: userId,
-            createdAt: { gte: twentyFourHoursAgo }
-          }
+        let dbUser = await prisma.user.findUnique({
+          where: { id: userId },
         });
 
-        if (recentTripsCount >= 2) {
+        if (!dbUser) {
+          const clerkUser = await currentUser();
+          if (clerkUser) {
+            const email = clerkUser.emailAddresses[0]?.emailAddress || '';
+            dbUser = await prisma.user.upsert({
+              where: { id: userId },
+              update: {},
+              create: {
+                id: userId,
+                email: email,
+                firstName: clerkUser.firstName,
+                lastName: clerkUser.lastName,
+                imageUrl: clerkUser.imageUrl,
+                generationCount: 0,
+              },
+            });
+          }
+        }
+
+        const lastGenTime = dbUser?.lastGenerationDate ? new Date(dbUser.lastGenerationDate).getTime() : 0;
+        isUserWindowExpired = !dbUser?.lastGenerationDate || (Date.now() - lastGenTime > THIRTY_DAYS_MS);
+        const currentGenerationCount = isUserWindowExpired ? 0 : (dbUser?.generationCount || 0);
+
+        if (currentGenerationCount >= 2) {
+          const resetDate = new Date(lastGenTime + THIRTY_DAYS_MS);
           return jsonResponse(
-            { error: "Daily limit reached", message: "You have reached your limit of 2 free AI trips per day. Please try again tomorrow!" },
+            {
+              error: "Monthly limit reached",
+              message: "You have reached your limit of 2 free itineraries for this 30-day period. Your quota resets on " + resetDate.toLocaleDateString() + ".",
+              limit: 2,
+              count: currentGenerationCount,
+              resetsAt: resetDate.toISOString(),
+            },
             { status: 429 }
           );
         }
@@ -234,24 +300,28 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
     
     if (userId) {
       try {
+        const user = await currentUser();
+        if (user) {
+          const email = user.emailAddresses[0]?.emailAddress || '';
+          await prisma.user.upsert({
+            where: { id: userId },
+            update: {
+              generationCount: isUserWindowExpired ? 1 : { increment: 1 },
+              lastGenerationDate: new Date(),
+            },
+            create: {
+              id: userId,
+              email: email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              imageUrl: user.imageUrl,
+              generationCount: 1,
+              lastGenerationDate: new Date(),
+            }
+          });
+        }
         
-          const user = await currentUser();
-          if (user) {
-            const email = user.emailAddresses[0]?.emailAddress || '';
-            await prisma.user.upsert({
-              where: { id: userId },
-              update: {},
-              create: {
-                id: userId,
-                email: email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                imageUrl: user.imageUrl,
-              }
-            });
-          }
-          const trip = await prisma.trip.create({
-
+        const trip = await prisma.trip.create({
           data: {
             userId,
             destination: destination,
@@ -266,8 +336,17 @@ Plan the daily itinerary and dining options based ONLY on the travel context abo
       }
     } else {
       tripId = "guest_trip";
+      try {
+        await prisma.guestRateLimit.upsert({
+          where: { ipHash },
+          update: { lastGenerationDate: new Date() },
+          create: { ipHash, lastGenerationDate: new Date() },
+        });
+      } catch (e) {
+        console.error("[Guest RateLimit Update Error]:", e);
+      }
       const cookieStore = await cookies();
-      cookieStore.set('guest_trip_generated', Date.now().toString(), { maxAge: 48 * 60 * 60, path: '/' });
+      cookieStore.set('guest_trip_generated', Date.now().toString(), { maxAge: 30 * 24 * 60 * 60, path: '/' });
     }
 
     return jsonResponse({ itinerary: parsedResponse, tripId });

@@ -59,7 +59,7 @@ export function Navbar() {
             <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50 transition-all">
               <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <span className="text-xs font-bold text-blue-700 dark:text-blue-300">
-                {Math.max(0, tripCount.limit - tripCount.count)}/{tripCount.limit} Free Trips
+                Credits: {Math.max(0, tripCount.limit - tripCount.count)}/{tripCount.limit}
               </span>
             </div>
           )}
@@ -145,7 +145,7 @@ export function Navbar() {
               <div className="flex items-center space-x-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800/50">
                 <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 <span className="text-sm font-bold text-blue-700 dark:text-blue-300">
-                  {Math.max(0, tripCount.limit - tripCount.count)}/{tripCount.limit} Free Trips Left
+                  Credits: {Math.max(0, tripCount.limit - tripCount.count)}/{tripCount.limit}
                 </span>
               </div>
               <Link href="/discover" onClick={() => setMobileMenuOpen(false)} className="flex items-center space-x-3 px-3 py-3 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900 font-semibold text-zinc-700 dark:text-zinc-200">
